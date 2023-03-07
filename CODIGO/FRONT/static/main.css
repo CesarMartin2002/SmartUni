@@ -1,0 +1,370 @@
+@import url('https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@400;700&display=swap');
+
+:root {
+    --main-bg: #1164ce;
+    --btn-bg: #1164ce;
+    --menu-bg: #253347;
+    --menu-font-color: #FFFFFF;
+    --menu-border: #253347;
+    --menu-bg-selected: #333333;
+    --menu-bg-hover: #32c8ed;
+    --menu-bg-selected-chevron: #532b27;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    font-family: 'Asap Condensed', sans-serif;
+    background: var(--main-bg);
+}
+
+main {
+    margin: 5rem auto;
+}
+
+
+  @keyframes slideUp {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+     
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    
+    }
+  }
+
+.menu {
+    animation: slideUp 1s;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: column wrap;
+    width: 40rem;
+    max-width: 80%;
+    border-radius: 2rem;
+    background: var(--menu-bg);
+    padding: 2rem;
+}
+
+.menu input[type="text"] ,input[type="password"]{
+  align-self: center;
+  width: 100%;
+  flex-flow: column wrap;
+  width: 40rem;
+  max-width: 80%;
+  position: relative;
+  cursor: text;
+  background: #FFFFFF;
+  border: none;
+  padding: 2rem;
+  color: #253347;
+  font-weight: 700;
+  margin: 2rem;
+  border-radius: 2rem;
+  transition: background 1s;
+}
+
+/*.menu input[type="submit"]*/
+.btn-menu {
+  position: relative;
+  cursor: pointer;
+  background: var(--btn-bg);
+  border: none;
+  padding: 2rem;
+  color: var(--menu-font-color);
+  font-weight: 700;
+  margin: 2rem;
+  border-radius: 2rem;
+  transition: background 1s;
+}
+
+.margen{
+    background: var(--main-bg);
+
+    margin: 2rem;
+}
+
+
+
+
+#loginForm {
+
+    margin: 0 auto;
+    display: flex;
+    width: 100%;
+    flex-flow: column wrap;
+    position: relative;
+    border: none;
+}
+.notif{
+    font-size: 1.6rem;
+    font-family: 'Asap Condensed', sans-serif;
+    padding: 0.5rem;
+    text-align: center;
+    background-color: #FFFFFF;
+    font-weight: 200;
+    margin: 1rem;
+    border-radius: 9999rem;
+}
+
+/*
+.button {
+    display: inline-block;
+    position: relative;
+    padding: 0.75em 1.5em;
+    border: none;
+    border-radius: 0.25em;
+    background-color: #333;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+  }
+  */
+
+  .button {
+    position: relative;
+    cursor: pointer;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--menu-font-color);
+    background: var(--btn-bg);
+    padding: 2rem;
+    border: none;
+    border-radius: 2rem;
+    margin: 2rem;
+    transition: background 1s;
+  }
+  
+  .button .icon {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    color: #fff;
+  }
+  
+  .button .overlay {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 100%;
+    height: 100%;
+    background-color: #f00;
+    border-radius: 2rem;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translate(-50%, 100%) scale(1);
+    }
+    to {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  
+  @keyframes slideOut {
+    from {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+      transform: translate(-50%, 100%) scale(1);
+    }
+  }
+  
+  .button:hover .icon {
+    display: block;
+    animation: slideIn 0.5s ease-out;
+  }
+  
+  .button:hover .overlay {
+    display: block;
+    animation: slideIn 0.5s ease-out;
+  }
+  
+  .button:not(:hover) .icon {
+    animation: slideOut 0.5s ease-out;
+  }
+  
+  .button:not(:hover) .overlay {
+    animation: slideOut 0.5s ease-out;
+  }
+  
+  
+  
+.errorMsg
+{
+    text-align: center;
+    color: rgb(231, 83, 83);
+    font-weight: 700;
+    margin: 1rem;   
+}
+
+h1,h2{
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-weight: 700;
+    margin: 1rem;   
+
+}
+
+
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50rem;
+    max-width: 80%;
+    margin-bottom: 10rem;
+    
+}
+
+
+.btn-menu:hover {
+    background: var(--menu-bg-hover);
+}
+
+.notif:hover {
+    background: #1164ce;
+}
+
+.btn-menu:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.selected {
+    background: var(--menu-bg-selected);
+}
+
+.selected::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: "";
+    background: var(--menu-bg-selected-chevron);
+    height: 5.6rem;
+    width: 0.5rem;
+}
+
+.btn{
+  text-decoration: none;
+  min-height: 8.5rem;
+  max-height: 8.5rem;
+
+  flex-flow: row wrap;
+  position: relative;
+  cursor: pointer;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #253347;
+  background: #FFFFFF;
+  padding: 2rem;
+  border: none;
+  border-radius: 999rem;
+  margin: 2rem;
+
+  text-align: center;
+  display: flex;
+  justify-content: center;
+
+  letter-spacing: 2px;
+  line-height: 45px;
+  transition: opacity 0.3s linear 0s;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn div{
+  line-height: 0px;
+  padding: 1rem;
+  margin: 0%;
+  align-items: center;
+  left: 0%;
+  position: relative;
+  transition: all 0.2s ease-out 0s;
+}
+
+.btn span{
+  /*center the span*/
+
+  margin-bottom: 3rem;
+  left: 0%;
+  position: relative;
+  transition: all 0.2s ease-out 0s;
+}
+
+.btn p{
+margin-top: 3rem;
+margin-bottom: 0rem;
+font-size: small;
+font-weight: 400;
+  left: 0%;
+  position: relative;
+  transition: all 0.2s ease-out 0s;
+}
+
+.btn img{
+  width: 5rem;
+  position: absolute;
+  top: 100%;
+  margin-top: -3rem;
+  line-height: 5rem;
+  opacity: 0;
+  transition: all 0.2s ease-out 0s;
+}
+
+.btn:hover {
+  background-color: red;
+}
+
+.btn:hover div{
+  width: 100%;
+  top: 0%;
+  /*
+  left: -14%;
+  */
+}
+
+.btn:hover span{
+  font-size: xx-small;
+  
+  color: red;
+  width: 100%;
+  /*
+  left: -14%;
+  */
+}
+.btn:hover p{
+  font-size: xx-small;
+  color: red;
+  width: 100%;
+  /*
+  left: -14%;
+  */
+}
+
+
+.btn:hover img{
+  opacity: 1;
+  margin-top: 0rem;
+  width: 7rem;
+  height: 7rem;
+  line-height: 10rem;
+  top: 10%;
+}

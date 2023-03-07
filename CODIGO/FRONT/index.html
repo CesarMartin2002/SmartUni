@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECURER</title>
+    <link rel="stylesheet" href="/static/main.css" />
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
+    <script src="/static/index.js" defer>
+
+    </script>
+</head>
+<body>
+<main>
+    <img class="logo" src="/static/images/logo.png" alt="Securer Logo">
+<div class="menu">
+    <h1>BIENVENIDO</h1>
+    <h2>INICIA SESIÓN</h2>
+
+    <h3 class="errorMsg" id="errorInicioSesion" style="display: none;">ERROR AL INICIAR SESION</h3>
+
+    <form id="loginForm" action="javascript:iniciarSesion((document.getElementById('correo')).value,(document.getElementById('contrasenna')).value)"> <!--el submit es el boton para enviar el formulario-->
+        <input placeholder="Correo electrónico"  type="text" id="correo">
+        <input placeholder="Contraseña" type="password" id="contrasenna">
+        <input class="btn-menu" type="submit"  value="INICIAR SESION">
+    </form>
+    <h3 style="text-align:center"><FONT COLOR=white>¿Es tu primera vez?</FONT></h3>
+    <a href="registrarse.html"style="text-align:center"><FONT COLOR=white>REGISTRATE</FONT></a>
+
+</div>
+
+</main>
+</body>
+</html>

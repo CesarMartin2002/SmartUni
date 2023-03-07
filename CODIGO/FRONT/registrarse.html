@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECURER</title>
+    <link rel="stylesheet" href="/static/main.css" />
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.png">
+    <script src="/static/registrarse.js" defer></script>
+</head>
+<body>
+<main>
+    <img class="logo" src="images/logo.png" alt="Securer Logo">
+<div class = "menu">
+    <h1>REGISTRARSE</h1>
+
+    <h3 class="errorMsg" id= "errorMsg0" style="display: none;">Las contraseñas no coinciden</h3>
+    <h3 class="errorMsg" id= "errorMsg1" style="display: none;">Ya existe una cuenta con ese correo</h3>
+    <h3 class="errorMsg" id= "errorMsg"style="display: none;">ERROR AL INICIAR SESION</h3>
+
+    <form id= "loginForm" action="javascript:registrarse((document.getElementById('correo')).value,(document.getElementById('contrasenna')).value,(document.getElementById('repeatContrasenna')).value)"> <!--el submit es el boton para enviar el formulario-->
+        <input placeholder="Correo electrónico" class="entrada" type = "text" id="correo">
+        <input placeholder="Contraseña" class="entrada" type = "password" id="contrasenna">
+        <input placeholder="Repetir Contraseña" class="entrada" type = "password" id="repeatContrasenna">
+        <input class="btn-menu" type = "submit"  value="REGISTRARSE">
+    </form>
+    <h3 style="text-align:center"><FONT COLOR=white>¿Ya tienes una cuenta?</FONT></h3>
+    <a href="/Securer"style="text-align:center"><FONT COLOR=white>INICIA SESIÓN</FONT></a>
+
+</div>
+
+
+
+</main>
+</body>
+</html>

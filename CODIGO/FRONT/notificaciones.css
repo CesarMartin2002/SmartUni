@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@400;700&display=swap');
+
+:root {
+    --main-bg: #4288f0;
+    --btn-bg: #4288f0;
+    --menu-bg: #253347;
+    --menu-font-color: #FFFFFF;
+    --menu-border: #253347;
+    --menu-bg-selected: #333333;
+    --menu-bg-hover: #32c8ed;
+    --menu-bg-selected-chevron: #532b27;
+    --porcentaje: 50%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-size: 1.6rem;
+    font-family: 'Asap Condensed', sans-serif;
+    background: var(--main-bg);
+}
+
+main {
+    margin: 5rem auto;
+}
+
+.menu {
+    animation: slideUp 1s;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: column wrap;
+    width: 40rem;
+    max-width: 80%;
+    border-radius: 2rem;
+    background: var(--menu-bg);
+    padding: 2rem;
+}
+
+.margen{
+    background: var(--main-bg);
+
+    margin: 2rem;
+}
+
+.btn{
+  text-decoration: none;
+  min-height: 8.5rem;
+  max-height: 8.5rem;
+
+  flex-flow: row wrap;
+  position: relative;
+  cursor: pointer;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #253347;
+  background: #FFFFFF;
+  padding: 2rem;
+  border: none;
+  border-radius: 999rem;
+  margin: 2rem;
+
+  text-align: center;
+  display: flex;
+  justify-content: center;
+
+  letter-spacing: 2px;
+  line-height: 45px;
+  transition: opacity 0.3s linear 0s;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn div{
+  line-height: 0px;
+  padding: 1rem;
+  margin: 0%;
+  align-items: center;
+  left: 0%;
+  position: relative;
+  transition: all 0.2s ease-out 0s;
+}
+
+.btn span{
+  /*center the span*/
+
+  margin-bottom: 3rem;
+  left: 0%;
+  position: relative;
+  transition: all 0.2s ease-out 0s;
+}
+
+.btn p{
+margin-top: 3rem;
+margin-bottom: 0rem;
+font-size: small;
+font-weight: 400;
+  left: 0%;
+  position: relative;
+  transition: all 0.2s ease-out 0s;
+}
+
+.btn img{
+  width: 5rem;
+  position: absolute;
+  top: 100%;
+  margin-top: -3rem;
+  line-height: 5rem;
+  opacity: 0;
+  transition: all 0.2s ease-out 0s;
+}
+
+.btn:hover {
+  background-color: red;
+}
+
+.btn:hover div{
+  width: 100%;
+  top: 0%;
+  /*
+  left: -14%;
+  */
+}
+
+.btn:hover span{
+  font-size: xx-small;
+  
+  color: red;
+  width: 100%;
+  /*
+  left: -14%;
+  */
+}
+.btn:hover p{
+  font-size: xx-small;
+  color: red;
+  width: 100%;
+  /*
+  left: -14%;
+  */
+}
+
+
+.btn:hover img{
+  opacity: 1;
+  margin-top: 0rem;
+  width: 7rem;
+  height: 7rem;
+  line-height: 10rem;
+  top: 10%;
+}
+
+
+.button {
+  position: relative;
+  cursor: pointer;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--menu-font-color);
+  background: var(--btn-bg);
+  padding: 2rem;
+  border: none;
+  border-radius: 2rem;
+  margin: 2rem;
+  transition: background 1s;
+}
+
+.button .icon {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5em;
+  color: #fff;
+}
+
+
+
+@keyframes slideIn {
+  from {
+    transform: translate(-50%, 100%) scale(1);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    transform: translate(-50%, 100%) scale(1);
+  }
+}
+
+.button:hover .icon {
+  display: block;
+  animation: slideIn 0.5s ease-out;
+}
+
+.icon{
+
+  margin: 0 auto;
+  display: block;
+  max-height: 80%;
+  margin-bottom: 10rem;
+}
+
+.button:not(:hover) .icon {
+  animation: slideOut 0.5s ease-out;
+}
+
+
+
+
+
+
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50rem;
+  max-width: 80%;
+  margin-bottom: 10rem;
+  
+}
+
+
+.cosilla {
+padding: 20px 40px;
+font-size: 32px;
+font-family: Arial, sans-serif;
+display: inline-block;
+position:relative;
+}
+.cosilla:before {
+content:'';
+background: #FFADAD;
+position:absolute;
+width:100%;
+top:0;
+left:0;
+height:100%;
+transition: 0.3s linear;
+z-index:-1;
+}
+.cosilla:hover:before {
+height:0%;
+}
