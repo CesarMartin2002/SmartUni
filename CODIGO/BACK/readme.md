@@ -1,6 +1,6 @@
 # Para usar el backend
 
-En primer lugar deberemos utilizar el entorno virtual que se encuentra en fastapi-env
+En primer lugar deberemos utilizar el entorno virtual que se encuentra en fastapi-env.  
 Para ello podemos ejecutar este comando:
 ```
 fastapi-env\Scripts\activate
