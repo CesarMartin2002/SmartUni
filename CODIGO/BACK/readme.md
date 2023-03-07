@@ -5,7 +5,7 @@ Para ello podemos ejecutar este comando:
 ```
 fastapi-env\Scripts\activate
 ```
-Una vez nos encontremos en el entorno virtual, debemos levantar el servidor con **uvicorn**
+Una vez nos encontremos en el entorno virtual, debemos levantar el servidor con **uvicorn**  
 Para ello podemos ejecutar este comando:
 ```
 uvicorn main:app --reload
