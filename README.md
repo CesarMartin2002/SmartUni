@@ -26,6 +26,7 @@ Este proyecto es un trabajo cerrado y no está abierto a contribuciones externas
 
 ## Autores
 
-- [Nombre del autor 1](enlace a perfil de github del autor 1)
-- [Nombre del autor 2](enlace a perfil de github del autor 2)
-- [Nombre del autor 3](enlace a perfil de github del autor 3)
+- [Javier Lombardía](https://github.com/lombaa)
+- [César Martín Guijarro](https://github.com/CesarMartin2002)
+- [Lucía Picado](https://github.com/LuciaPicado)
+- [Valeria Fernanda Villamares Félix](https://github.com/Valeriia632)
