@@ -1,6 +1,6 @@
 # Proyecto de Computación Ubicua
 
-![Logo del proyecto](https://raw.githubusercontent.com/CesarMartin2002/Proyecto-ubicua/master/CODIGO/FRONT/static/images/LOGO.png?token=GHSAT0AAAAAAB537FRUWSLRS23K4LREY4KIZAHUCDQ)
+![Logo del proyecto](https://github.com/CesarMartin2002/Proyecto-ubicua/blob/ae71068b281bec299fc2720dfbf35dd84001ad65/CODIGO/FRONT/static/images/LOGO.png)
 
 Este es el repositorio para el proyecto de Computación Ubicua, el cual tiene como objetivo crear una universidad inteligente mediante el uso de IoT.
 
