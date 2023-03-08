@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SECURER</title>
+        <link rel="icon" type="image/x-icon" href="images/favicon.png">
+        <link rel="stylesheet" href="/static/main.css" />
+    </head>
+    <body class="cafe">
+        <main>
+            <img class="logo" src="/static/images/logo.png" alt="Logo">
+            <h1>CAFETERÍA</h1>
+            <div class="menu">
+                <button id="pedido-btn">Realizar pedido</button>
+                <button>Consultar horario</button>
+                <button>Próximos eventos</button>
+            </div>
+        </main>
+
+        <script>
+            const pedidoBtn = document.getElementById('pedido-btn');
+            pedidoBtn.addEventListener('click', function() {
+                window.location.href += '/pedido';
+            });
+        </script>
+    </body>
+</html>

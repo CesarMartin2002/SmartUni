@@ -34,6 +34,24 @@ def index():
 
 @app.get("/registrarse")
 def registrarse():
-    with open("../FRONT/registrarse.html", "r") as f:
+    with open("../FRONT/registrarse.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(html)
+
+@app.get("/menu")
+def registrarse():
+    with open("../FRONT/bienvenida.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(html)
+
+@app.get("/cafeteria")
+def registrarse():
+    with open("../FRONT/cafeteria.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(html)
+
+@app.get("/cafeteria/pedido")
+def registrarse():
+    with open("../FRONT/cafeteria_pedido.html", "r", encoding="utf-8") as f:
         html = f.read()
     return HTMLResponse(html)
