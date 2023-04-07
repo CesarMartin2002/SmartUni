@@ -40,5 +40,28 @@ def obtener_datos_como_json(sql, params=None):
 def obtener_casillero(id: int):
     return {"id": id, "nombre": "Casillero 1"}
 
+# me devuelve la informacion de UNA taquilla
 def obtener_taquilla(id: int):
-    return {"id": id, "nombre": "Taquilla 1"}
+    return {"id": id, "nombre": "Taquilla 1", "estado": "ocupado"}
+
+# me devuelve la informacion de TODAS las taquillas
+def obtener_todasTaquillas():
+    taquillas = [{
+            "id": 1,
+            "nombre": "Taquilla 1",
+            "estado": "ocupado"
+        },
+        {
+            "id": 2,
+            "nombre": "Taquilla 2",
+            "estado": "ocupado"
+        },
+        {
+            "id": 3,
+            "nombre": "Taquilla 3",
+            "estado": "libre"
+        }]
+    return taquillas
+
+#
+    
