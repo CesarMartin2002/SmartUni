@@ -38,7 +38,9 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\César\Desktop\Repositorios\UBICUA RECU\Proyecto ubicua\CODIGO\BACK\fastapi-env"
+#get the full path to the directory containing this file. This is dynamic so that the script can be sourced from anywhere
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+VIRTUAL_ENV="$DIR/fastapi-env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
