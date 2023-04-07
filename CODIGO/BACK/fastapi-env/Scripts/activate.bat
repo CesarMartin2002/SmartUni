@@ -8,7 +8,11 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\César\Desktop\Repositorios\UBICUA RECU\Proyecto ubicua\CODIGO\BACK\fastapi-env
+set RUTA=%~dp0
+@REM set MIRUTA=%RUTA:~0,-9%
+set VIRTUAL_ENV=%RUTA:~0,-9%
+@REM set VIRTUAL_ENV=C:\Users\César\Desktop\Repositorios\UBICUA RECU\Proyecto ubicua\CODIGO\BACK\fastapi-env
+@REM echo %MIRUTA%
 
 if not defined PROMPT set PROMPT=$P$G
 
