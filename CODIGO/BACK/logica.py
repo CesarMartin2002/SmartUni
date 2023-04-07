@@ -36,32 +36,69 @@ def obtener_datos_como_json(sql, params=None):
     return  json.loads(datos_json)
 
 
-
+#un grupo de taquillas peternece a un casillero
 def obtener_casillero(id: int):
     return {"id": id, "nombre": "Casillero 1"}
 
 # me devuelve la informacion de UNA taquilla
-def obtener_taquilla(id: int):
-    return {"id": id, "nombre": "Taquilla 1", "estado": "ocupado"}
+def obtener_taquilla(id_taquilla: int):
+    # devolverla como un diccionario con sus propiedades (por ejemplo, {'id': 1, 'disponible': True, 'usuario': None})
+    # Si no se encuentra ninguna taquilla con ese id, puedes devolver None o lanzar una excepción, dependiendo de tu preferencia.
+    return {"id": id_taquilla, "nombre": "Taquilla 1", "estado": True, "usuario": 1}
 
-# me devuelve la informacion de TODAS las taquillas
+def obtener_usuario_de_taquilla(id_taquilla: int):
+    taquilla = obtener_taquilla(id_taquilla) 
+    if taquilla['estado']: #si la taquilla esta disponible no retornas 
+        return None
+    else: #si esta ocupado es que tiene un alumno asociado
+        return taquilla['usuario']
+    
+def actualizar_taquilla(id_taquilla: int, id_usuario :int):
+    # Aquí implementar la lógica para actualizar la información de la taquilla en la base de datos
+    # a partir del diccionario que se recibe como parámetro (por ejemplo, actualizando los valores de las propiedades
+    # 'disponible' y 'usuario')
+    taquilla = obtener_taquilla(id_taquilla)
+    #si la taquilla esta disponible
+    if taquilla['estado']:
+        estado = False
+        taquilla["estado"]=estado
+        taquilla["usuario"]=id_usuario
+        return taquilla
+    else:
+        return f"La taquilla {id_taquilla} no está disponible en este momento, esta asociado al alumno con id {id_usuario}."
+        
+
 def obtener_todasTaquillas():
-    taquillas = [{
-            "id": 1,
-            "nombre": "Taquilla 1",
-            "estado": "ocupado"
-        },
-        {
-            "id": 2,
-            "nombre": "Taquilla 2",
-            "estado": "ocupado"
-        },
-        {
-            "id": 3,
-            "nombre": "Taquilla 3",
-            "estado": "libre"
-        }]
+    taquillas = []
+    for id_taquilla in range(1, 4): # suponiendo que solo hay 3 taquillas
+        taq = obtener_taquilla(id_taquilla)
+        if taq["estado"] == False:
+            usuario = obtener_usuario_de_taquilla(id_taquilla)
+            taq["usuario"] = usuario
+        taquillas.append(taq)
     return taquillas
 
-#
+
+#funcion para reservar una taquilla
+def reservar_taquilla(id_taquilla: int, id_usuario: int):
+    taquilla = obtener_taquilla(id_taquilla)
+    if taquilla["estado"]:
+        taquilla["estado"] = False
+        taquilla["usuario"] = id_usuario
+        actualizar_taquilla(taquilla, id_usuario)
+        return f"La taquilla {id_taquilla} ha sido reservada por el usuario {id_usuario}."
+    else:
+        return f"La taquilla {id_taquilla} no está disponible en este momento."
+
+#cancelar una taquilla
+def cancelar_taquilla(id_taquilla: int, id_usuario: int):
+    taquilla = obtener_taquilla(id_taquilla)
+    if taquilla["usuario"] == id_usuario:
+        taquilla["estado"] = True
+        taquilla["usuario_id"] = None
+        actualizar_taquilla(id_taquilla, id_usuario)
+        return f"La taquilla {id_taquilla} ha sido CANCELADA por el usuario {id_usuario}."
+    else:
+        return f"La taquilla {id_taquilla} NO ESTA reservada por el usuario {id_usuario}."
+
     

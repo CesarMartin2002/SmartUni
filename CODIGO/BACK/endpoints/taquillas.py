@@ -23,18 +23,32 @@ async def get_taquillas():
     taquillas = logica.obtener_todasTaquillas()
     return taquillas
 
-# @router.put("/reservarTaquilla/{id_taquilla}/{id_usuario}")
-# def reservar_taquilla(id_taquilla:int, id_usuario:int):
-#     """Este endpoint reserva una taquilla a partir de una id dada
+@router.put("/reservarTaquilla/{id_taquilla}/{id_usuario}")
+def reservar_taquilla(id_taquilla:int, id_usuario:int):
+    """Este endpoint reserva una taquilla a partir de una id dada
 
-#     Args:
-#         id_taquilla, id_usuario
+    Args:
+        id_taquilla, id_usuario
 
-#     Returns:
-#         la informacion detallada de esa taquilla 
-#     """
-    
+    Returns:
+        la informacion detallada de esa taquilla 
+    """
+    reserva_taquilla = logica.reservar_taquilla(id_taquilla, id_usuario)
+    return reserva_taquilla
 
+@router.put("/cancelarTaquilla/{id_taquilla}/{id_usuario}")
+def cancelar_taquilla(id_taquilla: int, id_usuario:int):
+    """este Endpoint cancela la reserva o la asignacion al alumno 
+
+    Args:
+        id_taquilla (int): id de la taquilla
+        id_usuario (int): id del alumno que ya no quiere esa taquilla
+
+    Returns:
+        la taquilla actualizada con los campos de 'estado' y 'usuario'
+    """
+    cancelar_taquilla = logica.cancelar_taquilla(id_taquilla, id_usuario)
+    return cancelar_taquilla
 
 
 
