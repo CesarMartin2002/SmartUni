@@ -18,9 +18,9 @@ app.include_router(tests.router)
 # Realizar conexión a la base de datos
 db.connect()
 
-# Mount the static files directory at "/static"
-def cargar_static(app):
-    app.mount("/static", StaticFiles(directory="../FRONT/static"), name="static")
+# # Mount the static files directory at "/static"
+# def cargar_static(app):
+#     app.mount("/static", StaticFiles(directory="../FRONT/static"), name="static")
 
 app.mount("/static", StaticFiles(directory="../FRONT/static"), name="static")
 

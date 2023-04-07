@@ -9,6 +9,7 @@ router = APIRouter()
 @router.get("/taquillas/{id}")  # ruta que va a tener el endpoint. Puede ser de cualquier tipo. En este caso es de tipo GET. Para especificar el tipo de ruta se usa el decorador @router.TIPO
 async def get_taquilla(id: int):    # función que va a ser ejecutada cuando se llame a la ruta. En este caso es una función asíncrona. El parámetro id es el que se va a recibir en la ruta
     """
+    Este endpoint devuelve una taquilla en particular
     """
     print("id: ", id)
     taquilla = logica.obtener_taquilla(id)

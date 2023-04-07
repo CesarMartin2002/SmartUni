@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 23.1) (preloaded format=pdflatex 2023.3.8)  8 MAR 2023 02:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 23.1) (preloaded format=pdflatex 2023.3.8)  7 APR 2023 18:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -387,7 +387,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 27.
  (C:\Users\César\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Overfull \hbox (17.74118pt too wide) in paragraph at lines 27--27
+Overfull \hbox (76.97807pt too wide) in paragraph at lines 27--27
  [][][][] 
  []
 
@@ -442,7 +442,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  75i,31n,76p,329b,457s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/César/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/César/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/César/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/César/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/César/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/César/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsl10.pfb>
-Output written on memoria.pdf (5 pages, 96671 bytes).
+Output written on memoria.pdf (5 pages, 97655 bytes).
 PDF statistics:
  86 PDF objects out of 1000 (max. 8388607)
  12 named destinations out of 1000 (max. 500000)
