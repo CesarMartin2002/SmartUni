@@ -131,6 +131,7 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- DROP TABLE IF EXISTS public.Asignatura CASCADE;
 CREATE TABLE public.Asignatura (
 	id_asignatura varchar(20) NOT NULL,
+	descripcion varchar(50),
 	horario time,
 	id_aula_Aula varchar(20) NOT NULL,
 	CONSTRAINT Asignatura_pk PRIMARY KEY (id_asignatura)

@@ -55,3 +55,11 @@ INSERT INTO PRODUCTO VALUES (13, 'sandwich vegetal', 2.50, 1);
 INSERT INTO PRODUCTO VALUES (14, 'hamburguesa con patatas', 4.00, 1);
 INSERT INTO PRODUCTO VALUES (15, 'ensalada', 4.00, 1);
 --SELECT * FROM PRODUCTO;
+
+--ASIGNATURA(id, descripcion, horario, id_aula)
+INSERT INTO ASIGNATURA VALUES (1,'Gestion de Proyectos','08:00', 1);
+INSERT INTO ASIGNATURA VALUES (2, 'Sistemas Empresariales', '10:00', 1);
+INSERT INTO ASIGNATURA VALUES (3,'Estructuras Discretas','08:00', 2);
+INSERT INTO ASIGNATURA VALUES (4,'CRA','12:00', 1);
+INSERT INTO ASIGNATURA VALUES (5,'Gestion de Proyectos','10:00', 2);
+--SELECT * FROM ASIGNATURA;
