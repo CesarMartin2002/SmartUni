@@ -9,7 +9,7 @@
 -- 
 -- object: new_database | type: DATABASE --
 -- DROP DATABASE IF EXISTS new_database;
--- CREATE DATABASE new_database;
+CREATE DATABASE new_database;
 -- ddl-end --
 
 
@@ -110,6 +110,7 @@ ALTER TABLE public.Cafeteria OWNER TO aotdlhvi;
 -- DROP TABLE IF EXISTS public.Producto CASCADE;
 CREATE TABLE public.Producto (
 	id_producto varchar(20) NOT NULL,
+	descripcion varchar(50),
 	precio money,
 	id_cafeteria_Cafeteria varchar(20) NOT NULL,
 	CONSTRAINT Producto_pk PRIMARY KEY (id_producto)
