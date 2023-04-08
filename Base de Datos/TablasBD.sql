@@ -1,6 +1,6 @@
--- Database generated with pgModeler (PostgreSQL Database Modeler).
+-- Database generated with pgModeler (aotdlhviQL Database Modeler).
 -- pgModeler  version: 0.9.3-beta1
--- PostgreSQL version: 13.0
+-- aotdlhviQL version: 13.0
 -- Project Site: pgmodeler.io
 -- Model Author: ---
 
@@ -23,7 +23,7 @@ CREATE TABLE public.Alumno (
 
 );
 -- ddl-end --
-ALTER TABLE public.Alumno OWNER TO postgres;
+ALTER TABLE public.Alumno OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: public.Aula | type: TABLE --
@@ -36,7 +36,7 @@ CREATE TABLE public.Aula (
 
 );
 -- ddl-end --
-ALTER TABLE public.Aula OWNER TO postgres;
+ALTER TABLE public.Aula OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: public.Asiento | type: TABLE --
@@ -49,7 +49,7 @@ CREATE TABLE public.Asiento (
 
 );
 -- ddl-end --
-ALTER TABLE public.Asiento OWNER TO postgres;
+ALTER TABLE public.Asiento OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Aula_fk | type: CONSTRAINT --
@@ -85,7 +85,7 @@ CREATE TABLE public.Taquilla (
 
 );
 -- ddl-end --
-ALTER TABLE public.Taquilla OWNER TO postgres;
+ALTER TABLE public.Taquilla OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Alumno_fk | type: CONSTRAINT --
@@ -103,7 +103,7 @@ CREATE TABLE public.Cafeteria (
 
 );
 -- ddl-end --
-ALTER TABLE public.Cafeteria OWNER TO postgres;
+ALTER TABLE public.Cafeteria OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: public.Producto | type: TABLE --
@@ -116,7 +116,7 @@ CREATE TABLE public.Producto (
 
 );
 -- ddl-end --
-ALTER TABLE public.Producto OWNER TO postgres;
+ALTER TABLE public.Producto OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Cafeteria_fk | type: CONSTRAINT --
@@ -136,7 +136,7 @@ CREATE TABLE public.Asignatura (
 
 );
 -- ddl-end --
-ALTER TABLE public.Asignatura OWNER TO postgres;
+ALTER TABLE public.Asignatura OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Aula_fk | type: CONSTRAINT --
