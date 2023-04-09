@@ -16,7 +16,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 	<position x="40" y="440"/>
 	<column name="id_alumno" not-null="true">
-		<type name="varchar" length="20"/>
+		<type name="integer" length="20"/>
 	</column>
 	<column name="correo">
 		<type name="varchar" length="20"/>
@@ -34,7 +34,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 	<position x="580" y="20"/>
 	<column name="id_aula" not-null="true">
-		<type name="varchar" length="20"/>
+		<type name="integer" length="20"/>
 	</column>
 	<column name="temperatura">
 		<type name="integer" length="0"/>
@@ -52,7 +52,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 	<position x="540" y="400"/>
 	<column name="id_asiento" not-null="true">
-		<type name="varchar" length="20"/>
+		<type name="integer" length="20"/>
 	</column>
 	<constraint name="Asiento_pk" type="pk-constr" table="public.&quot;Asiento&quot;">
 		<columns names="id_asiento" ref-type="src-columns"/>
@@ -89,7 +89,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 	<position x="20" y="20"/>
 	<column name="id_taquilla" not-null="true">
-		<type name="varchar" length="20"/>
+		<type name="integer" length="20"/>
 	</column>
 	<column name="password">
 		<type name="integer" length="0"/>
@@ -133,7 +133,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 	<position x="920" y="40"/>
 	<column name="id_cafeteria" not-null="true">
-		<type name="varchar" length="20"/>
+		<type name="integer" length="20"/>
 	</column>
 	<constraint name="Cafeteria_pk" type="pk-constr" table="public.&quot;Cafeteria&quot;">
 		<columns names="id_cafeteria" ref-type="src-columns"/>
@@ -145,7 +145,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 	<position x="900" y="340"/>
 	<column name="id_producto" not-null="true">
-		<type name="varchar" length="20"/>
+		<type name="integer" length="20"/>
 	</column>
 	<column name="descripcion">
 		<type name="varchar" length="50"/>
@@ -180,7 +180,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<role name="postgres"/>
 	<position x="280" y="240"/>
 	<column name="id_asignatura" not-null="true">
-		<type name="varchar" length="20"/>
+		<type name="integer" length="20"/>
 	</column>
 	<column name="descripcion">
 		<type name="varchar" length="50"/>

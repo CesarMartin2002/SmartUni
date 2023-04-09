@@ -9,14 +9,14 @@
 -- 
 -- object: new_database | type: DATABASE --
 -- DROP DATABASE IF EXISTS new_database;
-CREATE DATABASE new_database;
+--CREATE DATABASE new_database;
 -- ddl-end --
 
 
 -- object: public.Alumno | type: TABLE --
 -- DROP TABLE IF EXISTS public.Alumno CASCADE;
 CREATE TABLE public.Alumno (
-	id_alumno varchar(20) NOT NULL,
+	id_alumno integer NOT NULL,
 	correo varchar(20),
 	password varchar(20),
 	CONSTRAINT Alumno_pk PRIMARY KEY (id_alumno)
@@ -29,7 +29,7 @@ ALTER TABLE public.Alumno OWNER TO aotdlhvi;
 -- object: public.Aula | type: TABLE --
 -- DROP TABLE IF EXISTS public.Aula CASCADE;
 CREATE TABLE public.Aula (
-	id_aula varchar(20) NOT NULL,
+	id_aula integer NOT NULL,
 	temperatura integer,
 	luminosidad integer,
 	CONSTRAINT Aula_pk PRIMARY KEY (id_aula)
@@ -42,9 +42,9 @@ ALTER TABLE public.Aula OWNER TO aotdlhvi;
 -- object: public.Asiento | type: TABLE --
 -- DROP TABLE IF EXISTS public.Asiento CASCADE;
 CREATE TABLE public.Asiento (
-	id_asiento varchar(20) NOT NULL,
-	id_aula_Aula varchar(20) NOT NULL,
-	id_alumno_Alumno varchar(20),
+	id_asiento integer NOT NULL,
+	id_aula_Aula integer NOT NULL,
+	id_alumno_Alumno integer,
 	CONSTRAINT Asiento_pk PRIMARY KEY (id_asiento)
 
 );
@@ -74,13 +74,13 @@ ALTER TABLE public.Asiento ADD CONSTRAINT Asiento_uq UNIQUE (id_alumno_Alumno);
 -- object: public.Taquilla | type: TABLE --
 -- DROP TABLE IF EXISTS public.Taquilla CASCADE;
 CREATE TABLE public.Taquilla (
-	id_taquilla varchar(20) NOT NULL,
+	id_taquilla integer NOT NULL,
 	password integer,
 	ala varchar(5),
 	piso integer,
 	pasillo integer,
 	ocupado bool,
-	id_alumno_Alumno varchar(20),
+	id_alumno_Alumno integer,
 	CONSTRAINT Taquilla_pk PRIMARY KEY (id_taquilla)
 
 );
@@ -98,7 +98,7 @@ ON DELETE SET NULL ON UPDATE CASCADE;
 -- object: public.Cafeteria | type: TABLE --
 -- DROP TABLE IF EXISTS public.Cafeteria CASCADE;
 CREATE TABLE public.Cafeteria (
-	id_cafeteria varchar(20) NOT NULL,
+	id_cafeteria integer NOT NULL,
 	CONSTRAINT Cafeteria_pk PRIMARY KEY (id_cafeteria)
 
 );
@@ -109,10 +109,10 @@ ALTER TABLE public.Cafeteria OWNER TO aotdlhvi;
 -- object: public.Producto | type: TABLE --
 -- DROP TABLE IF EXISTS public.Producto CASCADE;
 CREATE TABLE public.Producto (
-	id_producto varchar(20) NOT NULL,
+	id_producto integer NOT NULL,
 	descripcion varchar(50),
 	precio money,
-	id_cafeteria_Cafeteria varchar(20) NOT NULL,
+	id_cafeteria_Cafeteria integer NOT NULL,
 	CONSTRAINT Producto_pk PRIMARY KEY (id_producto)
 
 );
@@ -130,10 +130,10 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- object: public.Asignatura | type: TABLE --
 -- DROP TABLE IF EXISTS public.Asignatura CASCADE;
 CREATE TABLE public.Asignatura (
-	id_asignatura varchar(20) NOT NULL,
+	id_asignatura integer NOT NULL,
 	descripcion varchar(50),
 	horario time,
-	id_aula_Aula varchar(20) NOT NULL,
+	id_aula_Aula integer NOT NULL,
 	CONSTRAINT Asignatura_pk PRIMARY KEY (id_asignatura)
 
 );
