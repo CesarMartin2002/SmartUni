@@ -13,7 +13,9 @@ async def get_taquilla(id: int):    # función que va a ser ejecutada cuando se 
     """
     print("id: ", id)
     taquilla = logica.obtener_taquilla(id)
-    return taquilla
+    if len(taquilla) == 0:
+        return logica.respuesta_fallida("No se encontró la taquilla con id " + str(id))
+    return logica.respuesta_exitosa(taquilla)
 
 @router.get("/taquillas") 
 async def get_taquillas():
@@ -21,7 +23,7 @@ async def get_taquillas():
     Este endpoint devuelve todas las taquillas disponibles
     """
     taquillas = logica.obtener_todasTaquillas()
-    return taquillas
+    return logica.respuesta_exitosa(taquillas)
 
 @router.put("/reservarTaquilla/{id_taquilla}/{id_usuario}")
 def reservar_taquilla(id_taquilla:int, id_usuario:int):

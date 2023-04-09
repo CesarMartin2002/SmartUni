@@ -2,49 +2,17 @@ from decimal import Decimal
 import json
 import db
 
+
+#region Funciones de respuesta
 def respuesta_exitosa(data):
     return {"success": True, "code": 200, "message": "OK", "data": data}
 
 def respuesta_fallida(mensaje):
     return {"success": False, "code": 400, "message": mensaje}
-
-def json_serial(obj):
-    """JSON serializer for objects not serializable by default json encoder"""
-    if isinstance(obj, Decimal):
-        return float(obj) if obj % 1 > 0 else int(obj)
-    raise TypeError(f'Type {type(obj)} not serializable')
+#endregion
 
 
-def prueba_consulta ():
-    sql = "SELECT * FROM taquilla"
-    return db.realizar_consulta(sql)
-
-
-
-def obtener_datos_como_json(sql, params=None):
-    # Llamamos a la función para realizar la consulta
-    datos = db.realizar_consulta(sql, params)
-
-    if datos == "Error":
-        return "Error"
-    
-    # Obtenemos los nombres de las columnas
-    nombres_columnas = [d[0] for d in datos.description]
-    
-    # Creamos una lista de diccionarios con los datos
-    lista_datos = [dict(zip(nombres_columnas, d)) for d in datos]
-    
-    # Convertimos los Decimals a float o int
-    for d in lista_datos:
-        for k, v in d.items():
-            if isinstance(v, Decimal):
-                d[k] = float(v) if v % 1 > 0 else int(v)
-    
-    # Convertimos la lista de diccionarios a formato JSON
-    datos_json = json.dumps(lista_datos, default=json_serial)
-    
-    return  json.loads(datos_json)
-
+#region funciones de taquillas
 
 #un grupo de taquillas peternece a un casillero
 def obtener_casillero(id: int):
@@ -53,13 +21,11 @@ def obtener_casillero(id: int):
 # me devuelve la informacion de UNA taquilla
 def obtener_taquilla(id_taquilla: int):
     # devolverla como un diccionario con sus propiedades (por ejemplo, {'id': 1, 'disponible': True, 'usuario': None})
-    # Si no se encuentra ninguna taquilla con ese id, puedes devolver None o lanzar una excepción, dependiendo de tu preferencia.
+    # Si no se encuentra ninguna taquilla con ese id, se debe retornar un error (por ejemplo, {'success': False, 'message': 'No se encontró la taquilla con id 1'})
     query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
-    params = (id_taquilla,)
-    taquilla = db.realizar_consulta(query, params)
-    if len(taquilla) == 0:
-        return respuesta_fallida("No se encontró la taquilla con id " + str(id_taquilla))
-    return respuesta_exitosa(taquilla)
+    parameters = (id_taquilla,)
+    taquilla = db.realizar_consulta(query, params=parameters)[0]
+    return taquilla
 
 def obtener_usuario_de_taquilla(id_taquilla: int):
     taquilla = obtener_taquilla(id_taquilla) 
@@ -109,5 +75,46 @@ def cancelar_taquilla(id_taquilla: int, id_usuario: int):
         return f"La taquilla {id_taquilla} ha sido CANCELADA por el usuario {id_usuario}."
     else:
         return f"La taquilla {id_taquilla} NO ESTA reservada por el usuario {id_usuario}."
-
+#endregion
     
+
+def prueba_consulta():
+    taquilla_prueba = obtener_taquilla(1)
+    #cambiamos el id de la taquilla por 66
+    taquilla_prueba["id_taquilla"] = 66
+    resultado_insercion = db.realizar_insercion('taquilla', taquilla_prueba)
+    if resultado_insercion["code"]:
+        return resultado_insercion
+    else:
+        return respuesta_exitosa(resultado_insercion)
+
+#    def json_serial(obj):
+#     """JSON serializer for objects not serializable by default json encoder"""
+#     if isinstance(obj, Decimal):
+#         return float(obj) if obj % 1 > 0 else int(obj)
+#     raise TypeError(f'Type {type(obj)} not serializable')
+
+
+# def obtener_datos_como_json(sql, params=None):
+#     # Llamamos a la función para realizar la consulta
+#     datos = db.realizar_consulta(sql, params)
+
+#     if datos == "Error":
+#         return "Error"
+    
+#     # Obtenemos los nombres de las columnas
+#     nombres_columnas = [d[0] for d in datos.description]
+    
+#     # Creamos una lista de diccionarios con los datos
+#     lista_datos = [dict(zip(nombres_columnas, d)) for d in datos]
+    
+#     # Convertimos los Decimals a float o int
+#     for d in lista_datos:
+#         for k, v in d.items():
+#             if isinstance(v, Decimal):
+#                 d[k] = float(v) if v % 1 > 0 else int(v)
+    
+#     # Convertimos la lista de diccionarios a formato JSON
+#     datos_json = json.dumps(lista_datos, default=json_serial)
+    
+#     return  json.loads(datos_json)

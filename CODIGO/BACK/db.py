@@ -1,4 +1,7 @@
 import psycopg2
+# AsIs from psycopg2.sql
+from psycopg2.extensions import AsIs
+from psycopg2 import IntegrityError
 from fastapi import HTTPException
 import json
 
@@ -33,7 +36,7 @@ def get_connection():
 #     return datos
 
 
-def realizar_consulta(sql, params=None):
+def realizar_consulta(sql:str, params=None):
     if not sql.upper().startswith("SELECT"):
         raise HTTPException(status_code=400, detail="La consulta debe ser de tipo SELECT")
     conn = get_connection()
@@ -45,20 +48,90 @@ def realizar_consulta(sql, params=None):
     conn.close()
     return results
 
+def realizar_consulta_conexion(conn,sql:str, params=None):
+    if not sql.upper().startswith("SELECT"):
+        raise HTTPException(status_code=400, detail="La consulta debe ser de tipo SELECT")
+    cursor = conn.cursor()
+    try:
+        cursor.execute(sql, params)
+    except:
+        #print the error message
+        import traceback
+        traceback.print_exc()  # print the traceback of the error
+    column_names = [desc[0] for desc in cursor.description]  # get the column names from the cursor
+    results = [dict(zip(column_names, row)) for row in cursor.fetchall()]  # convert each row to a dictionary
+    cursor.close()
+    return results
+
+def realizar_insercion(nombre_tabla: str, data: dict):
+    conn = get_connection()
+    # verificar que la tabla exista
+    sql = 'SELECT * FROM %s LIMIT 1'
+    table_name = AsIs(nombre_tabla)
+    params = (table_name,)
+    try:
+        realizar_consulta_conexion(conn, sql, params)
+    except:
+        return {"success": False, "code": 400, "message": f"La tabla {nombre_tabla} no existe"}
 
 
-def insertar_datos(sql, params=None):
+    # establecer el valor de pk al nombre de la columna que es clave primaria
+    sql_pk = "SELECT kcu.column_name FROM information_schema.key_column_usage kcu JOIN information_schema.table_constraints tc ON kcu.constraint_name = tc.constraint_name WHERE kcu.table_name = %s AND tc.constraint_type = 'PRIMARY KEY';"
+    params = (nombre_tabla,)
+    pk = realizar_consulta_conexion(conn,sql_pk, params)[0]["column_name"]
+
+    # obtener los nombres de las columnas de la tabla
+    sql ='SELECT column_name FROM information_schema.columns WHERE table_name = %s'
+    columnas = realizar_consulta_conexion(conn,sql,params)
+    columnas = [columna["column_name"] for columna in columnas]
+
+    # revisar que todas las claves de data estén presentes en columnas
+
+    for columna in data:
+        if columna not in columnas:
+            return {"success": False, "code": 400, "message": f"La columna '{columna}' no existe en la tabla '{nombre_tabla}'"}
+    
+    # eliminar las columnas que no estén presentes en data
+    columnas = [columna for columna in columnas if columna in data]
+
+
+    # agregar columnas que no están presentes en el diccionario como None
+    valores = [data.get(columna, None) for columna in columnas]
+
+    # verificar que se hayan enviado todas las claves primarias
+    if pk not in data:
+        return {"success": False, "code": 400, "message": f"Falta la clave primaria '{pk}'"}
+
+    # construir la consulta
+    sql = f"INSERT INTO %s ({', '.join(columnas)}) VALUES ({', '.join(['%s' for columna in columnas])})"
+    params = (nombre_tabla, *valores)
+    print(params)
+    try:
+        id = insertar_datos_conexion(conn,sql, valores)
+    except IntegrityError:
+        return {"success": False, "code": 400, "message": f"Ya existe un registro con la clave primaria '{data[pk]}'"}
+
+    # devolver el registro insertado
+    query = 'SELECT * FROM %s WHERE %s = %s'
+    params = (table_name, AsIs(pk), id)
+    resultado = realizar_consulta_conexion(conn, query, params)
+    conn.close()
+    return resultado
+
+
+def insertar_datos_conexion(conn,sql, params=None):
     #revisamos si es un insert y no un select o update o delete...
+    #if any of the params is None change it to NULL
+    print (params)
+    params = [None if param is None else param for param in params]
     if not sql.upper().startswith("INSERT"):
         #si es un insert, obtenemos los datos
         return "Error"
-    conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(sql, params)
     #si no hay errores retornamos el id del registro insertado
     conn.commit()
     cursor.close()
-    conn.close()
     return cursor.lastrowid
 
 
