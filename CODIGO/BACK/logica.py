@@ -1,6 +1,5 @@
 from decimal import Decimal
 import json
-from logicaa.db import connect
 import db
 
 def json_serial(obj):
