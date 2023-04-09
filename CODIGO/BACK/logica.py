@@ -56,7 +56,10 @@ def obtener_taquilla(id_taquilla: int):
     # Si no se encuentra ninguna taquilla con ese id, puedes devolver None o lanzar una excepción, dependiendo de tu preferencia.
     query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
     params = (id_taquilla,)
-    return respuesta_exitosa(db.realizar_consulta(query, params))
+    taquilla = db.realizar_consulta(query, params)
+    if len(taquilla) == 0:
+        return respuesta_fallida("No se encontró la taquilla con id " + str(id_taquilla))
+    return respuesta_exitosa(taquilla)
 
 def obtener_usuario_de_taquilla(id_taquilla: int):
     taquilla = obtener_taquilla(id_taquilla) 
