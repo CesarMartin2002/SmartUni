@@ -32,4 +32,5 @@ Ahora podremos realizar todos los cambios que deseemos, y simplemente al guardar
 ## Documentación
 
 Para acceder a la documentación podemos usar el siguiente enlace: [localhost:8000/docs](http://localhost:8000/docs)
+Se puede accceder a la documentación alternativa utilizando este otro enlace: [localhost:8000/redoc](http://localhost:8000/redoc)
 
