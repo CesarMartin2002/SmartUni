@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from endpoints import taquillas, casillero, tests, paginasHTML
+from endpoints import taquillas, casillero, tests, paginasHTML, aulas, pruebas
 
 app = FastAPI()
 
@@ -17,12 +17,12 @@ app.include_router(tests.router)
 # Rutas para paginas HTML
 app.include_router(paginasHTML.router)
 
+# Rutas para aulas
+app.include_router(aulas.router)
 
-# # Mount the static files directory at "/static"
-# def cargar_static(app):
-#     app.mount("/static", StaticFiles(directory="../FRONT/static"), name="static")
+# Rutas para pruebas
+app.include_router(pruebas.router)
 
-# app.mount("/static", StaticFiles(directory="FRONT/static"), name="static")
+
+#Mount the static files directory at "/static"
 app.mount("/static", StaticFiles(directory="FRONT/static"), name="static")
-
-

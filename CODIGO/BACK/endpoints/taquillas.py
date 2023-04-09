@@ -1,5 +1,5 @@
 # todo esto es necesario para que funcione cualquier .py que se encuentre en la carpeta endpoints
-from fastapi import APIRouter
+from fastapi import APIRouter, Path
 import logica
 
 router = APIRouter() 
@@ -37,15 +37,14 @@ def reservar_taquilla(id_taquilla:int, id_usuario:int):
     return reserva_taquilla
 
 @router.put("/cancelarTaquilla/{id_taquilla}/{id_usuario}")
-def cancelar_taquilla(id_taquilla: int, id_usuario:int):
-    """este Endpoint cancela la reserva o la asignacion al alumno 
-
-    Args:
-        id_taquilla (int): id de la taquilla
-        id_usuario (int): id del alumno que ya no quiere esa taquilla
-
+def cancelar_taquilla(
+    id_taquilla: int = Path(..., title="ID de la taquilla", description="El ID de la taquilla a cancelar"),
+    id_usuario: int = Path(..., title="ID del usuario", description="El ID del usuario que cancela la taquilla")
+) -> dict:
+    """Este Endpoint cancela la reserva o la asignacion al alumno
+    
     Returns:
-        la taquilla actualizada con los campos de 'estado' y 'usuario'
+        dict: Informacion de la taquilla cancelada
     """
     cancelar_taquilla = logica.cancelar_taquilla(id_taquilla, id_usuario)
     return cancelar_taquilla

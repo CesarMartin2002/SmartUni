@@ -39,8 +39,13 @@ def realizar_consulta(sql, params=None):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(sql, params)
-    conn.commit()
-    return cursor
+    column_names = [desc[0] for desc in cursor.description]  # get the column names from the cursor
+    results = [dict(zip(column_names, row)) for row in cursor.fetchall()]  # convert each row to a dictionary
+    cursor.close()
+    conn.close()
+    return results
+
+
 
 def insertar_datos(sql, params=None):
     #revisamos si es un insert y no un select o update o delete...

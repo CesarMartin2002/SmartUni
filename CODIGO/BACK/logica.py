@@ -2,11 +2,22 @@ from decimal import Decimal
 import json
 import db
 
+def respuesta_exitosa(data):
+    return {"success": True, "code": 200, "message": "OK", "data": data}
+
+def respuesta_fallida(mensaje):
+    return {"success": False, "code": 400, "message": mensaje}
+
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json encoder"""
     if isinstance(obj, Decimal):
         return float(obj) if obj % 1 > 0 else int(obj)
     raise TypeError(f'Type {type(obj)} not serializable')
+
+
+def prueba_consulta ():
+    sql = "SELECT * FROM taquilla"
+    return db.realizar_consulta(sql)
 
 
 
@@ -68,14 +79,8 @@ def actualizar_taquilla(id_taquilla: int, id_usuario :int):
         
 
 def obtener_todasTaquillas():
-    taquillas = []
-    for id_taquilla in range(1, 4): # suponiendo que solo hay 3 taquillas
-        taq = obtener_taquilla(id_taquilla)
-        if taq["estado"] == False:
-            usuario = obtener_usuario_de_taquilla(id_taquilla)
-            taq["usuario"] = usuario
-        taquillas.append(taq)
-    return taquillas
+    taquillas = db.realizar_consulta("SELECT * FROM taquilla")
+    return respuesta_exitosa(taquillas)
 
 
 #funcion para reservar una taquilla
