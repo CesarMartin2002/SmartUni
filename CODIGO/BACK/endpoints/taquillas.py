@@ -6,7 +6,7 @@ router = APIRouter()
 
 # a partir de aquí se definen las rutas
 
-@router.get("/taquilla/{id}")  # ruta que va a tener el endpoint. Puede ser de cualquier tipo. En este caso es de tipo GET. Para especificar el tipo de ruta se usa el decorador @router.TIPO
+@router.get("/taquillas/{id}")  # ruta que va a tener el endpoint. Puede ser de cualquier tipo. En este caso es de tipo GET. Para especificar el tipo de ruta se usa el decorador @router.TIPO
 async def get_taquilla(id: int):    # función que va a ser ejecutada cuando se llame a la ruta. En este caso es una función asíncrona. El parámetro id es el que se va a recibir en la ruta
     """
     Este endpoint devuelve una taquilla en particular
@@ -42,7 +42,7 @@ def cancelar_taquilla(
     id_usuario: int = Path(..., title="ID del usuario", description="El ID del usuario que cancela la taquilla")
 ) -> dict:
     """Este Endpoint cancela la reserva o la asignacion al alumno
-    
+
     Returns:
         dict: Informacion de la taquilla cancelada
     """

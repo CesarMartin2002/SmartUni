@@ -54,7 +54,9 @@ def obtener_casillero(id: int):
 def obtener_taquilla(id_taquilla: int):
     # devolverla como un diccionario con sus propiedades (por ejemplo, {'id': 1, 'disponible': True, 'usuario': None})
     # Si no se encuentra ninguna taquilla con ese id, puedes devolver None o lanzar una excepción, dependiendo de tu preferencia.
-    return {"id": id_taquilla, "nombre": "Taquilla 1", "estado": True, "usuario": 1}
+    query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
+    params = (id_taquilla,)
+    return respuesta_exitosa(db.realizar_consulta(query, params))
 
 def obtener_usuario_de_taquilla(id_taquilla: int):
     taquilla = obtener_taquilla(id_taquilla) 
