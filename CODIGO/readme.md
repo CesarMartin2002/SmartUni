@@ -8,11 +8,15 @@ python -m venv env
 ```
 Una vez creado el entorno virtual debemos acceder al mismo. Si se ha creado el entorno con el fichero .bat, este paso se realizará automáticamente.
 Si se ha creado con el comando o no es la primera vez que se quiere utilizar el entorno, debemos ejecutar:
-```env\Scripts\activate.bat```
+```
+env\Scripts\activate.bat
+```
 
 Una vez nos encontremos en el entorno virtual, debemos instalar todas las librerías en el mismo.
 Para ello basta con símplemente ejcutar:
-```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+```
 
 Una vez instaladas todas estas librerías podemos proceder a levantar el servidor con **uvicorn**  
 Para ello podemos ejecutar este comando:
