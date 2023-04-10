@@ -9,14 +9,14 @@
 -- 
 -- object: new_database | type: DATABASE --
 -- DROP DATABASE IF EXISTS new_database;
---CREATE DATABASE new_database;
+-- CREATE DATABASE new_database;
 -- ddl-end --
 
 
 -- object: public.Alumno | type: TABLE --
 -- DROP TABLE IF EXISTS public.Alumno CASCADE;
 CREATE TABLE public.Alumno (
-	id_alumno integer NOT NULL,
+	id_alumno serial NOT NULL,
 	correo varchar(20),
 	password varchar(20),
 	CONSTRAINT Alumno_pk PRIMARY KEY (id_alumno)
@@ -29,7 +29,7 @@ ALTER TABLE public.Alumno OWNER TO aotdlhvi;
 -- object: public.Aula | type: TABLE --
 -- DROP TABLE IF EXISTS public.Aula CASCADE;
 CREATE TABLE public.Aula (
-	id_aula integer NOT NULL,
+	id_aula serial NOT NULL,
 	temperatura integer,
 	luminosidad integer,
 	CONSTRAINT Aula_pk PRIMARY KEY (id_aula)
@@ -42,7 +42,7 @@ ALTER TABLE public.Aula OWNER TO aotdlhvi;
 -- object: public.Asiento | type: TABLE --
 -- DROP TABLE IF EXISTS public.Asiento CASCADE;
 CREATE TABLE public.Asiento (
-	id_asiento integer NOT NULL,
+	id_asiento serial NOT NULL,
 	id_aula_Aula integer NOT NULL,
 	id_alumno_Alumno integer,
 	CONSTRAINT Asiento_pk PRIMARY KEY (id_asiento)
@@ -74,7 +74,7 @@ ALTER TABLE public.Asiento ADD CONSTRAINT Asiento_uq UNIQUE (id_alumno_Alumno);
 -- object: public.Taquilla | type: TABLE --
 -- DROP TABLE IF EXISTS public.Taquilla CASCADE;
 CREATE TABLE public.Taquilla (
-	id_taquilla integer NOT NULL,
+	id_taquilla serial NOT NULL,
 	password integer,
 	ala varchar(5),
 	piso integer,
@@ -98,7 +98,7 @@ ON DELETE SET NULL ON UPDATE CASCADE;
 -- object: public.Cafeteria | type: TABLE --
 -- DROP TABLE IF EXISTS public.Cafeteria CASCADE;
 CREATE TABLE public.Cafeteria (
-	id_cafeteria integer NOT NULL,
+	id_cafeteria serial NOT NULL,
 	CONSTRAINT Cafeteria_pk PRIMARY KEY (id_cafeteria)
 
 );
@@ -109,7 +109,7 @@ ALTER TABLE public.Cafeteria OWNER TO aotdlhvi;
 -- object: public.Producto | type: TABLE --
 -- DROP TABLE IF EXISTS public.Producto CASCADE;
 CREATE TABLE public.Producto (
-	id_producto integer NOT NULL,
+	id_producto serial NOT NULL,
 	descripcion varchar(50),
 	precio money,
 	id_cafeteria_Cafeteria integer NOT NULL,
@@ -130,7 +130,7 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- object: public.Asignatura | type: TABLE --
 -- DROP TABLE IF EXISTS public.Asignatura CASCADE;
 CREATE TABLE public.Asignatura (
-	id_asignatura integer NOT NULL,
+	id_asignatura serial NOT NULL,
 	descripcion varchar(50),
 	horario time,
 	id_aula_Aula integer NOT NULL,
