@@ -80,40 +80,40 @@ def realizar_insercion(nombre_tabla: str, data: dict):
     params = (nombre_tabla,)
     pk = realizar_consulta_conexion(conn,sql_pk, params)[0]["column_name"]
 
-    # obtener los nombres de las columnas de la tabla
+    # Verificar que la columna de la clave primaria no se haya enviado en el diccionario o que su valor sea None
+    if pk in data and data[pk] is not None:
+        return {"success": False, "code": 400, "message": f"No se puede enviar el valor de la clave primaria '{pk}'"}
+      # obtener los nombres de las columnas de la tabla
     sql ='SELECT column_name FROM information_schema.columns WHERE table_name = %s'
     columnas = realizar_consulta_conexion(conn,sql,params)
     columnas = [columna["column_name"] for columna in columnas]
 
     # revisar que todas las claves de data estén presentes en columnas
-
     for columna in data:
         if columna not in columnas:
             return {"success": False, "code": 400, "message": f"La columna '{columna}' no existe en la tabla '{nombre_tabla}'"}
-    
+
     # eliminar las columnas que no estén presentes en data
     columnas = [columna for columna in columnas if columna in data]
-
 
     # agregar columnas que no están presentes en el diccionario como None
     valores = [data.get(columna, None) for columna in columnas]
 
-    # verificar que se hayan enviado todas las claves primarias
-    if pk not in data:
-        return {"success": False, "code": 400, "message": f"Falta la clave primaria '{pk}'"}
-
-    # construir la consulta
-    sql = f"INSERT INTO %s ({', '.join(columnas)}) VALUES ({', '.join(['%s' for columna in columnas])})"
-    params = (nombre_tabla, *valores)
-    print(params)
+    # construir la consulta omitiendo la columna de la clave primaria
+    sql = f"INSERT INTO {nombre_tabla} ({', '.join(columna for columna in columnas if columna != pk)}) VALUES ({', '.join(['%s' for columna in columnas if columna != pk])})"
+    params = (*valores,)
     try:
-        id = insertar_datos_conexion(conn,sql, valores)
+        insertar_datos_conexion(conn,sql, valores)
     except IntegrityError:
         return {"success": False, "code": 400, "message": f"Ya existe un registro con la clave primaria '{data[pk]}'"}
 
+    # obtener el valor de la clave primaria del nuevo registro
+    sql = f"SELECT currval(pg_get_serial_sequence('{nombre_tabla}', '{pk}'))"
+    pk_value = realizar_consulta_conexion(conn, sql)[0]["currval"]
+
     # devolver el registro insertado
     query = 'SELECT * FROM %s WHERE %s = %s'
-    params = (table_name, AsIs(pk), id)
+    params = (table_name, AsIs(pk), pk_value)
     resultado = realizar_consulta_conexion(conn, query, params)
     conn.close()
     return resultado
@@ -122,13 +122,15 @@ def realizar_insercion(nombre_tabla: str, data: dict):
 def insertar_datos_conexion(conn,sql, params=None):
     #revisamos si es un insert y no un select o update o delete...
     #if any of the params is None change it to NULL
-    print (params)
     params = [None if param is None else param for param in params]
     if not sql.upper().startswith("INSERT"):
         #si es un insert, obtenemos los datos
         return "Error"
     cursor = conn.cursor()
+    #print the query with the params
+    print(cursor.mogrify(sql, params))
     cursor.execute(sql, params)
+    print("he insertado los datos")
     #si no hay errores retornamos el id del registro insertado
     conn.commit()
     cursor.close()

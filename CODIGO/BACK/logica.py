@@ -80,13 +80,10 @@ def cancelar_taquilla(id_taquilla: int, id_usuario: int):
 
 def prueba_consulta():
     taquilla_prueba = obtener_taquilla(1)
-    #cambiamos el id de la taquilla por 66
-    taquilla_prueba["id_taquilla"] = 66
+    #eliminar el id_taquilla para que no se intente insertar
+    del taquilla_prueba["id_taquilla"]
     resultado_insercion = db.realizar_insercion('taquilla', taquilla_prueba)
-    if resultado_insercion["code"]:
-        return resultado_insercion
-    else:
-        return respuesta_exitosa(resultado_insercion)
+    return respuesta_exitosa(resultado_insercion)
 
 #    def json_serial(obj):
 #     """JSON serializer for objects not serializable by default json encoder"""
