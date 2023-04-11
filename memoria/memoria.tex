@@ -1,65 +1,109 @@
-% LaTeX Template for short student reports.
-% Citations should be in bibtex format and go in references.bib
-\documentclass[a4paper, 11pt]{article}
-\usepackage[top=3cm, bottom=3cm, left = 2cm, right = 2cm]{geometry} 
-\geometry{a4paper} 
-\usepackage[utf8]{inputenc}
-\usepackage{textcomp}
-\usepackage{graphicx} 
-\usepackage{amsmath,amssymb}  
-\usepackage{bm}  
-\usepackage[pdftex,bookmarks,colorlinks,breaklinks]{hyperref}  
-%\hypersetup{linkcolor=black,citecolor=black,filecolor=black,urlcolor=black} % black links, for printed output
-\usepackage{memhfixc} 
-\usepackage{pdfsync}  
+\documentclass[12pt]{report}
+\usepackage[a4paper, total={17cm, 24cm}]{geometry}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{15pt}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
 
-\title{Computación Ubicua}
-%authors are Javier Lombardía, César Martín Guijarro, Lucía Picado and Valeria Fernanda Villamares Félix
-\author{Javier Lombardía Ocaña, César Martín Guijarro, Lucía Picado Joglar y Valeria Fernanda Villamares Félix}
-%\date{}
-%skip this page
-\thispagestyle{empty}
+\usepackage{lipsum} % Agregar el paquete lipsum para generar texto de ejemplo
 
 \begin{document}
-\maketitle
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \textbf{\huge Computación Ubicua}
+        
+        \vspace{0.5cm}
+        \textbf{\large Smart Uni}
+        
+        \vspace{1.5cm}
+        
+        \textbf{\huge Integración de sistemas IoT en la Universidad de Alcalá}
+        
+        \vspace{2cm}
+        
+        \textbf{\large Javier Lombardía Ocaña, César Martín Guijarro,}\\
+        \textbf{\large Lucía Picado Joglar y Valeria Fernanda Villamares Félix}
+        
+        \vfill
+        
+        \textbf{\large Universidad de Alcalá}\\
+        \textbf{\large \today}
+        
+    \end{center}
+\end{titlepage}
+
+\pagenumbering{arabic}
+
 \tableofcontents
 
-\section{Introduction}
 
-My project was about \ldots
+\pagenumbering{arabic}
 
-I developed a system to \ldots
+\chapter[Introducción]{Introducción\\ \normalsize En este capítulo se va a realizar una introducción detallada sobre todos los temas}
+\section{Objetivos}
+\lipsum[1-2] % Generar texto de ejemplo con lipsum
+\newpage
+\section{Justificación}
+\lipsum[3-4]
+\newpage
+\section{Estructura de la memoria}
+\lipsum[5-6]
 
-We did some experiments to find out \ldots
+\chapter[Propuestas]{Propuestas de mejora con respecto al primer proyecto\\ \normalsize En este capítulo trataremos sobre todos los inconvenientes con los que nos topamos durante el desarrollo de la primera práctica y que intentaremos mejorar en el capítulo posterior.}
+\section{Necesidad de estar físicamente}
+\section{Alojamiento del servidor}
+\section{Alojamiento de la BBDD}
+\section{Eliminación de la máquina virtual} %mencionar entorno virtual
+\section{Inconvenientes adicionales} %desplegar para cada cambio. Dificil comunicación con BBDD
+\section{Testing lento}
 
-The main results were \ldots
+\chapter{Implementación y soluciones a los problemas}
+\section{Servidores locales}
+\section{Implementación con FastApi}
+\section{Entornos virtuales}%mejor que una máquina virtual de mierda
+\section{Base de datos online} %en una página gratuita
+\section{Testing con Postman} %hablar de la metodología
+\section{Mejoras adicinoales} %mini librería BBDD
 
-\pagebreak
 
-\section{Background}
+\chapter{Marco teórico}
+\section{Computación ubicua}
+\lipsum[1-2]
+\newpage
+\section{Internet de las cosas}
+\lipsum[3-4]
+\newpage
+\section{Universidad de Alcalá}
+\lipsum[5-6]
 
-I did some background reading in the following areas \ldots
+\chapter{Metodología}
+\section{Desarrollo del proyecto}
+\lipsum[1-2]
+\newpage
+\section{Etapas del proyecto}
+\lipsum[3-4]
 
-\pagebreak
+\chapter{Resultados}
+\section{Análisis de los resultados}
+\lipsum[1-2]
+\newpage
+\section{Discusión de los resultados}
+\lipsum[3-4]
 
-\section{System Design}
+\chapter{Conclusiones}
+\section{Logros alcanzados}
+\lipsum[1-2]
+\newpage
+\section{Recomendaciones}
+\lipsum[3-4]
+\newpage
+\section{Trabajo futuro}
+\lipsum[5-6]
 
-My system worked as follows \ldots
-
-\pagebreak
-
-\section{Evaluation}
-
-We did some experiments \ldots
-
-\pagebreak
-
-\section{Conclusions and Future Work}
-
-From our experiments we can conclude that \ldots
-
-\bibliographystyle{abbrv}
-% \bibliography{references}  % need to put bibtex references in references.bib 
 \end{document}
