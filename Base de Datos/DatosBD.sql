@@ -38,22 +38,22 @@ INSERT INTO TAQUILLA VALUES (8, 4687, 'sur', 2, 1, FALSE, null);
 INSERT INTO CAFETERIA VALUES (1);
 --SELECT * FROM CAFETERIA
 
---PRODUCTO(id, descripcion, precio, id_cafeteria)
-INSERT INTO PRODUCTO VALUES (1, 'bocadillo de lomo', 2.00, 1);
-INSERT INTO PRODUCTO VALUES (2, 'bocadillo de bacon', 2.00, 1);
-INSERT INTO PRODUCTO VALUES (3, 'bocadillo de tortilla', 2.00, 1);
-INSERT INTO PRODUCTO VALUES (4, 'bocadillo de pollo', 2.00, 1);
-INSERT INTO PRODUCTO VALUES (5, 'bocadillo de francesa', 2.00, 1);
-INSERT INTO PRODUCTO VALUES (6, 'bocadillo de atun', 2.00, 1);
-INSERT INTO PRODUCTO VALUES (7, 'extra queso', 0.50, 1);
-INSERT INTO PRODUCTO VALUES (8, 'extra tomate', 0.50, 1);
-INSERT INTO PRODUCTO VALUES (9, 'extra pimiento', 0.50, 1);
-INSERT INTO PRODUCTO VALUES (10, 'extra huevo', 0.70, 1);
-INSERT INTO PRODUCTO VALUES (11, 'extra bacon', 0.70, 1);
-INSERT INTO PRODUCTO VALUES (12, 'sandwich mixto', 1.80, 1);
-INSERT INTO PRODUCTO VALUES (13, 'sandwich vegetal', 2.50, 1);
-INSERT INTO PRODUCTO VALUES (14, 'hamburguesa con patatas', 4.00, 1);
-INSERT INTO PRODUCTO VALUES (15, 'ensalada', 4.00, 1);
+--PRODUCTO(id, descripcion, precio, id_cafeteria, id_pedido)
+INSERT INTO PRODUCTO VALUES (1, 'bocadillo de lomo', 2.00, 1, null);
+INSERT INTO PRODUCTO VALUES (2, 'bocadillo de bacon', 2.00, 1, null);
+INSERT INTO PRODUCTO VALUES (3, 'bocadillo de tortilla', 2.00, 1, null);
+INSERT INTO PRODUCTO VALUES (4, 'bocadillo de pollo', 2.00, 1, null);
+INSERT INTO PRODUCTO VALUES (5, 'bocadillo de francesa', 2.00, 1, null);
+INSERT INTO PRODUCTO VALUES (6, 'bocadillo de atun', 2.00, 1, null);
+INSERT INTO PRODUCTO VALUES (7, 'extra queso', 0.50, 1, null);
+INSERT INTO PRODUCTO VALUES (8, 'extra tomate', 0.50, 1, null);
+INSERT INTO PRODUCTO VALUES (9, 'extra pimiento', 0.50, 1, null);
+INSERT INTO PRODUCTO VALUES (10, 'extra huevo', 0.70, 1, null);
+INSERT INTO PRODUCTO VALUES (11, 'extra bacon', 0.70, 1, null);
+INSERT INTO PRODUCTO VALUES (12, 'sandwich mixto', 1.80, 1, null);
+INSERT INTO PRODUCTO VALUES (13, 'sandwich vegetal', 2.50, 1, null);
+INSERT INTO PRODUCTO VALUES (14, 'hamburguesa con patatas', 4.00, 1, null);
+INSERT INTO PRODUCTO VALUES (15, 'ensalada', 4.00, 1, null);
 --SELECT * FROM PRODUCTO;
 
 --ASIGNATURA(id, descripcion, horario, id_aula)
@@ -63,3 +63,7 @@ INSERT INTO ASIGNATURA VALUES (3,'Estructuras Discretas','08:00', 2);
 INSERT INTO ASIGNATURA VALUES (4,'CRA','12:00', 1);
 INSERT INTO ASIGNATURA VALUES (5,'Gestion de Proyectos','10:00', 2);
 --SELECT * FROM ASIGNATURA;
+
+--PEDIDO(id, estado, id_alumno)
+INSERT INTO PEDIDO VALUES ();
+--SELECT * FROM PEDIDO
