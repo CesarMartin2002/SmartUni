@@ -1,21 +1,29 @@
 # todo esto es necesario para que funcione cualquier .py que se encuentre en la carpeta endpoints
-from fastapi import APIRouter, Path
+from fastapi import APIRouter, Path, Request
 import logica
 
 router = APIRouter() 
 
 # a partir de aquí se definen las rutas
 
-@router.get("/taquillas/{id}")  # ruta que va a tener el endpoint. Puede ser de cualquier tipo. En este caso es de tipo GET. Para especificar el tipo de ruta se usa el decorador @router.TIPO
-async def get_taquilla(id: int):    # función que va a ser ejecutada cuando se llame a la ruta. En este caso es una función asíncrona. El parámetro id es el que se va a recibir en la ruta
+from fastapi import APIRouter, Path, Request, HTTPException
+import logica
+
+router = APIRouter() 
+
+@router.get("/taquillas/{id}")
+async def get_taquilla(id: int):
     """
     Este endpoint devuelve una taquilla en particular
     """
-    print("id: ", id)
-    taquilla = logica.obtener_taquilla(id)
-    if len(taquilla) == 0:
-        return logica.respuesta_fallida("No se encontró la taquilla con id " + str(id))
-    return logica.respuesta_exitosa(taquilla)
+    try:
+        taquilla = logica.obtener_taquilla(id)
+        if len(taquilla) == 0:
+            raise logica.CustomException(message="No se encontró la taquilla con id " + str(id), code=404)
+        return logica.respuesta_exitosa(taquilla)
+    except logica.CustomException as e:
+        raise HTTPException(status_code=e.code, detail=e.message)
+
 
 @router.get("/taquillas") 
 async def get_taquillas():
@@ -23,7 +31,19 @@ async def get_taquillas():
     Este endpoint devuelve todas las taquillas disponibles
     """
     taquillas = logica.obtener_todasTaquillas()
+    print("taquillas: ", taquillas)
     return logica.respuesta_exitosa(taquillas)
+
+@router.post("/taquillas") 
+async def post_taquilla(request: Request):
+    """
+    Crear una nueva taquilla con los datos recibidos en el body
+    """
+    #data es un diccionario con los datos que se reciben en el form data
+    data = await request.json()
+    print("data: ", data)
+    taquilla = logica.crear_taquilla(data)
+    return logica.respuesta_exitosa(taquilla)
 
 @router.put("/reservarTaquilla/{id_taquilla}/{id_usuario}")
 def reservar_taquilla(id_taquilla:int, id_usuario:int):

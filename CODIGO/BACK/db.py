@@ -65,56 +65,64 @@ def realizar_consulta_conexion(conn,sql:str, params=None):
 
 def realizar_insercion(nombre_tabla: str, data: dict):
     conn = get_connection()
-    # verificar que la tabla exista
+    #region verificar que la tabla exista
     sql = 'SELECT * FROM %s LIMIT 1'
     table_name = AsIs(nombre_tabla)
     params = (table_name,)
     try:
         realizar_consulta_conexion(conn, sql, params)
     except:
-        return {"success": False, "code": 400, "message": f"La tabla {nombre_tabla} no existe"}
-
-
-    # establecer el valor de pk al nombre de la columna que es clave primaria
+        return {"success": False, "code": 404, "message": f"La tabla {nombre_tabla} no existe"}
+    #endregion
+    
+    #region establecer el valor de pk al nombre de la columna que es clave primaria
     sql_pk = "SELECT kcu.column_name FROM information_schema.key_column_usage kcu JOIN information_schema.table_constraints tc ON kcu.constraint_name = tc.constraint_name WHERE kcu.table_name = %s AND tc.constraint_type = 'PRIMARY KEY';"
     params = (nombre_tabla,)
     pk = realizar_consulta_conexion(conn,sql_pk, params)[0]["column_name"]
+    #endregion
 
-    # Verificar que la columna de la clave primaria no se haya enviado en el diccionario o que su valor sea None
+    #region Verificar que la columna de la clave primaria no se haya enviado en el diccionario o que su valor sea None
     if pk in data and data[pk] is not None:
         return {"success": False, "code": 400, "message": f"No se puede enviar el valor de la clave primaria '{pk}'"}
       # obtener los nombres de las columnas de la tabla
     sql ='SELECT column_name FROM information_schema.columns WHERE table_name = %s'
     columnas = realizar_consulta_conexion(conn,sql,params)
     columnas = [columna["column_name"] for columna in columnas]
+    #endregion
 
-    # revisar que todas las claves de data estén presentes en columnas
+    #region revisar que todas las columnas enviadas existan en la tabla
     for columna in data:
         if columna not in columnas:
             return {"success": False, "code": 400, "message": f"La columna '{columna}' no existe en la tabla '{nombre_tabla}'"}
+    #endregion
 
-    # eliminar las columnas que no estén presentes en data
+    #region eliminar las columnas que no estén presentes en data
     columnas = [columna for columna in columnas if columna in data]
+    #endregion
 
-    # agregar columnas que no están presentes en el diccionario como None
+    #region agregar columnas que no están presentes en el diccionario como None
     valores = [data.get(columna, None) for columna in columnas]
+    #endregion
 
-    # construir la consulta omitiendo la columna de la clave primaria
+    #region construir la consulta omitiendo la columna de la clave primaria
     sql = f"INSERT INTO {nombre_tabla} ({', '.join(columna for columna in columnas if columna != pk)}) VALUES ({', '.join(['%s' for columna in columnas if columna != pk])})"
     params = (*valores,)
     try:
         insertar_datos_conexion(conn,sql, valores)
     except IntegrityError:
         return {"success": False, "code": 400, "message": f"Ya existe un registro con la clave primaria '{data[pk]}'"}
+    #endregion
 
-    # obtener el valor de la clave primaria del nuevo registro
+    #region obtener el valor de la clave primaria del nuevo registro
     sql = f"SELECT currval(pg_get_serial_sequence('{nombre_tabla}', '{pk}'))"
     pk_value = realizar_consulta_conexion(conn, sql)[0]["currval"]
+    #endregion
 
-    # devolver el registro insertado
+    #region devolver el registro insertado
     query = 'SELECT * FROM %s WHERE %s = %s'
     params = (table_name, AsIs(pk), pk_value)
     resultado = realizar_consulta_conexion(conn, query, params)
+    #endregion
     conn.close()
     return resultado
 

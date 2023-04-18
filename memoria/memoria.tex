@@ -1,6 +1,7 @@
 \documentclass[12pt]{report}
 \usepackage[a4paper, total={17cm, 24cm}]{geometry}
 \usepackage{fancyhdr}
+\usepackage[spanish]{babel}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\leftmark}
@@ -45,7 +46,8 @@
 
 \pagenumbering{arabic}
 
-\chapter[Introducción]{Introducción\\ \normalsize En este capítulo se va a realizar una introducción detallada sobre todos los temas}
+\chapter{Introducción}
+En este capítulo se va a realizar una introducción detallada sobre todos los temas
 \section{Objetivos}
 \lipsum[1-2] % Generar texto de ejemplo con lipsum
 \newpage
@@ -55,18 +57,45 @@
 \section{Estructura de la memoria}
 \lipsum[5-6]
 
-\chapter[Propuestas]{Propuestas de mejora con respecto al primer proyecto\\ \normalsize En este capítulo trataremos sobre todos los inconvenientes con los que nos topamos durante el desarrollo de la primera práctica y que intentaremos mejorar en el capítulo posterior.}
-\section{Necesidad de estar físicamente}
+\chapter{Inconvenientes en el primer proyecto y propuestas de solución}
+En este capítulo trataremos sobre todos los inconvenientes con los que nos topamos durante el desarrollo de la primera práctica y que intentaremos mejorar para el óptimo desarrollo de la práctica actual.
+\section{Limitaciones en la comunicación}
+Para la comunicación efectiva de los componentes \textit{Back-End}, \textit{Front-End}, \textit{MQTT}, y \textit{Arduino} en el proyecto anterior, se requería la presencia física de todos los miembros. La configuración pasada basada en una máquina virtual contenedora del servidor \textit{Tomcat} y de la base de datos dificultó la compartición de recursos, resultando en tener que limitar la funcionalidad del \textit{Back-End} a un solo ordenador.\\
+Para abordar esta problemática, César desarrolló una solución mediante la creación de una \textit{red privada virtual} (\textit{VPN}) a través de \textit{Hamachi}, que permitió la comunicación remota a su máquina, dando acceso a la edición de la base de datos y la implementación de cambios en el \textit{Back-End} por parte de cualquier miembro. Sin embargo, esta solución fue limitada debido a que César tenía que mantener su máquina encendida en todo momento para hospedar los servicios. Por otro lado la configuración de la \textit{VPN} en el dispositivo \textit{ESP-32} resultó imposible; implicando un lento desarrollo de sus funciones.
+
+Como solución definitiva a este problema, César ha propuesto dos alternativas: la primera de estas era alquilar algún tipo de servicio online para poder llevar a cabo un hosting compartido sin necesidad de configurar redes privadas virtuales. En segundo lugar, investigar en otro tipo de tecnologías que permitan replicar los servidores de manera local, permitiendo así que todos los miembros del equipo puedan trabajar en el \textit{Back-End} y \textit{Front-End} eliminando así cualquier tipo de necesidad para realizar conexiones externas.
 \section{Alojamiento del servidor}
+Pese a que se ha mencionado parcialmente en el apartado anterior, alojar el servidor fue algo bastante complejo. Debido a que las herramientas que se nos proporcionaron no eran fáciles de compartir, lo más normal es que en todos los equipos sólamente una persona pudiese acceder al Back-End y a la base de datos. Con la VPN, se pudo mejorar mucho este aspecto. Además, César configuro unos servicios SSH que permitían a cualquier compañero obtener acceso total a una shell del servidor. Pese a ello, esta situación no es ideal en absoluto. Si en un momento determinado dos personas desean realizar un testing de sus modificaciones, una persona tendrá que esperar a la otra.
 \section{Alojamiento de la BBDD}
+En el proyecto previo, se detectaron limitaciones en la configuración de la base de datos alojada en la máquina virtual proporcionada por los docentes. La complejidad en el acceso a la configuración de la base de datos limitaba su uso y  debido a la manera en la que estaba estructurada, solo permitía la conexión de César, la persona que estaba hosteando los servicios. Para solucionar esta problemática, César implementó una red privada virtual (\textit{VPN}), mediante la cual se permitió la conexión remota a la base de datos desde cualquier miembro del equipo. Además, César investigó sobre cómo poder configurar conexiones remotas en este sistema. Sin embargo, esta solución dependía de que César mantuviera su máquina encendida las 24 horas del día para hospedar los servicios.
+
+Como solución definitiva a esta limitación, César ha propuesto la externalización de la base de datos a un servicio que esté disponible en todo momento. De esta forma, se eliminaría la dependencia de la máquina virtual y la VPN, y se evitaría la necesidad de mantener una máquina encendida constantemente para ejecutar el servicio. Esta solución no solo mejoraría la accesibilidad a la base de datos, sino que también eliminaría la necesidad de realizar configuraciones complejas para el acceso a la misma.
 \section{Eliminación de la máquina virtual} %mencionar entorno virtual
+En el proyecto anterior, la configuración basada en una máquina virtual contenedora del servidor Tomcat y de la base de datos resultó ineficiente en términos de compartición de recursos. Además, la máquina virtual no estaba correctamente configurada y no estaba documentada, lo que dificultaba su uso y modificación para adaptarse a las necesidades del proyecto. Debido a su tamaño, también era intransferible a otras máquinas y tenía un rendimiento pobre.\\
+Como alternativa, es necesario buscar un sistema que sea simple de compartir y transferir, y que pueda documentarse y configurarse rápidamente. Una propuesta realizada por César es la creación de un entorno virtual donde se pueden compartir los sistemas en un repositorio y transferir rápidamente mediante un archivo de requisitos. Esta solución permitiría una mayor eficiencia en la compartición de recursos, ya que todos los miembros del equipo tendrían acceso al mismo entorno virtual, lo que simplificaría el proceso de desarrollo y eliminaria la necesidad de alojar todos los servicios de backend y base de datos en una sola máquina encendida constantemente.\\
+Esto supuso que César empezase a plantear la posibilidad de realizar el desarrollo del back-end en Python debido a la facilidad que supone la creación de entornos que cumplan estos requisitos.
 \section{Inconvenientes adicionales} %desplegar para cada cambio. Dificil comunicación con BBDD
+Durante el desarrollo del primer proyecto se pudieron notar inconvenientes adicionales que afectaron al desarrollo del mismo.
+Principalmente la mayoría de problemas surgieron por haber desarrollado el Back-End utilizadno Tomcat.
+Este sistema supuso muchos problemas, entre los que destacan conflictos dados por la colisión de versiones de Java con los diferentes equipos de los miembros del equipo.
+Otro inconveniente dado por el desarrollo en Tomcat era la falta de documentación en línea.
+Por otro lado, un gran problema que se presentó al utilizar Tomcat el proceso extremadamente lento que suponía realizar cualquier mínimo cambio en el backend: tras haber realizado un cambio, era necesario realizar una compilación completa del proyecto, conectarse remótamente a la máquina virtual, enviar el fichero compilado de la máquina donde se haya realizado el desarrollo a la máquina virtual, acceder a los servicios de TomCat, eliminar el proyecto del servicio y desplegar esta nueva versión. Este proceso es totalmente ridículo, sobre todo si tenemos en cuenta el hecho de que, obviamente, lo más probable que ocurra tras realizar un cambio, es que haya algún fallo menor y que para poder corregirlo, debe repetirse este proceso al completo.\\
+Otro gran problema dado por TomCat era la extremadamente alta dificultad para configurar los logs del sistema. Cosa que jamás pudimos realizar correctamente ni con ayuda de nuestros docentes.
+
+Un cambio de librería no sólo supondría una mejora muy positiva, si no que es totalmente necesario.
 \section{Testing lento}
+El proceso de testing fue también una labor compleja durante la pasada práctica. Debido a que no se nos proporcionó ni explicó a fondo ninguna herramienta de testing de todos los endpoints de la aplicación de Back-End; nuestra manera de hacer testing se basaba en probar a escribir en el navegador las direcciones completas de cada endpoint. Además, nos veíamos forzados a realizar todas las llamadas con request de HTTP GET para poder enviar parámetros en la query (ya que no podíamos enviar parámetros de ninguna otra manera). Esto era un proceso tedioso y rudimentario que también afectaba de manera negativa al desarrollo de la práctica.
+Como solución, César ha propuesto implementar una metodología de testing basada en el software Postman. Dicha metodología debería organizar de la mejor manera posible todos los endpoints y aprovechar al máximo las funciones de las variables de dicho programa para recortar al máximo el tiempo implementado en el testing.
 
 \chapter{Implementación y soluciones a los problemas}
-\section{Servidores locales}
+En este capítulo se va a detallar de manera más detallada cómo se ha implementado nuestro proyecto. También se podrá ver de qué maneras esta implementación soluciona los problemas expuestos en el capitulo anterior. 
 \section{Implementación con FastApi}
+El desarrolo del Back-End se ha llevado a cabo utilizando el framework de FastApi para Python. Se ha elegido este lenguaje ya que es un lenguaje interpretado. Esto eliminará la necesidad de compilar el proyecto y realizar un despliegue por cada cambio que se realice.
+Se ha elegido FastApi debido a su destacada rapidez, su extensa documentación, su extremadamente simple sintaxis, la posibilidad de usar tipado estático y las facilidades que brinda para la documentación del proyecto.
+\section{Servidores locales}
+Se ha decidido utilizar la librería uvicorn para poder levantar con un simple comando una réplica local del servidor. Esta librería es totalmente compatible con FastApi. Además, uvicorn podrá refrescar el servidor cada vez que detecte un cambio en el código. De esta manera, para poder introducir modificaciones y testearlas, será tan simple como pulsar Ctrl+S con el servidor lanzado. Ya no será necesario hacer todo el proceso extremadamente rudimentario y asurdo que se tenía que llevar a cabo para introducir cualquier modificación utilizando Tomcat.
 \section{Entornos virtuales}%mejor que una máquina virtual de mierda
+
 \section{Base de datos online} %en una página gratuita
 \section{Testing con Postman} %hablar de la metodología
 \section{Mejoras adicinoales} %mini librería BBDD

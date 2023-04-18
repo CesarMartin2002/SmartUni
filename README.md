@@ -20,6 +20,9 @@ La plataforma se compone de distintas tecnologías, entre las que se incluyen:
 - Desarrollo de una web utilizando HTML, CSS y JavaScript.
 - Implementación de una API RESTful utilizando FastAPI.
 
+## Memoria
+El documento de memoria se puede encontrar [aquí](https://www.overleaf.com/4358141674rwwcsbrsywwx).  
+El proyecto de LaTeX también se puede encontrar al repositorio, pero puede no estar actualizado.
 ## Contribuir
 
 Este proyecto es un trabajo cerrado y no está abierto a contribuciones externas.
