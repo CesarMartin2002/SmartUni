@@ -31,7 +31,8 @@ body {
 }
 
 body.cafe{
-  background-image:url(https://www.uah.es/export/sites/uah/es/conoce-la-uah/.galleries/Galeria-de-imagenes/19274587378_433cda497b_z.jpg) ;
+  /* background-image:url(https://www.uah.es/export/sites/uah/es/conoce-la-uah/.galleries/Galeria-de-imagenes/19274587378_433cda497b_z.jpg) ; */
+  background-image:url(https://i.imgur.com/mMgbNpq.jpeg);
   background-repeat: no-repeat;
   background-size: auto;
   background-size: cover  ;
