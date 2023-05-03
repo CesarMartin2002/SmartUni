@@ -155,6 +155,30 @@ def login(correo: str, password: str):
     #endregion
     return usuario
 
+def registrar_usuario( correo: str, contrasena: str):
+    #region verificar que el correo no esté registrado
+    query = "SELECT * FROM alumno WHERE correo = %s"
+    parameters = (correo)
+    usuario = db.realizar_consulta(query, params=parameters)
+    if len(usuario) > 0:
+        raise HTTPException(status_code=400, detail="El correo ya está registrado")
+    #endregion
+
+    #region insertar el usuario
+    query = "INSERT INTO alumno (nombre, correo, password) VALUES (%s, %s, %s)"
+    parameters = (correo, contrasena)
+    db.realizar_insercion(query, params=parameters)
+    #endregion
+
+    #region obtener el usuario recién insertado
+    query = "SELECT * FROM alumno WHERE correo = %s"
+    parameters = (correo)
+    usuario = db.realizar_consulta(query, params=parameters)
+    #endregion
+
+    return usuario[0]
+
+
 #endregion
 
 #region funciones de taquillas
@@ -208,27 +232,109 @@ def crear_taquilla(data : dict):
     taquilla = db.realizar_insercion("taquilla", data)
     return taquilla
 
+#funcion para abrir una taquilla
+def abrir_taquilla(id_taquilla: int, id_usuario: int):
+    try:
+        # Obtener la taquilla con el id especificado
+        query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
+        parameters = (id_taquilla,)
+        taquilla = db.realizar_consulta(query, params=parameters)
+
+        # Verificar que se encontró la taquilla
+        if len(taquilla) == 0:
+            raise CustomException(message="No se encontró la taquilla con id " + str(id_taquilla), code=404)
+
+        # Verificar que la taquilla está disponible
+        if not taquilla[0]['disponible']:
+            raise CustomException(message="La taquilla con id " + str(id_taquilla) + " no está disponible", code=400)
+
+        # Actualizar la taquilla con el id del usuario que la abrió
+        query = "UPDATE taquilla SET disponible = %s, usuario_id = %s WHERE id_taquilla = %s"
+        parameters = (False, id_usuario, id_taquilla)
+        db.realizar_modificacion(query, params=parameters)
+
+        # Obtener la taquilla actualizada
+        query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
+        parameters = (id_taquilla,)
+        taquilla = db.realizar_consulta(query, params=parameters)
+
+        return taquilla[0]
+
+    except CustomException as e:
+        raise HTTPException(status_code=e.code, detail=e.message)
+
+
 #funcion para reservar una taquilla
 def reservar_taquilla(id_taquilla: int, id_usuario: int):
-    taquilla = obtener_taquilla(id_taquilla)
-    if taquilla["estado"]:
-        taquilla["estado"] = False
-        taquilla["usuario"] = id_usuario
-        actualizar_taquilla(taquilla, id_usuario)
+    try:
+        # Obtener la taquilla con el id especificado
+        query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
+        parameters = (id_taquilla,)
+        taquilla = db.realizar_consulta(query, params=parameters)
+
+        # Verificar que se encontró la taquilla
+        if len(taquilla) == 0:
+            raise CustomException(message="No se encontró la taquilla con id " + str(id_taquilla), code=404)
+
+        # Verificar que la taquilla está disponible
+        if not taquilla[0]['disponible']:
+            raise CustomException(message="La taquilla con id " + str(id_taquilla) + " no está disponible", code=400)
+
+        # Actualizar la taquilla con el id del usuario que la reservó
+        query = "UPDATE taquilla SET disponible = %s, usuario_id = %s WHERE id_taquilla = %s"
+        parameters = (False, id_usuario, id_taquilla)
+        db.realizar_modificacion(query, params=parameters)
+
         return f"La taquilla {id_taquilla} ha sido reservada por el usuario {id_usuario}."
-    else:
-        return f"La taquilla {id_taquilla} no está disponible en este momento."
+
+    except CustomException as e:
+        raise HTTPException(status_code=e.code, detail=e.message)
+
+# def reservar_taquilla(id_taquilla: int, id_usuario: int):
+#     taquilla = obtener_taquilla(id_taquilla)
+#     if taquilla["estado"]:
+#         taquilla["estado"] = False
+#         taquilla["usuario"] = id_usuario
+#         actualizar_taquilla(taquilla, id_usuario)
+#         return f"La taquilla {id_taquilla} ha sido reservada por el usuario {id_usuario}."
+#     else:
+#         return f"La taquilla {id_taquilla} no está disponible en este momento."
 
 #cancelar una taquilla
 def cancelar_taquilla(id_taquilla: int, id_usuario: int):
-    taquilla = obtener_taquilla(id_taquilla)
-    if taquilla["usuario"] == id_usuario:
-        taquilla["estado"] = True
-        taquilla["usuario_id"] = None
-        actualizar_taquilla(id_taquilla, id_usuario)
+    try:
+        # Obtener la taquilla con el id especificado
+        query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
+        parameters = (id_taquilla,)
+        taquilla = db.realizar_consulta(query, params=parameters)
+
+        # Verificar que se encontró la taquilla
+        if len(taquilla) == 0:
+            raise CustomException(message="No se encontró la taquilla con id " + str(id_taquilla), code=404)
+
+        # Verificar que la taquilla está reservada por el usuario que la quiere cancelar
+        if taquilla[0]['usuario_id'] != id_usuario:
+            raise CustomException(message="La taquilla con id " + str(id_taquilla) + " NO ESTÁ reservada por el usuario " + str(id_usuario), code=400)
+
+        # Actualizar la taquilla como disponible y sin usuario
+        query = "UPDATE taquilla SET disponible = %s, usuario_id = %s WHERE id_taquilla = %s"
+        parameters = (True, None, id_taquilla)
+        db.realizar_modificacion(query, params=parameters)
+
         return f"La taquilla {id_taquilla} ha sido CANCELADA por el usuario {id_usuario}."
-    else:
-        return f"La taquilla {id_taquilla} NO ESTA reservada por el usuario {id_usuario}."
+
+    except CustomException as e:
+        raise HTTPException(status_code=e.code, detail=e.message)
+
+# def cancelar_taquilla(id_taquilla: int, id_usuario: int):
+#     taquilla = obtener_taquilla(id_taquilla)
+#     if taquilla["usuario"] == id_usuario:
+#         taquilla["estado"] = True
+#         taquilla["usuario_id"] = None
+#         actualizar_taquilla(id_taquilla, id_usuario)
+#         return f"La taquilla {id_taquilla} ha sido CANCELADA por el usuario {id_usuario}."
+#     else:
+#         return f"La taquilla {id_taquilla} NO ESTA reservada por el usuario {id_usuario}."
 #endregion
     
 

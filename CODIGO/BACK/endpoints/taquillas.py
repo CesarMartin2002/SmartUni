@@ -11,6 +11,7 @@ import logica
 
 router = APIRouter() 
 
+#detalle taquilla (?)
 @router.get("/taquillas/{id}")
 async def get_taquilla(id: int):
     """
@@ -45,18 +46,27 @@ async def post_taquilla(request: Request):
     taquilla = logica.crear_taquilla(data)
     return logica.respuesta_exitosa(taquilla)
 
+#endpoint abrir taquilla
+@router.get("/taquillas/{id_taquilla}/{id_usuario}")
+def abrir_taquilla(id_taquilla:int, id_usuario:int):
+    """
+    Este endpoint permite abrir una taquilla a partir de una taquilla y usuario
+    """
+    resultado = logica.abrir_taquilla(id_taquilla, id_usuario)
+    return logica.respuesta_exitosa(resultado)
+
+
+#endpoint reservar
 @router.put("/reservarTaquilla/{id_taquilla}/{id_usuario}")
 def reservar_taquilla(id_taquilla:int, id_usuario:int):
-    """Este endpoint reserva una taquilla a partir de una id dada
+    resultado = logica.reservar_taquilla(id_taquilla, id_usuario)
+    return logica.respuesta_exitosa(resultado)
 
-    Args:
-        id_taquilla, id_usuario
-
-    Returns:
-        la informacion detallada de esa taquilla 
-    """
-    reserva_taquilla = logica.reservar_taquilla(id_taquilla, id_usuario)
-    return reserva_taquilla
+#endpoint cancelar
+# @router.put("/cancelarTaquilla/{id_taquilla}/{id_usuario}")
+# def cancelar_taquilla(id_taquilla:int, id_usuario:int):
+#     resultado = logica.cancelar_taquilla(id_taquilla, id_usuario)
+#     return logica.respuesta_exitosa(resultado)
 
 @router.put("/cancelarTaquilla/{id_taquilla}/{id_usuario}")
 def cancelar_taquilla(
@@ -70,6 +80,7 @@ def cancelar_taquilla(
     """
     cancelar_taquilla = logica.cancelar_taquilla(id_taquilla, id_usuario)
     return cancelar_taquilla
+
 
 
 
