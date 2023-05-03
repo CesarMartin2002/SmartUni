@@ -41,6 +41,8 @@ def realizar_consulta(sql:str, params=None):
         raise HTTPException(status_code=400, detail="La consulta debe ser de tipo SELECT")
     conn = get_connection()
     cursor = conn.cursor()
+    print("sql: ", sql)
+    print("params: ", params)
     cursor.execute(sql, params)
     column_names = [desc[0] for desc in cursor.description]  # get the column names from the cursor
     results = [dict(zip(column_names, row)) for row in cursor.fetchall()]  # convert each row to a dictionary

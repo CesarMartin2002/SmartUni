@@ -21,8 +21,8 @@ async def registro(request: Request):
     Este endpoint permite al usuario registrarse
     """
     data = await request.json()
-    print("data: ", data)
-    correo = data["correo"]
-    contrasena = data["password"]
-    usuario = logica.registro(correo, contrasena)
+    # print("data: ", data)
+    # correo = data["correo"]
+    # contrasena = data["password"]
+    usuario = logica.registrar_usuario(data)
     return logica.respuesta_exitosa(usuario)

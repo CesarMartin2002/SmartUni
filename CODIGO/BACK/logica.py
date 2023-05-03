@@ -155,19 +155,22 @@ def login(correo: str, password: str):
     #endregion
     return usuario
 
-def registrar_usuario( correo: str, contrasena: str):
+def registrar_usuario( data: dict):
+    correo = data["correo"]
+    contrasena = data["password"]
     #region verificar que el correo no esté registrado
-    query = "SELECT * FROM alumno WHERE correo = %s"
+    query = "SELECT * FROM alumno WHERE correo = \"%s\""
     parameters = (correo)
-    usuario = db.realizar_consulta(query, params=parameters)
+    usuario = db.realizar_consulta(query, parameters)
     if len(usuario) > 0:
         raise HTTPException(status_code=400, detail="El correo ya está registrado")
-    #endregion
+    # endregion
 
-    #region insertar el usuario
+    # region insertar el usuario
     query = "INSERT INTO alumno (nombre, correo, password) VALUES (%s, %s, %s)"
     parameters = (correo, contrasena)
-    db.realizar_insercion(query, params=parameters)
+    return db.realizar_insercion("alumno", data)
+
     #endregion
 
     #region obtener el usuario recién insertado
