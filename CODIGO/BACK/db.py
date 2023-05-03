@@ -112,7 +112,7 @@ def realizar_insercion(nombre_tabla: str, data: dict):
     try:
         insertar_datos_conexion(conn,sql, valores)
     except IntegrityError:
-        return {"success": False, "code": 400, "message": f"Ya existe un registro con la clave primaria '{data[pk]}'"}
+        return {"success": False, "code": 400, "message": f"Ya existe un registro con la clave primaria '{pk}' "}
     #endregion
 
     #region obtener el valor de la clave primaria del nuevo registro
