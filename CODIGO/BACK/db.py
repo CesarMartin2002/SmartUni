@@ -109,7 +109,7 @@ def realizar_insercion(nombre_tabla: str, data: dict):
     #endregion
 
     #region Verificar que no falten campos requeridos que no pueden ser nulos en la base de datos
-    campos_no_nulos = obtener_campos_no_nulos(nombre_tabla)
+    campos_no_nulos = obtener_campos_no_nulos(nombre_tabla,conn)
     for campo in campos_no_nulos:
         if (campo not in data or data[campo] is None) and campo != pk:
             mensaje = f"No se proporcionó un valor para el campo requerido '{campo}'"
@@ -125,7 +125,7 @@ def realizar_insercion(nombre_tabla: str, data: dict):
     try:
         insertar_datos_conexion(conn,sql, valores)
     except IntegrityError:
-        mensaje = f"Ya existe un registro con la clave primaria '{pk}' "
+        mensaje = f"Ya existe un registro con la clave primaria '{pk}'. Revise los seriales "
         logica.respuesta_fallida(mensaje)
     #endregion
 
@@ -161,13 +161,12 @@ def insertar_datos_conexion(conn,sql, params=None):
     cursor.close()
     return cursor.lastrowid
 
-def obtener_campos_no_nulos(nombre_tabla: str):
-    conn = get_connection()
+def obtener_campos_no_nulos(nombre_tabla: str, conn: psycopg2.extensions.connection):
     sql = "SELECT column_name FROM information_schema.columns WHERE table_name = %s AND is_nullable = 'NO'"
     params = (nombre_tabla,)
     resultados = realizar_consulta_conexion(conn, sql, params)
     campos_no_nulos = [resultado['column_name'] for resultado in resultados]
-    conn.close()
+
     return campos_no_nulos
 
 
