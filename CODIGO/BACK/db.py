@@ -79,7 +79,6 @@ def realizar_insercion(nombre_tabla: str, data: dict):
     except:
         mensaje = f"La tabla {nombre_tabla} no existe"
         logica.respuesta_fallida(mensaje)
-        # return {"success": False, "code": 404, "message": f"La tabla {nombre_tabla} no existe"}
     #endregion
     
     #region establecer el valor de pk al nombre de la columna que es clave primaria
@@ -109,6 +108,13 @@ def realizar_insercion(nombre_tabla: str, data: dict):
     columnas = [columna for columna in columnas if columna in data]
     #endregion
 
+    #region Verificar que no falten campos requeridos que no pueden ser nulos en la base de datos
+    campos_no_nulos = obtener_campos_no_nulos(nombre_tabla)
+    for campo in campos_no_nulos:
+        if (campo not in data or data[campo] is None) and campo != pk:
+            mensaje = f"No se proporcionó un valor para el campo requerido '{campo}'"
+            logica.respuesta_fallida(mensaje)
+    #endregion
     #region agregar columnas que no están presentes en el diccionario como None
     valores = [data.get(columna, None) for columna in columnas]
     #endregion
@@ -154,6 +160,15 @@ def insertar_datos_conexion(conn,sql, params=None):
     conn.commit()
     cursor.close()
     return cursor.lastrowid
+
+def obtener_campos_no_nulos(nombre_tabla: str):
+    conn = get_connection()
+    sql = "SELECT column_name FROM information_schema.columns WHERE table_name = %s AND is_nullable = 'NO'"
+    params = (nombre_tabla,)
+    resultados = realizar_consulta_conexion(conn, sql, params)
+    campos_no_nulos = [resultado['column_name'] for resultado in resultados]
+    conn.close()
+    return campos_no_nulos
 
 
 # def insertDB(nombreTabla, data):
