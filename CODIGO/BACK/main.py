@@ -5,7 +5,7 @@ from starlette.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.responses import PlainTextResponse
-from endpoints import taquillas, casillero, tests, paginasHTML, aulas, pruebas, sesion, productos
+from endpoints import taquillas, casillero, paginasHTML, aulas, sesion, productos
 import logica
 
 app = FastAPI()
@@ -52,17 +52,11 @@ app.include_router(taquillas.router)
 # Rutas para casillero
 app.include_router(casillero.router)
 
-# Rutas para tests
-app.include_router(tests.router)
-
 # Rutas para paginas HTML
 app.include_router(paginasHTML.router)
 
 # Rutas para aulas
 app.include_router(aulas.router)
-
-# Rutas para pruebas
-app.include_router(pruebas.router)
 
 # Rutas para sesion
 app.include_router(sesion.router)
