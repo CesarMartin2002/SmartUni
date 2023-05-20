@@ -4,7 +4,9 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from starlette.responses import PlainTextResponse
 from endpoints import taquillas, casillero, tests, paginasHTML, aulas, pruebas, sesion
+import logica
 
 app = FastAPI()
 
@@ -23,6 +25,21 @@ async def exception_handler(request: Request, call_next):
         traceback.print_exc()
         response = JSONResponse(content={"success": False, "code": 500, "message": "Internal Server Error"}, status_code=500)
     return response
+
+@app.exception_handler(logica.CustomException)
+async def custom_exception_handler(request, exc):
+    return JSONResponse(
+        status_code=exc.code,
+        content={"success": False, "code": exc.code, "message": str(exc)}
+    )
+
+@app.exception_handler(logica.PrintInterruptException)
+async def print_interrupt_exception_handler(request, exc):
+    return PlainTextResponse("PRINTERRUPT:\n\n"+exc.message)
+    # return JSONResponse(
+    #     status_code=200,
+    #     content={"PRINTERRUPT": exc.message}
+    # )
 
 # Rutas para taquillas
 app.include_router(taquillas.router)

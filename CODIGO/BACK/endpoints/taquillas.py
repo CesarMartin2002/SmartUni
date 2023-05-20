@@ -74,7 +74,6 @@ def cancelar_taquilla(
     id_usuario: int = Path(..., title="ID del usuario", description="El ID del usuario que cancela la taquilla")
 ) -> dict:
     """Este Endpoint cancela la reserva o la asignacion al alumno
-
     Returns:
         dict: Informacion de la taquilla cancelada
     """
