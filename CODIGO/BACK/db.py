@@ -3,6 +3,7 @@ import psycopg2
 from psycopg2.extensions import AsIs
 from psycopg2 import IntegrityError
 from fastapi import HTTPException
+import logica
 import json
 
 
@@ -38,7 +39,8 @@ def get_connection():
 
 def realizar_consulta(sql:str, params=None):
     if not sql.upper().startswith("SELECT"):
-        raise HTTPException(status_code=400, detail="La consulta debe ser de tipo SELECT")
+        mensaje = "La consulta debe ser de tipo SELECT"
+        logica.respuesta_fallida(mensaje)
     conn = get_connection()
     cursor = conn.cursor()
     print("sql: ", sql)
@@ -52,7 +54,8 @@ def realizar_consulta(sql:str, params=None):
 
 def realizar_consulta_conexion(conn,sql:str, params=None):
     if not sql.upper().startswith("SELECT"):
-        raise HTTPException(status_code=400, detail="La consulta debe ser de tipo SELECT")
+        mensaje = "La consulta debe ser de tipo SELECT"
+        logica.respuesta_fallida(mensaje)
     cursor = conn.cursor()
     try:
         cursor.execute(sql, params)
@@ -74,7 +77,9 @@ def realizar_insercion(nombre_tabla: str, data: dict):
     try:
         realizar_consulta_conexion(conn, sql, params)
     except:
-        return {"success": False, "code": 404, "message": f"La tabla {nombre_tabla} no existe"}
+        mensaje = f"La tabla {nombre_tabla} no existe"
+        logica.respuesta_fallida(mensaje)
+        # return {"success": False, "code": 404, "message": f"La tabla {nombre_tabla} no existe"}
     #endregion
     
     #region establecer el valor de pk al nombre de la columna que es clave primaria
@@ -85,7 +90,8 @@ def realizar_insercion(nombre_tabla: str, data: dict):
 
     #region Verificar que la columna de la clave primaria no se haya enviado en el diccionario o que su valor sea None
     if pk in data and data[pk] is not None:
-        return {"success": False, "code": 400, "message": f"No se puede enviar el valor de la clave primaria '{pk}'"}
+        mensaje = f"No se puede enviar el valor de la clave primaria '{pk}'. El valor se establece automáticamente"
+        logica.respuesta_fallida(mensaje)
       # obtener los nombres de las columnas de la tabla
     sql ='SELECT column_name FROM information_schema.columns WHERE table_name = %s'
     columnas = realizar_consulta_conexion(conn,sql,params)
@@ -95,7 +101,8 @@ def realizar_insercion(nombre_tabla: str, data: dict):
     #region revisar que todas las columnas enviadas existan en la tabla
     for columna in data:
         if columna not in columnas:
-            return {"success": False, "code": 400, "message": f"La columna '{columna}' no existe en la tabla '{nombre_tabla}'"}
+            mensaje = f"La columna '{columna}' no existe en la tabla '{nombre_tabla}'"
+            logica.respuesta_fallida(mensaje)
     #endregion
 
     #region eliminar las columnas que no estén presentes en data
@@ -112,7 +119,8 @@ def realizar_insercion(nombre_tabla: str, data: dict):
     try:
         insertar_datos_conexion(conn,sql, valores)
     except IntegrityError:
-        return {"success": False, "code": 400, "message": f"Ya existe un registro con la clave primaria '{pk}' "}
+        mensaje = f"Ya existe un registro con la clave primaria '{pk}' "
+        logica.respuesta_fallida(mensaje)
     #endregion
 
     #region obtener el valor de la clave primaria del nuevo registro
@@ -135,12 +143,13 @@ def insertar_datos_conexion(conn,sql, params=None):
     params = [None if param is None else param for param in params]
     if not sql.upper().startswith("INSERT"):
         #si es un insert, obtenemos los datos
-        return "Error"
+        mensaje = "La consulta debe ser de tipo INSERT"
+        logica.respuesta_fallida(mensaje)
     cursor = conn.cursor()
     #print the query with the params
     print(cursor.mogrify(sql, params))
     cursor.execute(sql, params)
-    print("he insertado los datos")
+    print("Datos insertados correctamente")
     #si no hay errores retornamos el id del registro insertado
     conn.commit()
     cursor.close()
@@ -246,6 +255,10 @@ def insertar_datos_conexion(conn,sql, params=None):
 
 #     return respuesta
 
+
+
+
+#esto no se usa, pero lo dejo por si acaso
 def insertDB(nombreTabla, data):
     conn = get_connection()
     # verificar que la tabla exista
