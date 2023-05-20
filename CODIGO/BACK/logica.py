@@ -193,11 +193,13 @@ def registrar_usuario( data: dict):
     # region insertar el usuario
     query = "INSERT INTO alumno (nombre, correo, password) VALUES (%s, %s, %s)"
     parameters = (correo, contrasena)
-    return db.realizar_insercion("alumno", data)
 
     #endregion
-
-
+    id_usuario = db.realizar_insercion("alumno", data)
+    query = "SELECT * FROM alumno WHERE id_alumno = %s"
+    parameters = (id_usuario,)
+    usuario = db.realizar_consulta(query, params=parameters)
+    return usuario[0]
 
 
 #endregion
@@ -250,7 +252,7 @@ def obtener_todasTaquillas():
 
 
 def crear_taquilla(data : dict):
-    taquilla = db.realizar_insercion("taquilla", data)
+    taquilla = obtener_taquilla(db.realizar_insercion("taquilla", data))
     return taquilla
 
 #funcion para abrir una taquilla
@@ -401,7 +403,11 @@ def obtener_aula(id_aula: int):
     return aula
 
 def insertar_aula(aula: dict):
-    return db.realizar_insercion("aula", aula)
+    return obtener_aula(db.realizar_insercion("aula", aula))
+
+def actualizar_aula(id: int, aula: dict):
+    return obtener_aula(db.realizar_actualizacion("aula",id,aula))
+
 
 #endregion
 

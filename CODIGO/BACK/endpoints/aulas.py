@@ -16,3 +16,8 @@ async def get_aula(id_aula: int):
 async def post_aula(request: Request):
     data = await request.json()
     return logica.respuesta_exitosa(logica.insertar_aula(data))
+                                    
+@router.put("/aulas/{id_aula}")
+async def put_aula(id_aula: int, request: Request):
+    data = await request.json()
+    return logica.respuesta_exitosa(logica.actualizar_aula(id_aula, data))
