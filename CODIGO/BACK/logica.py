@@ -80,7 +80,6 @@ def registrar_usuario( data: dict):
     usuario = db.realizar_consulta(query, params=parameters)
     return usuario[0]
 
-
 #endregion
 
 #region funciones de taquillas
@@ -292,12 +291,17 @@ def actualizar_aula(id: int, aula: dict):
 
 #region funciones de la cafeteria
 
-def obtener_productos():
+def obtener_productos(filtro: str = ""):
     """
     Lista todos los productos de cafetería.
     """
+    query = "SELECT id_producto, descripcion, precio FROM producto"
+    params = []
+    if filtro != "":
+        query += " WHERE descripcion LIKE %s"
+        params.append(f"%{filtro}%")
     #region obtener los productos de la base de datos
-    productos = db.realizar_consulta("SELECT id_producto, descripcion, precio FROM producto")
+    productos = db.realizar_consulta(query,params)
     #endregion
     return productos
 
