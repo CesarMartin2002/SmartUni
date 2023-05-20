@@ -5,11 +5,12 @@ from starlette.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.responses import PlainTextResponse
-from endpoints import taquillas, casillero, tests, paginasHTML, aulas, pruebas, sesion
+from endpoints import taquillas, casillero, tests, paginasHTML, aulas, pruebas, sesion, productos
 import logica
 
 app = FastAPI()
 
+#region manejo de errores
 # Middleware to handle all exceptions
 @app.middleware("http")
 async def exception_handler(request: Request, call_next):
@@ -32,7 +33,9 @@ async def custom_exception_handler(request, exc):
         status_code=exc.code,
         content={"success": False, "code": exc.code, "message": str(exc)}
     )
+#endregion
 
+#region manejo de printerrupt
 @app.exception_handler(logica.PrintInterruptException)
 async def print_interrupt_exception_handler(request, exc):
     return PlainTextResponse("PRINTERRUPT:\n\n"+exc.message)
@@ -40,7 +43,9 @@ async def print_interrupt_exception_handler(request, exc):
     #     status_code=200,
     #     content={"PRINTERRUPT": exc.message}
     # )
+#endregion
 
+#region rutas de los endpoints
 # Rutas para taquillas
 app.include_router(taquillas.router)
 
@@ -62,6 +67,11 @@ app.include_router(pruebas.router)
 # Rutas para sesion
 app.include_router(sesion.router)
 
+# Rutas para productos
+app.include_router(productos.router)
+#endregion
+
+#region cosas que no entiendo del todo pero que prefiero no tocar por si acaso
 # CORS settings
 origins = [
     "http://localhost",
@@ -77,6 +87,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+#endregion
 
 #Mount the static files directory at "/static"
+#Esto se usa básicamente para poder tener todo el fonrtend en una carpeta aparte y que el backend pueda acceder a ella
 app.mount("/static", StaticFiles(directory="FRONT/static"), name="static")

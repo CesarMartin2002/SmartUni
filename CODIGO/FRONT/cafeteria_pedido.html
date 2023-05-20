@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>SECURER</title>
+        <title>Realizar pedido - SmartUni</title>
         <link rel="icon" type="image/x-icon" href="images/favicon.png">
         <link rel="stylesheet" href="/static/main.css" />
     </head>
@@ -11,15 +11,25 @@
         <main>
             <img class="logo" src="/static/images/logo.png" alt="Logo">
             <h1>REALIZAR PEDIDO</h1>
+            <div class="filterDiv">
+                <form id="form" onsubmit="cargarDatos(); return false;">
+                    <input type="text" id="input" name="input" placeholder="Filtrar por nombre">
+                    <button class="btn" id="btn" type="submit">🔎</button>
+                    </form>
+            </div>
             <div class="menu">
-                <button>Menú del día</button>
+                <h1>PRODUCTOS</h1>
+                <div id = "productos">
+                    <h2>CARGANDO</h2>
+                </div>
+                <!-- <button>Menú del día</button>
                 <button>Platos combinados</button>
                 <button>Hamburguesa</button>
                 <button>Ensalda</button>
-                <button>Bocata</button>
+                <button>Bocata</button> -->
             </div>
         </main>
 
-        <script src="bienvenida.js"></script>
+        <script src="/static/cafeteria_pedido.js"></script>
     </body>
 </html>

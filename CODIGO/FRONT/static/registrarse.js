@@ -1,7 +1,6 @@
 
-window.onload = function() {
-    alert("base url:");
-  };
+// window.onload = function() {
+//   };
 
   function imprimirArgumento(arg) {
     console.log(arg);

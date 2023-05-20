@@ -3,7 +3,7 @@ window.onload= function(){
     let x = document.cookie;
     if(!x.includes("correo")){
         alert("Debes iniciar sesión para acceder a esta página.");
-        window.location.replace("/Securer");
+        window.location.replace("/");
 
     }
 }

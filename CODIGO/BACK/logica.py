@@ -4,9 +4,6 @@ from fastapi import Request
 import json
 import db
 
-
-
-
 #region Funciones de respuesta
 class CustomException(Exception):
     def __init__(self, message, code):
@@ -28,7 +25,11 @@ class PrintInterruptException(Exception):
         self.message = message
 
 def printerrupt(message):
-    raise PrintInterruptException(message)
+    """
+    Interrumpe la ejecución de la función y devuelve el mensaje como respuesta al cliente.
+    Muy útil para depurar código.
+    """
+    raise PrintInterruptException(str(message))
     # def decorator(func):
     #     async def wrapper(*args, **kwargs):
     #         # Obtener la solicitud actual del contexto
@@ -42,130 +43,6 @@ def printerrupt(message):
     # return decorator
 #endregion
 
-#region funciones de la base de datos
-# def get_connection():
-#     conn = psycopg2.connect(
-#         dbname='aotdlhvi',
-#         user='aotdlhvi',
-#         password='yJMYPFXps-4hLoQ2KO5iEzXs7o-bJxyJ',
-#         host='trumpet.db.elephantsql.com',
-#         port='5432')
-#     if conn:
-#         print('Conectado a la base de datos')
-#     else:
-#         print('Error al conectar a la base de datos')
-#     return conn
-
-# def realizar_consulta(sql:str, params=None):
-#     if not sql.upper().startswith("SELECT"):
-#         raise HTTPException(status_code=400, detail="La consulta debe ser de tipo SELECT")
-#     conn = get_connection()
-#     cursor = conn.cursor()
-#     cursor.execute(sql, params)
-#     column_names = [desc[0] for desc in cursor.description]  # get the column names from the cursor
-#     results = [dict(zip(column_names, row)) for row in cursor.fetchall()]  # convert each row to a dictionary
-#     cursor.close()
-#     conn.close()
-#     return results
-
-# def realizar_consulta_conexion(conn,sql:str, params=None):
-#     if not sql.upper().startswith("SELECT"):
-#         raise HTTPException(status_code=400, detail="La consulta debe ser de tipo SELECT")
-#     cursor = conn.cursor()
-#     try:
-#         cursor.execute(sql, params)
-#     except:
-#         #print the error message
-#         import traceback
-#         traceback.print_exc()  # print the traceback of the error
-#     column_names = [desc[0] for desc in cursor.description]  # get the column names from the cursor
-#     results = [dict(zip(column_names, row)) for row in cursor.fetchall()]  # convert each row to a dictionary
-#     cursor.close()
-#     return results
-
-# def realizar_insercion(nombre_tabla: str, data: dict):
-#     conn = get_connection()
-#     #region verificar que la tabla exista
-#     sql = 'SELECT * FROM %s LIMIT 1'
-#     table_name = AsIs(nombre_tabla)
-#     params = (table_name,)
-#     try:
-#         realizar_consulta_conexion(conn, sql, params)
-#     except:
-#         return {"success": False, "code": 400, "message": f"La tabla {nombre_tabla} no existe"}
-#     #endregion
-    
-#     #region establecer el valor de pk al nombre de la columna que es clave primaria
-#     sql_pk = "SELECT kcu.column_name FROM information_schema.key_column_usage kcu JOIN information_schema.table_constraints tc ON kcu.constraint_name = tc.constraint_name WHERE kcu.table_name = %s AND tc.constraint_type = 'PRIMARY KEY';"
-#     params = (nombre_tabla,)
-#     pk = realizar_consulta_conexion(conn,sql_pk, params)[0]["column_name"]
-#     #endregion
-
-#     #region Verificar que la columna de la clave primaria no se haya enviado en el diccionario o que su valor sea None
-#     if pk in data and data[pk] is not None:
-#         return {"success": False, "code": 400, "message": f"No se puede enviar el valor de la clave primaria '{pk}'"}
-#       # obtener los nombres de las columnas de la tabla
-#     sql ='SELECT column_name FROM information_schema.columns WHERE table_name = %s'
-#     columnas = realizar_consulta_conexion(conn,sql,params)
-#     columnas = [columna["column_name"] for columna in columnas]
-#     #endregion
-
-#     #region revisar que todas las columnas enviadas existan en la tabla
-#     for columna in data:
-#         if columna not in columnas:
-#             return {"success": False, "code": 400, "message": f"La columna '{columna}' no existe en la tabla '{nombre_tabla}'"}
-#     #endregion
-
-#     #region eliminar las columnas que no estén presentes en data
-#     columnas = [columna for columna in columnas if columna in data]
-#     #endregion
-
-#     #region agregar columnas que no están presentes en el diccionario como None
-#     valores = [data.get(columna, None) for columna in columnas]
-#     #endregion
-
-#     #region construir la consulta omitiendo la columna de la clave primaria
-#     sql = f"INSERT INTO {nombre_tabla} ({', '.join(columna for columna in columnas if columna != pk)}) VALUES ({', '.join(['%s' for columna in columnas if columna != pk])})"
-#     params = (*valores,)
-#     try:
-#         insertar_datos_conexion(conn,sql, valores)
-#     except IntegrityError:
-#         return {"success": False, "code": 400, "message": f"Ya existe un registro con la clave primaria '{data[pk]}'"}
-#     #endregion
-
-#     #region obtener el valor de la clave primaria del nuevo registro
-#     sql = f"SELECT currval(pg_get_serial_sequence('{nombre_tabla}', '{pk}'))"
-#     pk_value = realizar_consulta_conexion(conn, sql)[0]["currval"]
-#     #endregion
-
-#     #region devolver el registro insertado
-#     query = 'SELECT * FROM %s WHERE %s = %s'
-#     params = (table_name, AsIs(pk), pk_value)
-#     resultado = realizar_consulta_conexion(conn, query, params)
-#     #endregion
-#     conn.close()
-#     return resultado
-
-
-# def insertar_datos_conexion(conn,sql, params=None):
-#     #revisamos si es un insert y no un select o update o delete...
-#     #if any of the params is None change it to NULL
-#     params = [None if param is None else param for param in params]
-#     if not sql.upper().startswith("INSERT"):
-#         #si es un insert, obtenemos los datos
-#         return "Error"
-#     cursor = conn.cursor()
-#     #print the query with the params
-#     print(cursor.mogrify(sql, params))
-#     cursor.execute(sql, params)
-#     print("he insertado los datos")
-#     #si no hay errores retornamos el id del registro insertado
-#     conn.commit()
-#     cursor.close()
-#     return cursor.lastrowid
-
-#endregion
-
 #region funciones de usuarios
 
 def login(correo: str, password: str):
@@ -174,7 +51,8 @@ def login(correo: str, password: str):
     parameters = (correo,password)
     usuario = db.realizar_consulta(query, params=parameters)
     if len(usuario) == 0:
-        raise HTTPException(status_code=400, detail="El correo o la contraseña son incorrectos")
+        mensaje = f"El correo o la contraseña son incorrectos."
+        respuesta_fallida(mensaje, 400)
     usuario = usuario[0]
     #endregion
     return usuario
@@ -187,7 +65,8 @@ def registrar_usuario( data: dict):
     parameters = ([correo])
     usuario = db.realizar_consulta(query, parameters)
     if len(usuario) > 0:
-        raise HTTPException(status_code=400, detail="El correo ya está registrado")
+        mensaje = f"El correo {correo} ya está registrado."
+        respuesta_fallida(mensaje, 400)
     # endregion
 
     # region insertar el usuario
@@ -411,6 +290,168 @@ def actualizar_aula(id: int, aula: dict):
 
 #endregion
 
+#region funciones de la cafeteria
+
+def obtener_productos():
+    """
+    Lista todos los productos de cafetería.
+    """
+    #region obtener los productos de la base de datos
+    productos = db.realizar_consulta("SELECT id_producto, descripcion, precio FROM producto")
+    #endregion
+    return productos
+
+def obtener_producto(id_producto: int):
+    """
+    Obtiene el producto con el id especificado de la base de datos y lo devuelve como un diccionario
+    """
+    #region obtener el producto con el id especificado
+    query = "SELECT * FROM producto WHERE id_producto = %s"
+    parameters = (id_producto,)
+    producto = db.realizar_consulta(query, params=parameters)
+    #endregion
+
+    #region verificar que se encontró el producto
+    if len(producto) == 0:
+        mensaje = "No se encontró el producto con id " + str(id_producto)
+        respuesta_fallida(mensaje, 404)
+    #endregion
+
+    #region convertir los datos a un diccionario
+    producto = producto[0]
+    #endregion
+    return producto
+
+
+
+#endregion
+
+#region codigo antiguo que se borrará más adelante
+
+#region funciones de la base de datos
+# def get_connection():
+#     conn = psycopg2.connect(
+#         dbname='aotdlhvi',
+#         user='aotdlhvi',
+#         password='yJMYPFXps-4hLoQ2KO5iEzXs7o-bJxyJ',
+#         host='trumpet.db.elephantsql.com',
+#         port='5432')
+#     if conn:
+#         print('Conectado a la base de datos')
+#     else:
+#         print('Error al conectar a la base de datos')
+#     return conn
+
+# def realizar_consulta(sql:str, params=None):
+#     if not sql.upper().startswith("SELECT"):
+#         raise HTTPException(status_code=400, detail="La consulta debe ser de tipo SELECT")
+#     conn = get_connection()
+#     cursor = conn.cursor()
+#     cursor.execute(sql, params)
+#     column_names = [desc[0] for desc in cursor.description]  # get the column names from the cursor
+#     results = [dict(zip(column_names, row)) for row in cursor.fetchall()]  # convert each row to a dictionary
+#     cursor.close()
+#     conn.close()
+#     return results
+
+# def realizar_consulta_conexion(conn,sql:str, params=None):
+#     if not sql.upper().startswith("SELECT"):
+#         raise HTTPException(status_code=400, detail="La consulta debe ser de tipo SELECT")
+#     cursor = conn.cursor()
+#     try:
+#         cursor.execute(sql, params)
+#     except:
+#         #print the error message
+#         import traceback
+#         traceback.print_exc()  # print the traceback of the error
+#     column_names = [desc[0] for desc in cursor.description]  # get the column names from the cursor
+#     results = [dict(zip(column_names, row)) for row in cursor.fetchall()]  # convert each row to a dictionary
+#     cursor.close()
+#     return results
+
+# def realizar_insercion(nombre_tabla: str, data: dict):
+#     conn = get_connection()
+#     #region verificar que la tabla exista
+#     sql = 'SELECT * FROM %s LIMIT 1'
+#     table_name = AsIs(nombre_tabla)
+#     params = (table_name,)
+#     try:
+#         realizar_consulta_conexion(conn, sql, params)
+#     except:
+#         return {"success": False, "code": 400, "message": f"La tabla {nombre_tabla} no existe"}
+#     #endregion
+    
+#     #region establecer el valor de pk al nombre de la columna que es clave primaria
+#     sql_pk = "SELECT kcu.column_name FROM information_schema.key_column_usage kcu JOIN information_schema.table_constraints tc ON kcu.constraint_name = tc.constraint_name WHERE kcu.table_name = %s AND tc.constraint_type = 'PRIMARY KEY';"
+#     params = (nombre_tabla,)
+#     pk = realizar_consulta_conexion(conn,sql_pk, params)[0]["column_name"]
+#     #endregion
+
+#     #region Verificar que la columna de la clave primaria no se haya enviado en el diccionario o que su valor sea None
+#     if pk in data and data[pk] is not None:
+#         return {"success": False, "code": 400, "message": f"No se puede enviar el valor de la clave primaria '{pk}'"}
+#       # obtener los nombres de las columnas de la tabla
+#     sql ='SELECT column_name FROM information_schema.columns WHERE table_name = %s'
+#     columnas = realizar_consulta_conexion(conn,sql,params)
+#     columnas = [columna["column_name"] for columna in columnas]
+#     #endregion
+
+#     #region revisar que todas las columnas enviadas existan en la tabla
+#     for columna in data:
+#         if columna not in columnas:
+#             return {"success": False, "code": 400, "message": f"La columna '{columna}' no existe en la tabla '{nombre_tabla}'"}
+#     #endregion
+
+#     #region eliminar las columnas que no estén presentes en data
+#     columnas = [columna for columna in columnas if columna in data]
+#     #endregion
+
+#     #region agregar columnas que no están presentes en el diccionario como None
+#     valores = [data.get(columna, None) for columna in columnas]
+#     #endregion
+
+#     #region construir la consulta omitiendo la columna de la clave primaria
+#     sql = f"INSERT INTO {nombre_tabla} ({', '.join(columna for columna in columnas if columna != pk)}) VALUES ({', '.join(['%s' for columna in columnas if columna != pk])})"
+#     params = (*valores,)
+#     try:
+#         insertar_datos_conexion(conn,sql, valores)
+#     except IntegrityError:
+#         return {"success": False, "code": 400, "message": f"Ya existe un registro con la clave primaria '{data[pk]}'"}
+#     #endregion
+
+#     #region obtener el valor de la clave primaria del nuevo registro
+#     sql = f"SELECT currval(pg_get_serial_sequence('{nombre_tabla}', '{pk}'))"
+#     pk_value = realizar_consulta_conexion(conn, sql)[0]["currval"]
+#     #endregion
+
+#     #region devolver el registro insertado
+#     query = 'SELECT * FROM %s WHERE %s = %s'
+#     params = (table_name, AsIs(pk), pk_value)
+#     resultado = realizar_consulta_conexion(conn, query, params)
+#     #endregion
+#     conn.close()
+#     return resultado
+
+
+# def insertar_datos_conexion(conn,sql, params=None):
+#     #revisamos si es un insert y no un select o update o delete...
+#     #if any of the params is None change it to NULL
+#     params = [None if param is None else param for param in params]
+#     if not sql.upper().startswith("INSERT"):
+#         #si es un insert, obtenemos los datos
+#         return "Error"
+#     cursor = conn.cursor()
+#     #print the query with the params
+#     print(cursor.mogrify(sql, params))
+#     cursor.execute(sql, params)
+#     print("he insertado los datos")
+#     #si no hay errores retornamos el id del registro insertado
+#     conn.commit()
+#     cursor.close()
+#     return cursor.lastrowid
+
+#endregion
+
 def prueba_consulta():
     taquilla_prueba = obtener_taquilla(1)
     #eliminar el id_taquilla para que no se intente insertar
@@ -448,3 +489,5 @@ def prueba_consulta():
 #     datos_json = json.dumps(lista_datos, default=json_serial)
     
 #     return  json.loads(datos_json)
+
+#endregion

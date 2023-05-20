@@ -5,7 +5,11 @@ const baseUrl = `${window.location.protocol}//${window.location.host}`;
 function iniciarSesion(user, pass) {
   console.log(`Usuario ${user} y contraseña ${pass}`);
   console.log("Justo antes del fetch");
-
+  if (user == "" || pass == "") {
+    document.getElementById('errorInicioSesion').innerHTML = "Debes rellenar todos los campos";
+    document.getElementById('errorInicioSesion').style.display = 'block';
+    return;
+  }
   fetch(`${baseUrl}/login`, {
     method: 'POST',
     headers: {
@@ -40,6 +44,7 @@ function iniciarSesion(user, pass) {
         window.location.replace(`${baseUrl}/menu`);
       }
        else {
+        document.getElementById('errorInicioSesion').innerHTML = data.message;
         document.getElementById('errorInicioSesion').style.display = 'block';
       }
     })

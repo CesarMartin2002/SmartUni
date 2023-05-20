@@ -92,7 +92,7 @@ def realizar_insercion(nombre_tabla: str, data: dict):
     if pk in data and data[pk] is not None:
         mensaje = f"No se puede enviar el valor de la clave primaria '{pk}'. El valor se establece automáticamente"
         logica.respuesta_fallida(mensaje)
-      # obtener los nombres de las columnas de la tabla
+    # obtener los nombres de las columnas de la tabla
     sql ='SELECT column_name FROM information_schema.columns WHERE table_name = %s'
     columnas = realizar_consulta_conexion(conn,sql,params)
     columnas = [columna["column_name"] for columna in columnas]
