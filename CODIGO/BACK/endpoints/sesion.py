@@ -6,7 +6,7 @@ router = APIRouter()
 @router.post("/login")
 async def login(request: Request):
     """
-    Este endpoint permite al usuario loguearse
+    Endpoint que permite al usuario ingresar a la aplicación.
     """
     data = await request.json()
     print("data: ", data)

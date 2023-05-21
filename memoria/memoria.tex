@@ -2,14 +2,18 @@
 \usepackage[a4paper, total={17cm, 24cm}]{geometry}
 \usepackage{fancyhdr}
 \usepackage[spanish]{babel}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{tikz}
 \pagestyle{fancy}
+\usepackage{float}
 \fancyhf{}
 \fancyhead[L]{\leftmark}
 \fancyfoot[C]{\thepage}
 \setlength{\headheight}{15pt}
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
 
-\usepackage{lipsum} % Agregar el paquete lipsum para generar texto de ejemplo
+% \usepackage{lipsum} % Agregar el paquete lipsum para generar texto de ejemplo
 
 \begin{document}
 
@@ -49,13 +53,13 @@
 \chapter{Introducción}
 En este capítulo se va a realizar una introducción detallada sobre todos los temas
 \section{Objetivos}
-\lipsum[1-2] % Generar texto de ejemplo con lipsum
+% \lipsum[1-2] % Generar texto de ejemplo con lipsum
 \newpage
 \section{Justificación}
-\lipsum[3-4]
+% \lipsum[3-4]
 \newpage
 \section{Estructura de la memoria}
-\lipsum[5-6]
+% \lipsum[5-6]
 
 \chapter{Inconvenientes en el primer proyecto y propuestas de solución}
 En este capítulo trataremos sobre todos los inconvenientes con los que nos topamos durante el desarrollo de la primera práctica y que intentaremos mejorar para el óptimo desarrollo de la práctica actual.
@@ -89,50 +93,201 @@ Como solución, César ha propuesto implementar una metodología de testing basa
 
 \chapter{Implementación y soluciones a los problemas}
 En este capítulo se va a detallar de manera más detallada cómo se ha implementado nuestro proyecto. También se podrá ver de qué maneras esta implementación soluciona los problemas expuestos en el capitulo anterior. 
-\section{Implementación con FastApi}
-El desarrolo del Back-End se ha llevado a cabo utilizando el framework de FastApi para Python. Se ha elegido este lenguaje ya que es un lenguaje interpretado. Esto eliminará la necesidad de compilar el proyecto y realizar un despliegue por cada cambio que se realice.
-Se ha elegido FastApi debido a su destacada rapidez, su extensa documentación, su extremadamente simple sintaxis, la posibilidad de usar tipado estático y las facilidades que brinda para la documentación del proyecto.
+\section{Implementación con \textit{FastApi}}
+El desarrolo del Back-End se ha llevado a cabo utilizando el \textit{framework} de \textit{FastApi} para Python. Se ha elegido este lenguaje ya que es un lenguaje interpretado. Esto eliminará la necesidad de compilar el proyecto y realizar un despliegue por cada cambio que se realice.
+Se ha elegido \textit{FastApi} debido a su destacada rapidez, su extensa documentación, su extremadamente simple sintaxis, la posibilidad de usar tipado estático y las facilidades que brinda para la documentación del proyecto.
 \section{Servidores locales}
-Se ha decidido utilizar la librería uvicorn para poder levantar con un simple comando una réplica local del servidor. Esta librería es totalmente compatible con FastApi. Además, uvicorn podrá refrescar el servidor cada vez que detecte un cambio en el código. De esta manera, para poder introducir modificaciones y testearlas, será tan simple como pulsar Ctrl+S con el servidor lanzado. Ya no será necesario hacer todo el proceso extremadamente rudimentario y asurdo que se tenía que llevar a cabo para introducir cualquier modificación utilizando Tomcat.
+Se ha decidido utilizar la librería \textit{uvicorn} para poder levantar con un simple comando una réplica local del servidor. Esta librería es totalmente compatible con \textit{FastApi}. Además, \textit{uvicorn} podrá refrescar el servidor cada vez que detecte un cambio en el código. De esta manera, para poder introducir modificaciones y testearlas, será tan simple como pulsar \textit{Ctrl+S} con el servidor lanzado. Ya no será necesario hacer todo el proceso extremadamente rudimentario y absurdo que se tenía que llevar a cabo para introducir cualquier modificación utilizando \textit{Tomcat}.
 \section{Entornos virtuales}%mejor que una máquina virtual de mierda
 
 \section{Base de datos online} %en una página gratuita
 \section{Testing con Postman} %hablar de la metodología
 \section{Mejoras adicinoales} %mini librería BBDD
 
+\chapter{Desarrollo del Backend}
+Como se ha detallado anteriormente, este apartado ha sido desarrollado por completo utilizando el \textit{framework} de \textit{FastApi} para el lenguaje \textit{Python}. Un desarrollo de un \textit{Backend} complejo y sotisficado siempre es una tarea de alta dificultad, sin embargo; gracias a utilizar este \textit{framework}, nuestro trabajo se ha simplificado y acelerado en gran medida.
+\\
+A continuación se detallarán aspectos importantes a destacar de la implementación realizada.
+\section{Estructura clara y organizada}
+Desde el inicio del proyecto, César hizo hincapié en la importancia de contar con una estructura de código clara y organizada, que permitiera localizar rápidamente cualquier aspecto del mismo.
+\\
 
-\chapter{Marco teórico}
-\section{Computación ubicua}
-\lipsum[1-2]
-\newpage
-\section{Internet de las cosas}
-\lipsum[3-4]
-\newpage
-\section{Universidad de Alcalá}
-\lipsum[5-6]
+En este contexto, la implementación adoptada por César se basa en un archivo principal denominado \texttt{main.py}, el cual contiene la aplicación \textit{FastAPI}. A este archivo se agregan todos los nodos terminales que se encuentran en la carpeta \textit{endpoints}. Estos endpoints se encuentran distribuidos en varios archivos \textit{.py}, clasificados de acuerdo con el aspecto de la \textit{API} que manejan. Por ejemplo, se pueden encontrar archivos como \textit{taquillas.py}, \textit{productos.py}, entre otros.
+\\
 
-\chapter{Metodología}
-\section{Desarrollo del proyecto}
-\lipsum[1-2]
-\newpage
-\section{Etapas del proyecto}
-\lipsum[3-4]
+Además de la organización de los endpoints, esta implementación también proporciona una forma sencilla de agregar todos los archivos necesarios para mostrar la interfaz de usuario (\emph{frontend}). Esto implica que la estructura del proyecto permite incorporar de manera eficiente los archivos relevantes para la interfaz de usuario, facilitando así su desarrollo y mantenimiento.
+\\
 
-\chapter{Resultados}
-\section{Análisis de los resultados}
-\lipsum[1-2]
-\newpage
-\section{Discusión de los resultados}
-\lipsum[3-4]
+A continuación se muestra un diagrama de la estructura utilizada:
+\begin{figure}[H]
+    \centering
+\begin{tikzpicture}[
+  level 1/.style={sibling distance=60mm},
+  level 2/.style={sibling distance=30mm},
+  level 3/.style={sibling distance=20mm}
+]
+\node {main.py}
+  child {node {endpoints}
+    child {node {taquillas.py}}
+    child {node {productos.py}}
+    child {node {sesion.py}}
+    child {node {aulas.py}}
+    child {node {...}}
+  };
+\end{tikzpicture}
+\caption{Diagrama de la estructura del proyecto}
+\label{fig:arbol_estructura}
+\end{figure}
 
-\chapter{Conclusiones}
-\section{Logros alcanzados}
-\lipsum[1-2]
-\newpage
-\section{Recomendaciones}
-\lipsum[3-4]
-\newpage
-\section{Trabajo futuro}
-\lipsum[5-6]
+\section{Manejo de errores}
+César ha implementado un sistema que permite lanzar errores que se le pueden mostrar al cliente de manera detallada; donde se le muestra el código de estado de la llamada \textit{HTTP}, junto con un mensaje detallando la causa del problema. La mayor complicación ha sido implementar el sistema haciendo que en el momento en el que se quiera mandar dicha respuesta al cliente, se interrumpa toda la ejecución y se devuelva únicamente el error especificado.
+
+\section{Impresión interrumpida}
+Implementado por César, el método de depuración \texttt{printerrupt()} ofrece una solución eficiente para la depuración de nuestra \textit{API}.
+
+El método \texttt{printerrupt()} permite interrumpir rápidamente la ejecución del programa y devuelve al cliente una cadena de texto plano especificada como argumento. Esta función resulta especialmente útil en situaciones en las que es difícil determinar la causa de un error en un momento determinado. Al proporcionar una forma de interrumpir la ejecución y obtener información en forma de texto plano, este método simplifica el proceso de identificación y resolución de cualquier tipo de error o fallo (\emph{bug}).
+
+El uso de \texttt{printerrupt()} permite una depuración más eficiente al proporcionar una herramienta que ayuda a acotar el problema en cuestión. Al interrumpir la ejecución y enviar una respuesta al cliente, se facilita la identificación de puntos críticos en el código y se agiliza la solución de problemas.
+\section{Utilidades para la base de datos}
+César ha creado una serie de métodos que facilitan muy notoriamente el manejo de las conexiones a la base de datos donde se almacenan todos los datos.
+
+Entre estos métodos destacan:
+\begin{itemize}
+    \item \texttt{realizar\_insercion}:
+    \\
+    Realiza la inserción de datos en una tabla de la base de datos, símplemente pasándole como argumentos el nombre de la tabla y un diccionario (\textit{JSON}) cuyos campos serán las columnas de la tabla. El método inteligentemente realiza una serie de verificaciones previas para asegurar que todo funcionará correctamente y cuenta con un manejo de errores detallado. A continuación, se muestran los pasos que sigue este método:
+
+\begin{enumerate}
+    \item Establece una conexión a la base de datos utilizando una función llamada \texttt{get\_connection()}.
+    
+    \item Verifica si la tabla especificada existe en la base de datos. Para ello, ejecuta una consulta de selección limitada a un solo registro en la tabla. Si la consulta arroja un error, se interpreta como que la tabla no existe y se genera un mensaje de error.
+    
+    \item Determina el nombre de la columna que actúa como clave primaria en la tabla. Esto se hace consultando el esquema de la base de datos y buscando la columna que tiene la restricción de ``\textit{PRIMARY KEY}".
+    
+    \item Verifica que la columna de la clave primaria no se haya proporcionado en el diccionario de datos o que su valor sea `\textit{None}`. Si se proporciona o su valor no es `\textit{None}`, se genera un mensaje de error. Los IDs de la base de datos implementada son del tipo Serial y se establecen automáticamente, por lo que no se deben enviar a la hora de realizar inserciones en la base de datos.
+    
+    \item Obtiene los nombres de todas las columnas de la tabla desde el esquema de la base de datos.
+    
+    \item Revisa que todas las columnas enviadas en el diccionario de datos existan en la tabla. Si alguna columna no existe, se genera un mensaje de error.
+    
+    \item Elimina las columnas de la lista que no están presentes en el diccionario de datos. Esto asegura que solo se inserten los valores para las columnas proporcionadas.
+    % Aquellos que no estén se insertarán como nulos, siempre y cuando la tabla lo permita.
+    
+    \item Verifica que no falten campos requeridos que no pueden ser nulos en la base de datos. Esto se hace consultando los campos no nulos de la tabla y comparándolos con los campos proporcionados en el diccionario de datos. Si falta algún campo requerido, se genera un mensaje de error.
+    
+    \item Agrega `\textit{None}` como valor para las columnas que no están presentes en el diccionario de datos. Esto garantiza que se inserten `\textit{NULL}` en esas columnas.
+    
+    \item Construye una consulta de inserción automáticamente utilizando el nombre de la tabla y las columnas correspondientes. La columna de la clave primaria se omite en esta consulta por lo que se mencionó anteriormente.
+    
+    \item Ejecuta la consulta de inserción en la base de datos utilizando una función llamada `\texttt{insertar\_datos\_conexion()}`. Si ocurre un error de integridad debido a una violación de clave primaria, se genera un mensaje de error. Realmente, no debería haberlo nunca, pero pese a ello, se maneja dicho error.
+    
+    \item Obtiene el valor de la clave primaria del nuevo registro insertado utilizando una consulta que obtiene el valor actual de la secuencia de la clave primaria.
+    
+    \item Cierra la conexión a la base de datos.
+    
+    \item Retorna el valor de la clave primaria del nuevo registro insertado.
+\end{enumerate}
+En resumen, este método se encarga de realizar la inserción de datos en una tabla de una base de datos creando inteligentemente una consulta procesada. Esto se realiza verificando la existencia de la tabla, la validez de los datos proporcionados, la presencia de campos requeridos y la integridad de la clave primaria. Además, se encarga de manejar los mensajes de error y retorna el valor de la clave primaria del nuevo registro.
+
+\item \texttt{realizar\_actualizacion}
+Este método, de manera similar al anterior, se encarga de realizar una actualización en una tabla de una base de datos reciviéndo únicamente el nombre de la tabla, el id del registro y los un diccionario con aquellos campos que se deseen actualizar. Este método realiza la actualizacion tras verificar  y manejar cualquier tipo de problema. A continuación, se detallan los pasos que sigue este método:
+
+\begin{enumerate}
+    \item Establece una conexión a la base de datos utilizando una función llamada `\texttt{get\_connection()}`.
+    \item Verifica si la tabla especificada existe en la base de datos. Para ello, ejecuta una consulta de selección limitada a un solo registro en la tabla. Si la consulta arroja un error, se interpreta como que la tabla no existe y se genera un mensaje de error.
+    \item Determina el nombre de la columna que actúa como clave primaria en la tabla. Esto se hace consultando el esquema de la base de datos y buscando la columna que tiene la restricción de "PRIMARY KEY".
+    \item Verifica que la columna de la clave primaria no se haya enviado en el diccionario de datos y que el parámetro `id` no sea `None`. Si se envía la columna o `id` es `None`, se genera un mensaje de error.
+    \item Obtiene los nombres de todas las columnas de la tabla desde el esquema de la base de datos.
+    \item Verifica que exista un registro en la tabla con el valor de clave primaria especificado en el parámetro `id`. Si no existe un registro con ese valor de clave primaria, se genera un mensaje de error.
+    \item Verifica que todas las columnas enviadas en el diccionario de datos existan en la tabla. Si alguna columna no existe, se genera un mensaje de error.
+    \item Verifica que los campos con valor `None` puedan ser nulos en la base de datos. Esto se hace consultando los campos no nulos de la tabla y comparándolos con los campos y sus valores proporcionados en el diccionario de datos. Si se intenta asignar un valor `None` a un campo no nulo, se genera un mensaje de error.
+    \item Construye la consulta de actualización y los valores a actualizar. Las columnas y sus respectivos valores se obtienen del diccionario de datos, excluyendo la columna de la clave primaria y las columnas que tienen un valor `None`. La consulta de actualización se construye utilizando la sintaxis SQL adecuada.
+    \item Ejecuta la consulta de actualización en la base de datos utilizando una función llamada `\texttt{actualizar\_datos\_conexion()}`. Si ocurre un error de integridad debido a una violación de clave primaria, se genera un mensaje de error.
+    \item Cierra la conexión a la base de datos.
+    \item Retorna el valor del parámetro `id`.
+\end{enumerate}
+
+En resumen, este método se encarga de realizar una actualización en una tabla de una base de datos, verificando la existencia de la tabla, la validez de los datos proporcionados, la presencia de la clave primaria y las columnas, y la posibilidad de asignar valores `\textit{None}` a campos nulos. Además, se encarga de manejar los mensajes de error y retorna el valor del parámetro `id`.
+\end{itemize}
+
+\section{Endpoints}
+Como se ha mencionado en apartados anteriores, los \textit{endpoints} han sido organizados de manera categórica dentro de diversos ficheros. Nuestros endpoint se han distinguido en las siguientes categorías
+\begin{itemize}
+    \item Sesión\\
+    Dentro del fichero \textit{sesion.py} se pueden encontrar los \textit{endpoints} relacionados con el inicio de sesión y registro e usuarios en la plataforma. 
+    \item Páginas HTML\\
+    Dentro del fichero \textit{paginasHTML.py} se alojan todos los endpoints que retotnan las páginas \textit{HTML} junto con su hoja de estilos \textit{CSS} y código \textit{JavaScript} asociado. Es una manera simple y organizada de conectar el \textit{FrontEnd} al \textit{BackEnd}.
+    \item Taquillas\\
+    En el fichero \textit{taquillas.py} podemos encontrar todos los nodos terminales relacionados con la gestión de taquillas.
+    Entre dichos endpoints encontramos:
+    \begin{itemize}
+        \item \textcolor{ForestGreen}{\texttt{GET}} \textit{Lista Taquillas}\\
+        Retorna un listado de todas las taquillas del sistema.\\
+        Localizado en: \texttt{(host)/taquillas}
+        \item \textcolor{ForestGreen}{\texttt{GET}} \textit{Detalle taquilla}\\
+        Retorna la información completa y detallada de una taquilla en específico.\\
+        Para ello recibe como argumento el id de la taquilla deseada como path parameter.\\
+        Localizado en: \texttt{(host)/taquillas/\{id\_taquilla\}}
+        \item \textcolor{YellowOrange}{\texttt{POST}} \textit{Insertar taquilla}\\
+        Permite insertar una nueva taquilla en el sistema con la información que se envíe en el body de la solicitud.
+        \\Localizado en: \texttt{(host)/taquillas}
+    \end{itemize}
+    \item Aulas\\
+     En el fichero \textit{aulas.py} podemos encontrar todos los nodos terminales relacionados con la gestión de todas las aulas.
+    Entre dichos endpoints encontramos:
+        \begin{itemize}
+        \item \textcolor{ForestGreen}{\texttt{GET}} \textit{Lista Aulas}\\
+        Retorna un listado de todas las aulas de la Escuela Politécnica Superior. Permite también realizar una búsqueda filtrada según el piso del aula, su tipo (Laboratorio o Aula de teoría), ala (Norte, Sur, Este y Oeste)... Dicho filtro se realiza a partir de los query params recibidos.\\
+        Localizado en: \texttt{(host)/aulas}
+        \item \textcolor{ForestGreen}{\texttt{GET}} \textit{Info aula}\\
+        Retorna la información completa y detallada de un aula en concreto.\\
+        Para ello recibe como argumento el id del aula deseada como path parameter.\\
+        Localizado en: \texttt{(host)/aulas/\{id\_aula\}}
+        \item \textcolor{YellowOrange}{\texttt{POST}} \textit{Insertar aula}\\
+        Permite insertar una nueva aula en el sistema con la información que se envíe en el body de la solicitud.
+        \\Localizado en: \texttt{(host)/aulas}
+        \item \textcolor{SkyBlue}{\texttt{PUT}}
+        \textit{Actualizar aula}\\
+        Permite actualizar los valores de un aula concreta del sistema con la información que se envíe en el body de la solicitud. Este endpoint es utilizado por parte del Arduino para actualizar valores como la temperatura en tiempo real.
+        \\Localizado en: \texttt{(host)/aulas/\{id\_aula\}}
+        
+    \end{itemize}
+    \item Cafetería
+    
+\end{itemize}
+
+% \chapter{Marco teórico}
+% \section{Computación ubicua}
+% \lipsum[1-2]
+% \newpage
+% \section{Internet de las cosas}
+% \lipsum[3-4]
+% \newpage
+% \section{Universidad de Alcalá}
+% \lipsum[5-6]
+
+% \chapter{Metodología}
+% \section{Desarrollo del proyecto}
+% \lipsum[1-2]
+% \newpage
+% \section{Etapas del proyecto}
+% \lipsum[3-4]
+
+% \chapter{Resultados}
+% \section{Análisis de los resultados}
+% \lipsum[1-2]
+% \newpage
+% \section{Discusión de los resultados}
+% \lipsum[3-4]
+
+% \chapter{Conclusiones}
+% \section{Logros alcanzados}
+% \lipsum[1-2]
+% \newpage
+% \section{Recomendaciones}
+% \lipsum[3-4]
+% \newpage
+% \section{Trabajo futuro}
+% \lipsum[5-6]
 
 \end{document}

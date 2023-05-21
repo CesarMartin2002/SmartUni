@@ -116,11 +116,6 @@ def realizar_insercion(nombre_tabla: str, data: dict):
     pk_value = realizar_consulta_conexion(conn, sql)[0]["currval"]
     #endregion
 
-    # #region devolver el registro insertado
-    # query = 'SELECT * FROM %s WHERE %s = %s'
-    # params = (table_name, AsIs(pk), pk_value)
-    # resultado = realizar_consulta_conexion(conn, query, params)
-    # #endregion
     conn.close()
     return pk_value
 
@@ -203,7 +198,8 @@ def realizar_actualizacion(nombre_tabla: str,id: int, data: dict):
     columnas = realizar_consulta_conexion(conn, sql, params)
     columnas = [columna["column_name"] for columna in columnas]
     #endregion
-    # # region Verificar que la columna de la clave primaria exista en la tabla
+
+    # # IGNORAR region Verificar que la columna de la clave primaria exista en la tabla
     # if pk not in columnas:
     #     mensaje = f"La columna de la clave primaria '{pk}' no existe en la tabla '{nombre_tabla}'"
     #     logica.respuesta_fallida(mensaje)
@@ -241,9 +237,6 @@ def realizar_actualizacion(nombre_tabla: str,id: int, data: dict):
             if columna in data and data[columna] is not None:
                 columnas_actualizar.append(columna)
                 valores_actualizar.append(data[columna])
-            # else:
-            #     columnas_actualizar.append(columna)
-            #     valores_actualizar.append(AsIs(columna))
 
     sql = f"UPDATE {nombre_tabla} SET {', '.join([columna + ' = %s' for columna in columnas_actualizar])} WHERE {pk} = %s"
     valores = valores_actualizar + [id]
@@ -253,13 +246,6 @@ def realizar_actualizacion(nombre_tabla: str,id: int, data: dict):
         mensaje = f"No se puede realizar la actualización. Ya existe un registro con la clave primaria '{pk}'"
         logica.respuesta_fallida(mensaje)
     # endregion
-
-    # # region Obtener el registro actualizado
-    # query = 'SELECT * FROM %s WHERE %s = %s'
-    # params = (table_name, AsIs(pk), id)
-    # resultado = realizar_consulta_conexion(conn, query, params)
-    # # endregion
-
 
     conn.close()
     return id
