@@ -92,15 +92,12 @@ def obtener_casillero(id: int):
 def obtener_taquilla(id_taquilla: int):
     # devolverla como un diccionario con sus propiedades (por ejemplo, {'id': 1, 'disponible': True, 'usuario': None})
     # Si no se encuentra ninguna taquilla con ese id, se debe retornar un error (por ejemplo, {'success': False, 'message': 'No se encontró la taquilla con id 1'})
-    try:
-        query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
-        parameters = (id_taquilla,)
-        taquilla = db.realizar_consulta(query, params=parameters)
-        if len(taquilla) == 0:
-            raise CustomException(message="No se encontró la taquilla con id " + str(id_taquilla), code=404)
-        return taquilla
-    except CustomException as e:
-        return HTTPException(status_code=e.code, detail=e.message)
+    query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
+    parameters = (id_taquilla,)
+    taquilla = db.realizar_consulta(query, params=parameters)
+    if len(taquilla) == 0:
+        respuesta_fallida(message="No se encontró la taquilla con id " + str(id_taquilla), code=404)
+    return taquilla
 
 def obtener_usuario_de_taquilla(id_taquilla: int):
     taquilla = obtener_taquilla(id_taquilla) 
@@ -124,8 +121,25 @@ def actualizar_taquilla(id_taquilla: int, id_usuario :int):
         return f"La taquilla {id_taquilla} no está disponible en este momento, esta asociado al alumno con id {id_usuario}."
         
 
-def obtener_todasTaquillas():
-    taquillas = db.realizar_consulta("SELECT * FROM taquilla")
+def obtener_todasTaquillas(ala = "", piso = 0, pasillo = 0):
+    query = "SELECT * FROM taquilla"
+    params = []
+    if ala != "":
+        query += " WHERE ala = %s"
+        params.append(ala)
+    if piso != 0:
+        if len(params) == 0:
+            query += " WHERE piso = %s"
+        else:
+            query += " AND piso = %s"
+        params.append(piso)
+    if pasillo != 0:
+        if len(params) == 0:
+            query += " WHERE pasillo = %s"
+        else:
+            query += " AND pasillo = %s"
+        params.append(pasillo)
+    taquillas = db.realizar_consulta(query, params)
     return taquillas
 
 
@@ -240,12 +254,29 @@ def cancelar_taquilla(id_taquilla: int, id_usuario: int):
     
 #region funciones de las aulas
 
-def obtener_aulas():
+def obtener_aulas(ala,planta,numero):
     """
     Lista todas las aulas de la base de datos.
     """
     #region obtener las aulas de la base de datos
-    aulas = db.realizar_consulta("SELECT id_aula, laboratorio, planta, ala, num_aula FROM aula")
+    query = "SELECT id_aula, laboratorio, planta, ala, num_aula FROM aula"
+    params = []
+    if ala != "":
+        query += " WHERE ala = %s"
+        params.append(ala)
+    if planta != 0:
+        if len(params) == 0:
+            query += " WHERE planta = %s"
+        else:
+            query += " AND planta = %s"
+        params.append(planta)
+    if numero != 0:
+        if len(params) == 0:
+            query += " WHERE num_aula = %s"
+        else:
+            query += " AND num_aula = %s"
+        params.append(numero)
+    aulas = db.realizar_consulta(query, params)
     #endregion
     #region convertir los datos a un diccionario añadiendo los nombres de cada aula.
     for aula in aulas:
@@ -326,6 +357,142 @@ def obtener_producto(id_producto: int):
     #endregion
     return producto
 
+def obtener_pedidos():
+    """
+    Lista todos los pedidos de cafetería.
+    """
+    #region obtener los pedidos de la base de datos
+    pedidos = db.realizar_consulta("SELECT * from vista_pedidos")
+    #endregion
+    for pedido in pedidos:
+        pedido["productos_ids"] = pedido["productos_ids"].split("|")
+        pedido["productos_ids"] = [int(id) for id in pedido["productos_ids"]]
+        pedido["productos_descripciones"] = pedido["productos_descripciones"].split("|")
+        pedido["estado"]= int(pedido["estado"])
+    return pedidos
+
+def obtener_pedido(id_pedido: int):
+    """
+    Obtiene el pedido con el id especificado de la base de datos y lo devuelve como un diccionario
+    """
+    #region obtener el pedido con el id especificado
+    query = "SELECT * FROM vista_pedidos WHERE id_pedido = %s"
+    parameters = (id_pedido,)
+    pedido = db.realizar_consulta(query, params=parameters)
+    #endregion
+
+    #region verificar que se encontró el pedido
+    if len(pedido) == 0:
+        mensaje = "No se encontró el pedido con id " + str(id_pedido)
+        respuesta_fallida(mensaje, 404)
+    #endregion
+
+    #region convertir los datos a un diccionario
+    pedido = pedido[0]
+    #hacemos un split de los productos para obtener una lista de ids de productos
+    pedido["productos_ids"] = pedido["productos_ids"].split("|")
+    pedido["productos_ids"] = [int(id) for id in pedido["productos_ids"]]
+    pedido["productos_descripciones"] = pedido["productos_descripciones"].split("|")
+    pedido["estado"]= int(pedido["estado"])
+    #endregion
+    return pedido
+
+def crear_pedido(data: dict):
+    """
+    Crea un nuevo pedido. El parámetro data debe ser un diccionario que contenga la información del pedido.
+    """
+    #region verificar que el pedido tenga al menos un producto
+    if len(data["productos"]) == 0:
+        mensaje = "El pedido debe tener al menos un producto"
+        respuesta_fallida(mensaje, 400)
+    #endregion
+
+    #region verificar que todos los productos existan
+    for producto in data["productos"]:
+        if obtener_producto(producto) is None:
+            mensaje = f"No se encontró el producto con id {producto['id_producto']}"
+            respuesta_fallida(mensaje, 404)
+    #endregion
+
+    #region insertar el pedido
+    #creamos el diccionario con los datos del pedido
+    data_pedido = {
+        "id_alumno_alumno": data["id_alumno"],
+        "estado": 0 #estado 0 es pendiente de aprobar
+    }
+    id_pedido = db.realizar_insercion("pedido", data_pedido)
+    #endregion
+
+    #region insertar los productos del pedido
+    for producto in data["productos"]:
+        data_pedido_producto = {
+            "id_pedido": id_pedido,
+            "id_producto": producto
+        }
+        db.realizar_insercion("pedido_producto", data_pedido_producto)
+    #endregion
+
+    #region obtener el pedido insertado
+    pedido = obtener_pedido(id_pedido)
+    #endregion
+
+    return pedido
+
+def actualizar_pedido(id_pedido: int, data: dict):
+    """
+    Actualiza el pedido con el id especificado. Solo estará permitido cambiar el estado.
+    """
+    #region obtener el pedido con el id especificado
+    pedido = obtener_pedido(id_pedido)
+    #endregion
+
+    #region verificar que se encontró el pedido
+    if pedido is None:
+        mensaje = "No se encontró el pedido con id " + str(id_pedido)
+        respuesta_fallida(mensaje, 404)
+    #endregion
+    #region verificar que solo nos haya enviado el estado y el id del alumno
+    if len(data) != 2:
+        mensaje = "Solo se puede enviar el estado y el id del alumno"
+        respuesta_fallida(mensaje, 400)
+    if "id_alumno" not in data:
+        mensaje = "Debe enviar el id del alumno"
+        respuesta_fallida(mensaje, 400)
+    if "estado" not in data:
+        mensaje = "Debe enviar el estado"
+        respuesta_fallida(mensaje, 400)
+    #endregion
+
+    #region el pedido debe pertenecer al alumno que lo está modificando
+    if pedido["id_alumno_alumno"] != data["id_alumno"]:
+        mensaje = "El pedido no pertenece al alumno con id " + str(data["id_alumno"])
+        respuesta_fallida(mensaje, 400)
+    #endregion
+
+    #region verificar que el estado sea válido
+    if data["estado"] not in [0, 1, 2, 3]:
+        mensaje = "El estado debe ser 0, 1, 2 o 3"
+        respuesta_fallida(mensaje, 400)
+    # if pedido["estado"] == 3:
+    #     mensaje = "El pedido ya está completado y no se puede modificar"
+    #     respuesta_fallida(mensaje, 400)
+    if pedido["estado"] >=  data["estado"] :
+        mensaje = "La modificación del estado no es válida"
+        respuesta_fallida(mensaje, 400)
+    #endregion
+
+    #region actualizar el pedido
+    data_pedido = {
+        "estado": data["estado"]
+    }
+    db.realizar_actualizacion("pedido", id_pedido, data_pedido)
+    #endregion
+
+    #region obtener el pedido actualizado
+    pedido = obtener_pedido(id_pedido)
+    #endregion
+
+    return pedido
 
 
 #endregion

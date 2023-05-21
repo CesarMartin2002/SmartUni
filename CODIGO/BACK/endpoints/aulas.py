@@ -1,15 +1,14 @@
-from fastapi import APIRouter
-from fastapi import Request
+from fastapi import APIRouter, Request, Query
 import logica
 
 router = APIRouter()
 
 @router.get("/aulas")
-async def get_aulas():
+async def get_aulas(ala: str = Query(default=""),planta: int = Query(default=0),numero: int = Query(default=0)):
     """
     Obtiene todas las aulas registradas en la base de datos.
     """
-    return logica.respuesta_exitosa(logica.obtener_aulas())
+    return logica.respuesta_exitosa(logica.obtener_aulas(ala, planta, numero))
 
 @router.get("/aulas/{id_aula}")
 async def get_aula(id_aula: int):

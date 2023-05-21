@@ -5,7 +5,7 @@ from starlette.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.responses import PlainTextResponse
-from endpoints import taquillas, casillero, paginasHTML, aulas, sesion, productos
+from endpoints import taquillas, casillero, paginasHTML, aulas, sesion, productos, pedidos
 import logica
 
 app = FastAPI()
@@ -29,6 +29,7 @@ async def exception_handler(request: Request, call_next):
 
 @app.exception_handler(logica.CustomException)
 async def custom_exception_handler(request, exc):
+    print("\nERROR CAPTURADO:\nCode: ", exc.code, "\nMessage: ", str(exc), "\n")
     return JSONResponse(
         status_code=exc.code,
         content={"success": False, "code": exc.code, "message": str(exc)}
@@ -38,7 +39,9 @@ async def custom_exception_handler(request, exc):
 #region manejo de printerrupt
 @app.exception_handler(logica.PrintInterruptException)
 async def print_interrupt_exception_handler(request, exc):
-    return PlainTextResponse("PRINTERRUPT:\n\n"+exc.message)
+    return_message = "PRINTERRUPT:\n\n"+exc.message
+    print(return_message)
+    return PlainTextResponse(return_message)
     # return JSONResponse(
     #     status_code=200,
     #     content={"PRINTERRUPT": exc.message}
@@ -63,6 +66,9 @@ app.include_router(sesion.router)
 
 # Rutas para productos
 app.include_router(productos.router)
+
+# Rutas para pedidos
+app.include_router(pedidos.router)
 #endregion
 
 #region cosas que no entiendo del todo pero que prefiero no tocar por si acaso
