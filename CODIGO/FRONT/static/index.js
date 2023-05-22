@@ -30,14 +30,6 @@ function iniciarSesion(user, pass) {
         // localStorage.setItem('id_alumno', data['id_alumno']);
         document.cookie = `correo=${data.data.correo}`;
         document.cookie = `id_alumno=${data.data['id_alumno']}`;
-
-        //obtiene los valores de las cookies
-        var correo = document.cookie.replace(/(?:(?:^|.*;\s*)correo\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        var id_alumno = document.cookie.replace(/(?:(?:^|.*;\s*)id_alumno\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-
-        console.log(correo);
-        console.log(id_alumno);
-
         // Usa pushState() para agregar la URL actual al historial del navegador
         window.history.pushState({}, null, `${window.location.href}`);
         // Usa replace() para cambiar a la página de menú

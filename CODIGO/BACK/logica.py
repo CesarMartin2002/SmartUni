@@ -70,11 +70,11 @@ def registrar_usuario( data: dict):
     # endregion
 
     # region insertar el usuario
-    query = "INSERT INTO alumno (nombre, correo, password) VALUES (%s, %s, %s)"
-    parameters = (correo, contrasena)
+
+    id_usuario = db.realizar_insercion("alumno", data)
 
     #endregion
-    id_usuario = db.realizar_insercion("alumno", data)
+    # printerrupt(data)
     query = "SELECT * FROM alumno WHERE id_alumno = %s"
     parameters = (id_usuario,)
     usuario = db.realizar_consulta(query, params=parameters)

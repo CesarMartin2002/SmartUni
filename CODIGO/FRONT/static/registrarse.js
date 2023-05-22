@@ -1,6 +1,6 @@
 
-// window.onload = function() {
-//   };
+// Define una variable global baseUrl que contiene el inicio de la URL
+const baseUrl = `${window.location.protocol}//${window.location.host}`;
 
   function imprimirArgumento(arg) {
     console.log(arg);
@@ -14,74 +14,61 @@ console.log("Usuario " + user + " y contraseña " + pass + " y repite contraseñ
         //call a java servlet (url GetInicioSesion) that logs in with user.value and pass.value
         if (pass != rpass) {    
             console.log("Las contraseñas no coinciden");
-        document.getElementById("errorMsg0").style.display = 'block';
-
+            document.getElementById("errorMsg").innerHTML = "Las contraseñas no coinciden";
+            document.getElementById("errorMsg").style.display = 'block';
             return;
         }
-        
-        console.log("justo antes del fetch");
-        let url = "GetInicioSesion?correo=" + user + "&contrasenna=" + pass;
-        console.log("La url es: "+ url)
-        fetch(url)
-       
+        if (user == "" || pass == "" || rpass == "") {
+          console.log("Debes rellenar todos los campos");
+          document.getElementById("errorMsg").innerHTML = "Debes rellenar todos los campos";
+          document.getElementById("errorMsg").style.display = 'block';
+          return;
+        }
+        if (!validarCorreoElectronico(user)) {
+          console.log("El correo electrónico no es válido");
+          document.getElementById("errorMsg").innerHTML = "El correo electrónico no es válido";
+          document.getElementById("errorMsg").style.display = 'block';
+          return;
+        }
+        fetch(`${baseUrl}/signup`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            correo: user,
+            password: pass
+          })
+        })
         .then(response => response.json())
-      .then(data => {
-        //handle data
-       console.log("entro en el then data");
-
-        console.log(data.islogged);
-        if (data.islogged == true) {
-            console.log("redirijo a la pagina de bienvenida");
-            window.location.replace("bienvenida.html");
-      }else{
-        document.getElementById("errorInicioSesion").style.display = 'block';
-        
-      }
-
-
-      })
-      .catch(error => {
-       console.log("entro en el then error");
-        document.getElementById("errorInicioSesion").style.display = 'block';
-
-
-        //handle error
-      });
-
-        /*
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    if (data == "true") {
-                        console.log("Usuario " + user.value + " y contraseña " + pass.value);
-                        window.location.href = "index.html";
-                    } else {
-                        alert("Usuario o contraseña incorrectos");
-                    }
-                })
-                .catch(error => console.log(error));
-            */
- 
+        .then(data => {
+          console.log(data);
+          if (data.code === 200) {
+            // Guarda el token en el local storage
+            // Guardar valores en local storage
+            // localStorage.setItem('correo', data['correo']);
+            // localStorage.setItem('id_alumno', data['id_alumno']);
+            document.cookie = `correo=${data.data.correo}`;
+            document.cookie = `id_alumno=${data.data['id_alumno']}`;
+            // Usa pushState() para agregar la URL actual al historial del navegador
+            window.history.pushState({}, null, `${window.location.href}`);
+            // Usa replace() para cambiar a la página de menú
+            window.location.replace(`${baseUrl}/menu`);
+          }
+           else {
+            document.getElementById('errorInicioSesion').innerHTML = data.message;
+            document.getElementById('errorInicioSesion').style.display = 'block';
+          }
+        })
+        .catch(error => console.error(error));
         
 
-
-/*
-        {
-        data:  {"correo" : user, "contrasenna":pass},
-                url:   "GetInicioSesion",
-                error: function(jqXHR, textStatus, errorThrown)
-                {
-                },
-                type:  'post',
-                async: false,
-                success:  function (response)
-                {
-                    console.log(response);
-                }
-        
-}
-*/
 }
 
+function validarCorreoElectronico(correo) {
+  // Expresión regular para validar el formato de un correo electrónico
+  const expresionRegular = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-
+  // Verificar si el correo cumple con el formato
+  return expresionRegular.test(correo);
+}
