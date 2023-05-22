@@ -3,6 +3,7 @@ from fastapi import HTTPException
 from fastapi import Request
 import json
 import db
+import correos
 
 #region Funciones de respuesta
 class CustomException(Exception):
@@ -59,7 +60,6 @@ def login(correo: str, password: str):
 
 def registrar_usuario( data: dict):
     correo = data["correo"]
-    contrasena = data["password"]
     #region verificar que el correo no esté registrado
     query = "SELECT * FROM alumno WHERE correo = %s"
     parameters = ([correo])
@@ -74,12 +74,98 @@ def registrar_usuario( data: dict):
     id_usuario = db.realizar_insercion("alumno", data)
 
     #endregion
-    # printerrupt(data)
     query = "SELECT * FROM alumno WHERE id_alumno = %s"
     parameters = (id_usuario,)
     usuario = db.realizar_consulta(query, params=parameters)
+    #llamar a la funcion de enviar correo sin bloquear la ejecucion
+    enviar_correo_bienvenida([usuario[0]["correo"]])
     return usuario[0]
 
+#endregion
+
+#region funciones de envio de correos
+def enviar_correo_bienvenida(destinatarios):
+  asunto = '¡Bienvenid@ a SmartUni!'
+  cuerpo_html = '''
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correo Electrónico de SmartUni</title>
+    <link href="https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      /* Estilos generales */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #1164ce;
+        color: #fff;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+      }
+
+      /* Estilos del encabezado */
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .header img {
+        max-width: 200px;
+      }
+
+      /* Estilos del contenido */
+      .content {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .content h1 {
+        font-family: 'Asap Condensed', sans-serif;
+        font-weight: 700;
+      }
+
+      /* Estilos del pie de página */
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="https://i.imgur.com/QVRrfct.png" alt="SmartUni Logo">
+      </div>
+
+      <div class="content">
+        <h1>Bienvenido a SmartUni</h1>
+        <p>Estimad@ estudiante,</p>
+        <p>Te damos la bienvenida a SmartUni, la plataforma online inteligente de la Universidad de Alcalá. Estamos emocionados de tenerte como parte de nuestra comunidad.</p>
+        <p>Con SmartUni, podrás acceder a una amplia gama de recursos y de funcionalidados. Estamos comprometidos a brindarte una experiencia educativa de calidad y apoyarte en tu crecimiento académico y profesional.</p>
+        <p>¡Explora nuestra plataforma y descubre nuevas oportunidades de aprendizaje!</p>
+        <p>Atentamente,</p>
+        <p>El equipo de SmartUni</p>
+      </div>
+
+      <div class="footer">
+        <p>Este correo electrónico fue enviado desde la plataforma SmartUni. Por favor, no respondas a este mensaje.</p>
+      </div>
+    </div>
+  </body>
+  </html>
+
+  '''
+  correos.enviar_correo(destinatarios, asunto, cuerpo_html)
 #endregion
 
 #region funciones de taquillas
