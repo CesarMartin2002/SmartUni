@@ -140,6 +140,21 @@ main {
   transition: background 1s;
 }
 
+.producto {
+  display: flex;
+  align-items: center;
+}
+
+.btn-minus,
+.btn-plus {
+  width: 30px !important;
+  height: 30px !important;
+  max-height: 30px !important;
+  border-radius: 50% !important;
+  font-size: 12px !important;
+  margin: 5px !important; 
+}
+
 .margen{
     background: var(--main-bg);
 

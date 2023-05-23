@@ -56,8 +56,8 @@ console.log("Usuario " + user + " y contraseña " + pass + " y repite contraseñ
             window.location.replace(`${baseUrl}/menu`);
           }
            else {
-            document.getElementById('errorInicioSesion').innerHTML = data.message;
-            document.getElementById('errorInicioSesion').style.display = 'block';
+            document.getElementById('errorMsg').innerHTML = data.message;
+            document.getElementById('errorMsg').style.display = 'block';
           }
         })
         .catch(error => console.error(error));

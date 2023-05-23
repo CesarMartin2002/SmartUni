@@ -154,7 +154,7 @@ def enviar_correo_bienvenida(destinatarios):
         <p>Con SmartUni, podrás acceder a una amplia gama de recursos y de funcionalidados. Estamos comprometidos a brindarte una experiencia educativa de calidad y apoyarte en tu crecimiento académico y profesional.</p>
         <p>¡Explora nuestra plataforma y descubre nuevas oportunidades de aprendizaje!</p>
         <p>Atentamente,</p>
-        <p>El equipo de SmartUni</p>
+        <p>El equipo de SmartUni.</p>
       </div>
 
       <div class="footer">
