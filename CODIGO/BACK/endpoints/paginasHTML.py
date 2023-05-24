@@ -35,3 +35,15 @@ def registrarse():
     with open("FRONT/cafeteria_pedido.html", "r", encoding="utf-8") as f:
         html = f.read()
     return HTMLResponse(html)
+
+@router.get("/nfc")
+def pagina_nfc():
+    with open("FRONT/nfc.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(html)
+
+@router.get("/notification")
+def pagina_notif():
+    with open("FRONT/notif.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(html)

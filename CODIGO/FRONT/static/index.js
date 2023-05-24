@@ -42,3 +42,4 @@ function iniciarSesion(user, pass) {
     })
     .catch(error => console.error(error));
 }
+

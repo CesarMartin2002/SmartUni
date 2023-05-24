@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mi página web</title>
+</head>
+<body>
+  <!-- Contenido de tu página web -->
+  <h1 id="ncf">API Web NFC</h1>
+  <button id="scanButton">Escanear NFC</button>
+  <script>
+    document.getElementById("scanButton").addEventListener("click", async () => {
+      try {
+        const ndef = new NDEFReader();
+        await ndef.scan();
+        ndef.onreading = event => {
+          const serialNumber = event.serialNumber;
+          console.log("Serial del NFC:", serialNumber);
+          document.getElementById("ncf").innerHTML = "Serial del NFC: " + serialNumber;
+        };
+        ndef.onreadingerror = () => {
+          console.error("No se puede leer la tarjeta NFC. ¿Intentar con otra?");
+          document.getElementById("ncf").innerHTML = "No se puede leer la tarjeta NFC. ¿Intentar con otra?";
+        };
+      } catch (error) {
+        console.error("Error al iniciar el escaneo NFC:", error);
+        document.getElementById("ncf").innerHTML = "Error al iniciar el escaneo NFC: " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
