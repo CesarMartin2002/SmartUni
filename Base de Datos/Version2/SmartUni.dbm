@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="13"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="14"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -29,10 +29,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="Aula" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="Aula" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="20" y="40"/>
+	<position x="0" y="0"/>
 	<column name="id_aula" not-null="true">
 		<type name="serial" length="20"/>
 	</column>
@@ -41,6 +41,18 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="luminosidad">
 		<type name="integer" length="0"/>
+	</column>
+	<column name="laboratorio">
+		<type name="bool" length="0"/>
+	</column>
+	<column name="planta">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="ala">
+		<type name="character varying" length="5"/>
+	</column>
+	<column name="num_ala">
+		<type name="numeric" length="0"/>
 	</column>
 	<constraint name="Aula_pk" type="pk-constr" table="public.&quot;Aula&quot;">
 		<columns names="id_aula" ref-type="src-columns"/>
@@ -128,10 +140,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.&quot;Taquilla&quot;"
 	 src-required="false" dst-required="false"/>
 
-<table name="Producto" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+<table name="Producto" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1160" y="160"/>
+	<position x="1200" y="120"/>
 	<column name="id_producto" not-null="true">
 		<type name="serial" length="20"/>
 	</column>
@@ -146,11 +158,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 
 	<customidxs object-type="column">
-		<object name="id_pedido_Pedido" index="3"/>
+		<object name="id_empleado_Empelado" index="3"/>
 	</customidxs>
 
 	<customidxs object-type="constraint">
-		<object name="Pedido_fk" index="1"/>
+		<object name="Empelado_fk" index="1"/>
 	</customidxs>
 </table>
 
@@ -212,15 +224,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 custom-color="#4b7713"
 	 src-table="public.&quot;Alumno&quot;"
 	 dst-table="public.&quot;Pedido&quot;"
-	 src-required="true" dst-required="false"/>
-
-<relationship name="contiene" type="rel1n" layer="0"
-	 src-col-pattern="{sc}_{st}"
-	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
-	 src-fk-pattern="{st}_fk"
-	 custom-color="#2863d3"
-	 src-table="public.&quot;Pedido&quot;"
-	 dst-table="public.&quot;Producto&quot;"
 	 src-required="true" dst-required="false"/>
 
 <table name="NFC" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
@@ -349,5 +352,47 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-table="public.&quot;Alumno&quot;"
 	 dst-table="public.&quot;Matricula&quot;"
 	 src-required="true" dst-required="false"/>
+
+<table name="Pedido_Producto" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1280" y="360"/>
+	<column name="id_pedido_producto" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<constraint name="Pedido_Producto_pk" type="pk-constr" table="public.&quot;Pedido_Producto&quot;">
+		<columns names="id_pedido_producto" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_pedido_Pedido" index="1"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="Pedido_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="contiene2" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#3e5b32"
+	 src-table="public.&quot;Pedido&quot;"
+	 dst-table="public.&quot;Pedido_Producto&quot;"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="contiene" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#96d1a2"
+	 src-table="public.&quot;Producto&quot;"
+	 dst-table="public.&quot;Pedido_Producto&quot;"
+	 src-required="true" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-17.6674" y="-10.7323"/>
+	</label>
+</relationship>
 
 </dbmodel>

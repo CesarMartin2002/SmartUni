@@ -32,6 +32,10 @@ CREATE TABLE public.Aula (
 	id_aula serial NOT NULL,
 	temperatura integer,
 	luminosidad integer,
+	laboratorio bool,
+	planta numeric,
+	ala character varying(5),
+	num_ala numeric,
 	CONSTRAINT Aula_pk PRIMARY KEY (id_aula)
 
 );
@@ -101,7 +105,6 @@ CREATE TABLE public.Producto (
 	id_producto serial NOT NULL,
 	descripcion varchar(50),
 	precio money,
-	id_pedido_Pedido integer NOT NULL,
 	id_empleado_Empelado integer NOT NULL,
 	CONSTRAINT Producto_pk PRIMARY KEY (id_producto)
 
@@ -147,13 +150,6 @@ ALTER TABLE public.Pedido OWNER TO postgres;
 -- ALTER TABLE public.Pedido DROP CONSTRAINT IF EXISTS Alumno_fk CASCADE;
 ALTER TABLE public.Pedido ADD CONSTRAINT Alumno_fk FOREIGN KEY (id_alumno_Alumno)
 REFERENCES public.Alumno (id_alumno) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: Pedido_fk | type: CONSTRAINT --
--- ALTER TABLE public.Producto DROP CONSTRAINT IF EXISTS Pedido_fk CASCADE;
-ALTER TABLE public.Producto ADD CONSTRAINT Pedido_fk FOREIGN KEY (id_pedido_Pedido)
-REFERENCES public.Pedido (id_pedido) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
@@ -245,6 +241,33 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public.Matricula DROP CONSTRAINT IF EXISTS Alumno_fk CASCADE;
 ALTER TABLE public.Matricula ADD CONSTRAINT Alumno_fk FOREIGN KEY (id_alumno_Alumno)
 REFERENCES public.Alumno (id_alumno) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: public.Pedido_Producto | type: TABLE --
+-- DROP TABLE IF EXISTS public.Pedido_Producto CASCADE;
+CREATE TABLE public.Pedido_Producto (
+	id_pedido_producto serial NOT NULL,
+	id_pedido_Pedido integer NOT NULL,
+	id_producto_Producto integer NOT NULL,
+	CONSTRAINT Pedido_Producto_pk PRIMARY KEY (id_pedido_producto)
+
+);
+-- ddl-end --
+ALTER TABLE public.Pedido_Producto OWNER TO postgres;
+-- ddl-end --
+
+-- object: Pedido_fk | type: CONSTRAINT --
+-- ALTER TABLE public.Pedido_Producto DROP CONSTRAINT IF EXISTS Pedido_fk CASCADE;
+ALTER TABLE public.Pedido_Producto ADD CONSTRAINT Pedido_fk FOREIGN KEY (id_pedido_Pedido)
+REFERENCES public.Pedido (id_pedido) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: Producto_fk | type: CONSTRAINT --
+-- ALTER TABLE public.Pedido_Producto DROP CONSTRAINT IF EXISTS Producto_fk CASCADE;
+ALTER TABLE public.Pedido_Producto ADD CONSTRAINT Producto_fk FOREIGN KEY (id_producto_Producto)
+REFERENCES public.Producto (id_producto) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 

@@ -5,10 +5,10 @@ INSERT INTO ALUMNO VALUES (3, 'sonia@edu.uah.es', 's0n145790');
 INSERT INTO ALUMNO VALUES (4, 'manuel@edu.uah.es', 'm4nu3l2020');
 --SELECT * FROM ALUMNO;
 
---AULA(id, temp, lum)
-INSERT INTO AULA VALUES (1, 20, 40);
-INSERT INTO AULA VALUES (2, 18, 60);
-INSERT INTO AULA VALUES (3, 23, 80);
+--AULA(id, temp, lum, lab, planta, ala, num_ala)
+INSERT INTO AULA VALUES (1, 20, 40, FALSE, 1, 'este', 1);
+INSERT INTO AULA VALUES (2, 18, 60, FALSE, 1, 'oeste', 2);
+INSERT INTO AULA VALUES (3, 23, 80, TRUE, 2, 'norte', 2);
 --SELECT * FROM AULA;
 
 --ASIENTO(id, id_aula, id_alumno)
@@ -38,22 +38,22 @@ INSERT INTO TAQUILLA VALUES (8, 4687, 'sur', 2, 1, FALSE, null);
 INSERT INTO EMPLEADO VALUES (1);
 --SELECT * FROM EMPLEADO
 
---PRODUCTO(id, descripcion, precio, id_empleado, id_pedido)
-INSERT INTO PRODUCTO VALUES (1, 'bocadillo de lomo', 2.00, 1, null);
-INSERT INTO PRODUCTO VALUES (2, 'bocadillo de bacon', 2.00, 1, null);
-INSERT INTO PRODUCTO VALUES (3, 'bocadillo de tortilla', 2.00, 1, null);
-INSERT INTO PRODUCTO VALUES (4, 'bocadillo de pollo', 2.00, 1, null);
-INSERT INTO PRODUCTO VALUES (5, 'bocadillo de francesa', 2.00, 1, null);
-INSERT INTO PRODUCTO VALUES (6, 'bocadillo de atun', 2.00, 1, null);
-INSERT INTO PRODUCTO VALUES (7, 'extra queso', 0.50, 1, null);
-INSERT INTO PRODUCTO VALUES (8, 'extra tomate', 0.50, 1, null);
-INSERT INTO PRODUCTO VALUES (9, 'extra pimiento', 0.50, 1, null);
-INSERT INTO PRODUCTO VALUES (10, 'extra huevo', 0.70, 1, null);
-INSERT INTO PRODUCTO VALUES (11, 'extra bacon', 0.70, 1, null);
-INSERT INTO PRODUCTO VALUES (12, 'sandwich mixto', 1.80, 1, null);
-INSERT INTO PRODUCTO VALUES (13, 'sandwich vegetal', 2.50, 1, null);
-INSERT INTO PRODUCTO VALUES (14, 'hamburguesa con patatas', 4.00, 1, null);
-INSERT INTO PRODUCTO VALUES (15, 'ensalada', 4.00, 1, null);
+--PRODUCTO(id, descripcion, precio, id_empleado)
+INSERT INTO PRODUCTO VALUES (1, 'bocadillo de lomo', 2.00, 1);
+INSERT INTO PRODUCTO VALUES (2, 'bocadillo de bacon', 2.00, 1);
+INSERT INTO PRODUCTO VALUES (3, 'bocadillo de tortilla', 2.00, 1);
+INSERT INTO PRODUCTO VALUES (4, 'bocadillo de pollo', 2.00, 1);
+INSERT INTO PRODUCTO VALUES (5, 'bocadillo de francesa', 2.00, 1);
+INSERT INTO PRODUCTO VALUES (6, 'bocadillo de atun', 2.00, 1);
+INSERT INTO PRODUCTO VALUES (7, 'extra queso', 0.50, 1);
+INSERT INTO PRODUCTO VALUES (8, 'extra tomate', 0.50, 1);
+INSERT INTO PRODUCTO VALUES (9, 'extra pimiento', 0.50, 1);
+INSERT INTO PRODUCTO VALUES (10, 'extra huevo', 0.70, 1);
+INSERT INTO PRODUCTO VALUES (11, 'extra bacon', 0.70, 1);
+INSERT INTO PRODUCTO VALUES (12, 'sandwich mixto', 1.80, 1);
+INSERT INTO PRODUCTO VALUES (13, 'sandwich vegetal', 2.50, 1);
+INSERT INTO PRODUCTO VALUES (14, 'hamburguesa con patatas', 4.00, 1);
+INSERT INTO PRODUCTO VALUES (15, 'ensalada', 4.00, 1);
 --SELECT * FROM PRODUCTO;
 
 --ASIGNATURA(id, descripcion, id_aula)
@@ -67,6 +67,10 @@ INSERT INTO ASIGNATURA VALUES (5,'Gestion de Proyectos', 2);
 --PEDIDO(id, estado, id_alumno)
 INSERT INTO PEDIDO VALUES ();
 --SELECT * FROM PEDIDO
+
+--PEDIDO_PRODUCTO (id, id_pedido, id_producto)
+INSERT INTO PEDIDO_PRODUCTO VALUES ();
+--SELECT * FROM PEDIDO_PRODUCTO
 
 --NFC (id, id_pedido)
 INSERT INTO NFC VALUES ();
