@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="13"
+	 default-schema="public" default-owner="postgres">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="Alumno" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="760" y="680"/>
+	<column name="id_alumno" not-null="true">
+		<type name="serial" length="20"/>
+	</column>
+	<column name="correo">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="password">
+		<type name="varchar" length="20"/>
+	</column>
+	<constraint name="Alumno_pk" type="pk-constr" table="public.&quot;Alumno&quot;">
+		<columns names="id_alumno" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Aula" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="20" y="40"/>
+	<column name="id_aula" not-null="true">
+		<type name="serial" length="20"/>
+	</column>
+	<column name="temperatura">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="luminosidad">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="Aula_pk" type="pk-constr" table="public.&quot;Aula&quot;">
+		<columns names="id_aula" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Asiento" layer="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="560" y="20"/>
+	<column name="id_asiento" not-null="true">
+		<type name="serial" length="20"/>
+	</column>
+	<constraint name="Asiento_pk" type="pk-constr" table="public.&quot;Asiento&quot;">
+		<columns names="id_asiento" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="tiene" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#eecf64"
+	 src-table="public.&quot;Aula&quot;"
+	 dst-table="public.&quot;Asiento&quot;"
+	 src-required="true" dst-required="false">
+	<label ref-type="dst-label">
+		<position x="17.2301" y="3.85"/>
+	</label>
+	<label ref-type="name-label">
+		<position x="28.0576" y="-13.1323"/>
+	</label>
+</relationship>
+
+<relationship name="se sienta" type="rel11" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#1fb629"
+	 src-table="public.&quot;Alumno&quot;"
+	 dst-table="public.&quot;Asiento&quot;"
+	 src-required="false" dst-required="false"/>
+
+<table name="Taquilla" layer="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="60" y="580"/>
+	<column name="id_taquilla" not-null="true">
+		<type name="serial" length="20"/>
+	</column>
+	<column name="password">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="ala">
+		<type name="varchar" length="5"/>
+	</column>
+	<column name="piso">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="pasillo">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="ocupado">
+		<type name="bool" length="0"/>
+	</column>
+	<constraint name="Taquilla_pk" type="pk-constr" table="public.&quot;Taquilla&quot;">
+		<columns names="id_taquilla" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_alumno_Alumno" index="6"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="Alumno_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="ocupa" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#aa00ff"
+	 src-table="public.&quot;Alumno&quot;"
+	 dst-table="public.&quot;Taquilla&quot;"
+	 src-required="false" dst-required="false"/>
+
+<table name="Producto" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1160" y="160"/>
+	<column name="id_producto" not-null="true">
+		<type name="serial" length="20"/>
+	</column>
+	<column name="descripcion">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="precio">
+		<type name="money" length="0"/>
+	</column>
+	<constraint name="Producto_pk" type="pk-constr" table="public.&quot;Producto&quot;">
+		<columns names="id_producto" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_pedido_Pedido" index="3"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="Pedido_fk" index="1"/>
+	</customidxs>
+</table>
+
+<table name="Asignatura" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="420" y="240"/>
+	<column name="id_asignatura" not-null="true">
+		<type name="serial" length="20"/>
+	</column>
+	<column name="descripcion">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="Asignatura_pk" type="pk-constr" table="public.&quot;Asignatura&quot;">
+		<columns names="id_asignatura" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_aula_Aula" index="2"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="Aula_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="se imparten" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#aaffff"
+	 src-table="public.&quot;Aula&quot;"
+	 dst-table="public.&quot;Asignatura&quot;"
+	 src-required="true" dst-required="false">
+	<label ref-type="name-label">
+		<position x="48.3792" y="-23.1323"/>
+	</label>
+</relationship>
+
+<table name="Pedido" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1140" y="600"/>
+	<column name="id_pedido" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="estado">
+		<type name="varchar" length="15"/>
+	</column>
+	<constraint name="Pedido_pk" type="pk-constr" table="public.&quot;Pedido&quot;">
+		<columns names="id_pedido" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="hace" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#4b7713"
+	 src-table="public.&quot;Alumno&quot;"
+	 dst-table="public.&quot;Pedido&quot;"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="contiene" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#2863d3"
+	 src-table="public.&quot;Pedido&quot;"
+	 dst-table="public.&quot;Producto&quot;"
+	 src-required="true" dst-required="false"/>
+
+<table name="NFC" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="860" y="360"/>
+	<column name="id_NFC" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<constraint name="NFC_pk" type="pk-constr" table="public.&quot;NFC&quot;">
+		<columns names="id_NFC" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_pedido_Pedido" index="1"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="NFC_uq" index="2"/>
+		<object name="Pedido_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="pertenece" type="rel11" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#ada83f"
+	 src-table="public.&quot;Pedido&quot;"
+	 dst-table="public.&quot;NFC&quot;"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-7.91738" y="-1.93226"/>
+	</label>
+</relationship>
+
+<table name="Empelado" layer="0" collapse-mode="2" max-obj-count="1" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="840" y="40"/>
+	<column name="id_empleado" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<constraint name="Empelado_pk" type="pk-constr" table="public.&quot;Empelado&quot;">
+		<columns names="id_empleado" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="prepara" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#c2bd10"
+	 src-table="public.&quot;Empelado&quot;"
+	 dst-table="public.&quot;Producto&quot;"
+	 src-required="true" dst-required="false"/>
+
+<table name="Horario" layer="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="0" y="260"/>
+	<column name="id_horario" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="dia">
+		<type name="date" length="0"/>
+	</column>
+	<column name="hora_inicio">
+		<type name="time" length="0"/>
+	</column>
+	<column name="hora_fin">
+		<type name="time" length="0"/>
+	</column>
+	<constraint name="Horario_pk" type="pk-constr" table="public.&quot;Horario&quot;">
+		<columns names="id_horario" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_asignatura_Asignatura" index="4"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="Asignatura_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="se realiza" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#846fba"
+	 src-table="public.&quot;Asignatura&quot;"
+	 dst-table="public.&quot;Horario&quot;"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-4.41738" y="9.92042"/>
+	</label>
+</relationship>
+
+<table name="Matricula" layer="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="360" y="480"/>
+	<column name="id_matricula" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<constraint name="Matricula_pk" type="pk-constr" table="public.&quot;Matricula&quot;">
+		<columns names="id_matricula" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="necesita" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#1b2f70"
+	 src-table="public.&quot;Asignatura&quot;"
+	 dst-table="public.&quot;Matricula&quot;"
+	 src-required="true" dst-required="false"/>
+
+<relationship name="rellena" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#ed0dcc"
+	 src-table="public.&quot;Alumno&quot;"
+	 dst-table="public.&quot;Matricula&quot;"
+	 src-required="true" dst-required="false"/>
+
+</dbmodel>
