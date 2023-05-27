@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request, Query
 import logica
+import datetime
 
 router = APIRouter()
 
@@ -32,3 +33,17 @@ async def put_aula(id_aula: int, request: Request):
     """
     data = await request.json()
     return logica.respuesta_exitosa(logica.actualizar_aula(id_aula, data))
+
+
+"""
+A partir de aqui se definen los endpoints para los horarios de las aulas
+"""
+
+#consultar disponibilidad de aulas
+@router.get("/aulas/{id_aula}")
+async def get_clase_proxima(id_aula: int):
+    prox_clase = logica.obtener_clase_proxima(id_aula)
+    #si prox_clase es en los proximos 15 minutos devolver true sino false
+    fecha_actual = datetime.datetime.now()
+    fecha_futura = fecha_actual + datetime.timedelta(minutes=15)
+    return fecha_futura >= prox_clase

@@ -70,13 +70,13 @@ def registrar_usuario( data: dict):
     # endregion
 
     # region insertar el usuario
-
     id_usuario = db.realizar_insercion("alumno", data)
-
     #endregion
+    
     query = "SELECT * FROM alumno WHERE id_alumno = %s"
     parameters = (id_usuario,)
     usuario = db.realizar_consulta(query, params=parameters)
+    
     #llamar a la funcion de enviar correo sin bloquear la ejecucion
     enviar_correo_bienvenida([usuario[0]["correo"]])
     return usuario[0]
@@ -87,7 +87,7 @@ def obtener_usuario(id_usuario: int):
     """
     #region obtener el usuario con el id especificado
     query = "SELECT * FROM alumno WHERE id_alumno = %s"
-    parameters = (id_usuario,)
+    parameters = (id_usuario)
     usuario = db.realizar_consulta(query, params=parameters)
     #endregion
 
@@ -254,39 +254,26 @@ def crear_taquilla(data : dict):
     return taquilla
 
 #funcion para abrir una taquilla
-def abrir_taquilla(id_taquilla: int, id_usuario: int):
+def abrir_taquilla(id_taquilla: int, id_usuario: int, password:int):
     try:
         # Obtener la taquilla con el id especificado
-        query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
-        parameters = (id_taquilla,)
+        query = "SELECT * FROM taquilla WHERE id_taquilla = %s AND id_usuario = %s AND password = %s"
+        parameters = ([id_taquilla, id_usuario, password])
         taquilla = db.realizar_consulta(query, params=parameters)
 
-        # Verificar que se encontró la taquilla
+        # Verificar si no se encontró la taquilla con los datos proporcionados
         if len(taquilla) == 0:
-            raise CustomException(message="No se encontró la taquilla con id " + str(id_taquilla), code=404)
+            mensaje = f"La contraseña ingresada no coincide con la contraseña de la taquilla"
+            respuesta_fallida(mensaje, 400)
 
-        # Verificar que la taquilla está disponible
-        if not taquilla[0]['disponible']:
-            raise CustomException(message="La taquilla con id " + str(id_taquilla) + " no está disponible", code=400)
-
-        # Actualizar la taquilla con el id del usuario que la abrió
-        query = "UPDATE taquilla SET disponible = %s, usuario_id = %s WHERE id_taquilla = %s"
-        parameters = (False, id_usuario, id_taquilla)
-        db.realizar_modificacion(query, params=parameters)
-
-        # Obtener la taquilla actualizada
-        query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
-        parameters = (id_taquilla,)
-        taquilla = db.realizar_consulta(query, params=parameters)
-
-        return taquilla[0]
+        return True  # Contraseña correcta
 
     except CustomException as e:
         raise HTTPException(status_code=e.code, detail=e.message)
 
 
 #funcion para reservar una taquilla
-def reservar_taquilla(id_taquilla: int, id_usuario: int):
+def reservar_taquilla(id_taquilla: int, id_usuario: int, contrasena: int):
     try:
         # Obtener la taquilla con el id especificado
         query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
@@ -302,14 +289,16 @@ def reservar_taquilla(id_taquilla: int, id_usuario: int):
             raise CustomException(message="La taquilla con id " + str(id_taquilla) + " no está disponible", code=400)
 
         # Actualizar la taquilla con el id del usuario que la reservó
-        query = "UPDATE taquilla SET disponible = %s, usuario_id = %s WHERE id_taquilla = %s"
-        parameters = (False, id_usuario, id_taquilla)
+        query = "UPDATE taquilla SET disponible = %s, usuario_id = %s, password = %s WHERE id_taquilla = %s"
+        parameters = (False, id_usuario, contrasena, id_taquilla)
         db.realizar_modificacion(query, params=parameters)
 
-        return f"La taquilla {id_taquilla} ha sido reservada por el usuario {id_usuario}."
+        return f"La taquilla {id_taquilla} ha sido reservada por el usuario {id_usuario} con la contraseña {contrasena}."
 
     except CustomException as e:
         raise HTTPException(status_code=e.code, detail=e.message)
+    
+
 
 # def reservar_taquilla(id_taquilla: int, id_usuario: int):
 #     taquilla = obtener_taquilla(id_taquilla)
@@ -422,6 +411,12 @@ def insertar_aula(aula: dict):
 
 def actualizar_aula(id: int, aula: dict):
     return obtener_aula(db.realizar_actualizacion("aula",id,aula))
+
+
+def obtener_clase_proxima(id_aula):
+    query= "SELECT fecha_inicio FROM aula INNER JOIN asignatura INNER JOIN horario WHERE id_aula = %s AND fecha_inicio > now() ORDER BY fecha_inicio DESC LIMIT 1"
+    #hay que probar la query
+    params = (id_aula)
 
 
 #endregion
@@ -904,3 +899,5 @@ def prueba_consulta():
 #     return  json.loads(datos_json)
 
 #endregion
+
+

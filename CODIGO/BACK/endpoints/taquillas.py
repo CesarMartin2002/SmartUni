@@ -1,10 +1,14 @@
 # todo esto es necesario para que funcione cualquier .py que se encuentre en la carpeta endpoints
 from fastapi import APIRouter, Path, Request, Query
 import logica
+import random
+
 
 router = APIRouter() 
 
 # a partir de aquí se definen las rutas
+
+
 
 @router.get("/taquillas/{id}")
 async def get_taquilla(id: int):
@@ -24,6 +28,7 @@ async def get_taquillas(ala: str = Query(default=""), piso: int = Query(default=
     print("taquillas: ", taquillas)
     return logica.respuesta_exitosa(taquillas)
 
+
 @router.post("/taquillas") 
 async def post_taquilla(request: Request):
     """
@@ -35,25 +40,31 @@ async def post_taquilla(request: Request):
     taquilla = logica.crear_taquilla(data)
     return logica.respuesta_exitosa(taquilla)
 
+
 #endpoint abrir taquilla
-@router.get("/taquillas/{id_taquilla}/{id_usuario}")
-def abrir_taquilla(id_taquilla:int, id_usuario:int):
+@router.get("/taquillas/{id_taquilla}/{id_usuario}/{password}")
+def abrir_taquilla(id_taquilla: int, id_usuario: int, password: str):
     """
     Este endpoint permite abrir una taquilla a partir de una taquilla y usuario
     """
-    resultado = logica.abrir_taquilla(id_taquilla, id_usuario)
+    resultado = logica.abrir_taquilla(id_taquilla, id_usuario, password)
     return logica.respuesta_exitosa(resultado)
 
 
-#endpoint reservar
+#endpoint reservar taquilla
 @router.put("/reservarTaquilla/{id_taquilla}/{id_usuario}")
 def reservar_taquilla(id_taquilla:int, id_usuario:int):
     """
-    Este endpoint permite reservar una taquilla a partir de una taquilla y usuario
+    Este endpoint permite reservar una taquilla a partir de una taquilla y usuario y genera una contraseña
     """
-    resultado = logica.reservar_taquilla(id_taquilla, id_usuario)
-    return logica.respuesta_exitosa(resultado)
+    numero = random.randint(1000, 9999)
+    #numero_str = str(numero).zfill(4)      para el cambio a string
+    resultado = logica.reservar_taquilla(id_taquilla, id_usuario, numero)
+    
+    return resultado
 
+
+#endpoint cancelar taquilla
 @router.put("/cancelarTaquilla/{id_taquilla}/{id_usuario}")
 def cancelar_taquilla(
     id_taquilla: int = Path(..., title="ID de la taquilla", description="El ID de la taquilla a cancelar"),
@@ -66,15 +77,4 @@ def cancelar_taquilla(
     cancelar_taquilla = logica.cancelar_taquilla(id_taquilla, id_usuario)
     return cancelar_taquilla
 
-
-
-
-
-@router.get("/consulta/")
-async def consultita():
-    """return logica.obtener_datos_como_json("select * FROM nombretabla", None)"""
-
-@router.get("/holacaca/")
-async def consultita():
-    return "hola"
 
