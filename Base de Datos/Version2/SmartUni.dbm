@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="14"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="509,0" last-zoom="1" max-obj-count="14"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -232,6 +232,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<position x="860" y="360"/>
 	<column name="id_NFC" not-null="true">
 		<type name="serial" length="0"/>
+	</column>
+	<column name="num_serie">
+		<type name="varchar" length="0"/>
 	</column>
 	<constraint name="NFC_pk" type="pk-constr" table="public.&quot;NFC&quot;">
 		<columns names="id_NFC" ref-type="src-columns"/>
