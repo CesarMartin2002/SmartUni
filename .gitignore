@@ -3,6 +3,3 @@ env/
 
 # Ignore the python compiled files
 *.pyc
-
-#Ignore levantar.bat
-levantar.bat
