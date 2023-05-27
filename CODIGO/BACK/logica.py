@@ -277,7 +277,7 @@ def reservar_taquilla(id_taquilla: int, id_usuario: int, contrasena: int):
     try:
         # Obtener la taquilla con el id especificado
         query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
-        parameters = (id_taquilla,)
+        parameters = ([id_taquilla])
         taquilla = db.realizar_consulta(query, params=parameters)
 
         # Verificar que se encontró la taquilla
@@ -290,7 +290,7 @@ def reservar_taquilla(id_taquilla: int, id_usuario: int, contrasena: int):
 
         # Actualizar la taquilla con el id del usuario que la reservó
         query = "UPDATE taquilla SET disponible = %s, usuario_id = %s, password = %s WHERE id_taquilla = %s"
-        parameters = (False, id_usuario, contrasena, id_taquilla)
+        parameters = ([False, id_usuario, contrasena, id_taquilla])
         db.realizar_modificacion(query, params=parameters)
 
         return f"La taquilla {id_taquilla} ha sido reservada por el usuario {id_usuario} con la contraseña {contrasena}."
@@ -299,52 +299,52 @@ def reservar_taquilla(id_taquilla: int, id_usuario: int, contrasena: int):
         raise HTTPException(status_code=e.code, detail=e.message)
     
 
-
-# def reservar_taquilla(id_taquilla: int, id_usuario: int):
-#     taquilla = obtener_taquilla(id_taquilla)
-#     if taquilla["estado"]:
-#         taquilla["estado"] = False
-#         taquilla["usuario"] = id_usuario
-#         actualizar_taquilla(taquilla, id_usuario)
-#         return f"La taquilla {id_taquilla} ha sido reservada por el usuario {id_usuario}."
-#     else:
-#         return f"La taquilla {id_taquilla} no está disponible en este momento."
-
 #cancelar una taquilla
-def cancelar_taquilla(id_taquilla: int, id_usuario: int):
+def cancelar_taquilla(id_taquilla: int, id_usuario: int) -> dict:
     try:
-        # Obtener la taquilla con el id especificado
-        query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
-        parameters = (id_taquilla,)
+        # Verificar que la taquilla está reservada por el alumno
+        query = "SELECT * FROM taquilla WHERE id_taquilla = %s AND usuario_id = %s"
+        parameters = (id_taquilla, id_usuario)
         taquilla = db.realizar_consulta(query, params=parameters)
-
-        # Verificar que se encontró la taquilla
         if len(taquilla) == 0:
-            raise CustomException(message="No se encontró la taquilla con id " + str(id_taquilla), code=404)
+            mensaje = f"La taquilla {id_taquilla} no está reservada por el alumno {id_usuario}"
+            respuesta_fallida(mensaje, 400)
 
-        # Verificar que la taquilla está reservada por el usuario que la quiere cancelar
-        if taquilla[0]['usuario_id'] != id_usuario:
-            raise CustomException(message="La taquilla con id " + str(id_taquilla) + " NO ESTÁ reservada por el usuario " + str(id_usuario), code=400)
-
-        # Actualizar la taquilla como disponible y sin usuario
+        # Actualizar la taquilla con el id del usuario que la reservó
         query = "UPDATE taquilla SET disponible = %s, usuario_id = %s WHERE id_taquilla = %s"
-        parameters = (True, None, id_taquilla)
+        parameters = ([True, None, id_taquilla])
         db.realizar_modificacion(query, params=parameters)
 
-        return f"La taquilla {id_taquilla} ha sido CANCELADA por el usuario {id_usuario}."
+        # Obtener la información actualizada de la taquilla
+        taquilla_actualizada = obtener_taquilla(id_taquilla)
+
+        return taquilla_actualizada
 
     except CustomException as e:
         raise HTTPException(status_code=e.code, detail=e.message)
 
-# def cancelar_taquilla(id_taquilla: int, id_usuario: int):
-#     taquilla = obtener_taquilla(id_taquilla)
-#     if taquilla["usuario"] == id_usuario:
-#         taquilla["estado"] = True
-#         taquilla["usuario_id"] = None
-#         actualizar_taquilla(id_taquilla, id_usuario)
-#         return f"La taquilla {id_taquilla} ha sido CANCELADA por el usuario {id_usuario}."
-#     else:
-#         return f"La taquilla {id_taquilla} NO ESTA reservada por el usuario {id_usuario}."
+
+#funcion para eliminar una taquilla a partir de su id y que nos muestre su informacion
+def eliminar_taquilla(id_taquilla: int) -> dict:
+    try:
+        # Obtener la taquilla con el id especificado
+        taquilla = obtener_taquilla(id_taquilla)
+
+        # Verificar que se encontró la taquilla
+        if len(taquilla) == 0:
+            mensaje = f"No se encontró la taquilla con id {id_taquilla}"
+            respuesta_fallida(mensaje, 404)
+
+        # Eliminar la taquilla
+        query = "DELETE FROM taquilla WHERE id_taquilla = %s"
+        parameters = ([id_taquilla])
+        db.realizar_modificacion(query, params=parameters)
+
+        return taquilla
+
+    except CustomException as e:
+        raise HTTPException(status_code=e.code, detail=e.message)
+    
 #endregion
     
 #region funciones de las aulas

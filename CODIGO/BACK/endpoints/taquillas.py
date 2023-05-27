@@ -36,6 +36,8 @@ async def post_taquilla(request: Request):
     """
     #data es un diccionario con los datos que se reciben en el form data
     data = await request.json()
+    #eliminar campo password de la tabla taquillas
+    data.pop("password", None)
     print("data: ", data)
     taquilla = logica.crear_taquilla(data)
     return logica.respuesta_exitosa(taquilla)
@@ -66,15 +68,22 @@ def reservar_taquilla(id_taquilla:int, id_usuario:int):
 
 #endpoint cancelar taquilla
 @router.put("/cancelarTaquilla/{id_taquilla}/{id_usuario}")
-def cancelar_taquilla(
-    id_taquilla: int = Path(..., title="ID de la taquilla", description="El ID de la taquilla a cancelar"),
-    id_usuario: int = Path(..., title="ID del usuario", description="El ID del usuario que cancela la taquilla")
-) -> dict:
+def cancelar_taquilla(id_taquilla : int, id_usuario:int) -> dict:
     """Este Endpoint cancela la reserva o la asignacion al alumno
     Returns:
         dict: Informacion de la taquilla cancelada
     """
     cancelar_taquilla = logica.cancelar_taquilla(id_taquilla, id_usuario)
     return cancelar_taquilla
+
+
+#endpoint para eliminar una taquilla
+@router.delete("/taquillas/{id}")
+def eliminar_taquilla(id_taquilla: int):
+    """
+    Este endpoint permite eliminar una taquilla a partir de su id
+    """
+    resultado = logica.eliminar_taquilla(id_taquilla)
+    return logica.respuesta_exitosa(resultado)
 
 
