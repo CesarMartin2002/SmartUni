@@ -224,7 +224,7 @@ def realizar_actualizacion(nombre_tabla: str,id: int, data: dict):
     campos_no_nulos = obtener_campos_no_nulos(nombre_tabla, conn)
     for campo, valor in data.items():
         if valor is None:
-            if campo not in campos_no_nulos:
+            if campo in campos_no_nulos:
                 mensaje = f"No se puede asignar un valor None al campo no nulo '{campo}'"
                 logica.respuesta_fallida(mensaje)
     # endregion
@@ -234,7 +234,7 @@ def realizar_actualizacion(nombre_tabla: str,id: int, data: dict):
     valores_actualizar = []
     for columna in columnas:
         if columna != pk:
-            if columna in data and data[columna] is not None:
+            if columna in data:
                 columnas_actualizar.append(columna)
                 valores_actualizar.append(data[columna])
 

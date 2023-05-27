@@ -36,7 +36,7 @@ def registrarse():
         html = f.read()
     return HTMLResponse(html)
 
-@router.get("/nfc")
+@router.get("/nfcTest")
 def pagina_nfc():
     with open("FRONT/nfc.html", "r", encoding="utf-8") as f:
         html = f.read()

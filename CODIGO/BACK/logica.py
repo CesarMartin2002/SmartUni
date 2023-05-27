@@ -81,6 +81,26 @@ def registrar_usuario( data: dict):
     enviar_correo_bienvenida([usuario[0]["correo"]])
     return usuario[0]
 
+def obtener_usuario(id_usuario: int):
+    """
+    Obtiene el usuario con el id especificado de la base de datos y lo devuelve como un diccionario
+    """
+    #region obtener el usuario con el id especificado
+    query = "SELECT * FROM alumno WHERE id_alumno = %s"
+    parameters = (id_usuario,)
+    usuario = db.realizar_consulta(query, params=parameters)
+    #endregion
+
+    #region verificar que se encontró el usuario
+    if len(usuario) == 0:
+        mensaje = "No se encontró el usuario con id " + str(id_usuario)
+        respuesta_fallida(mensaje, 404)
+    #endregion
+
+    #region convertir los datos a un diccionario
+    usuario = usuario[0]
+    #endregion
+    return usuario
 #endregion
 
 #region funciones de envio de correos
@@ -448,7 +468,7 @@ def obtener_pedidos():
     Lista todos los pedidos de cafetería.
     """
     #region obtener los pedidos de la base de datos
-    pedidos = db.realizar_consulta("SELECT * from vista_pedidos")
+    pedidos = db.realizar_consulta("SELECT id_pedido, correo_alumno, productos_ids, productos_descripciones, estado from vista_pedidos")
     #endregion
     for pedido in pedidos:
         pedido["productos_ids"] = pedido["productos_ids"].split("|")
@@ -556,8 +576,8 @@ def actualizar_pedido(id_pedido: int, data: dict):
     #endregion
 
     #region verificar que el estado sea válido
-    if data["estado"] not in [0, 1, 2, 3]:
-        mensaje = "El estado debe ser 0, 1, 2 o 3"
+    if data["estado"] not in [0, 1, 2, 3, 4]:
+        mensaje = "El estado debe ser 0, 1, 2 , 3 y 4"
         respuesta_fallida(mensaje, 400)
     # if pedido["estado"] == 3:
     #     mensaje = "El pedido ya está completado y no se puede modificar"
@@ -567,6 +587,51 @@ def actualizar_pedido(id_pedido: int, data: dict):
         respuesta_fallida(mensaje, 400)
     #endregion
 
+    #region actualizaciones de nfc
+    #region si el estado es 4, el nfc debe dejar de estar asociado al pedido
+    if data["estado"] == 4:
+        #region si no hay un nfc asociado, se debe devolver un error
+        if pedido["id_nfc"] is None:
+            mensaje = "No hay ningún nfc asociado al pedido"
+            respuesta_fallida(mensaje, 400)
+        #endregion
+        data_pedido = {
+            "id_pedido_pedido": None
+        }
+        db.realizar_actualizacion("nfc", pedido["id_nfc"], data_pedido)
+        #endregion
+    #region si el estado es 1, deberá asociarse un nfc de los disponibles al pedido
+    if data["estado"] == 1:
+        #region si ya hay un nfc asociado, se debe liberar dicho nfc
+        if pedido["id_nfc"] is not None:
+            data_pedido = {
+                "id_pedido_pedido": None
+            }
+            db.realizar_actualizacion("nfc", pedido["id_nfc"], data_pedido)
+        #endregion
+        #region obtener el primer nfc disponible
+        query = "SELECT id_nfc FROM nfc WHERE id_pedido_pedido IS NULL LIMIT 1"
+        nfcs = db.realizar_consulta(query)
+        #endregion
+
+        #region verificar que hay al menos un nfc disponible
+        if len(nfcs) == 0:
+            mensaje = "No hay ningún nfc disponible"
+            respuesta_fallida(mensaje, 400)
+        #endregion
+
+        #region asociar el primer nfc disponible al pedido
+        data_pedido = {
+            "id_pedido_pedido": id_pedido
+        }
+        db.realizar_actualizacion("nfc", nfcs[0]["id_nfc"], data_pedido)
+        #endregion
+    #endregion
+
+    #region obtener el pedido actualizado
+    pedido = obtener_pedido(id_pedido)
+    #endregion
+
     #region actualizar el pedido
     data_pedido = {
         "estado": data["estado"]
@@ -574,14 +639,105 @@ def actualizar_pedido(id_pedido: int, data: dict):
     db.realizar_actualizacion("pedido", id_pedido, data_pedido)
     #endregion
 
-    #region obtener el pedido actualizado
-    pedido = obtener_pedido(id_pedido)
-    #endregion
 
     return pedido
 
 
 #endregion
+
+#region funciones nfc básicas
+
+def obtener_nfcs():
+    """
+    Lista todos los NFCs de la base de datos.
+    """
+    #region obtener los NFCs de la base de datos
+    nfcs = db.realizar_consulta("SELECT num_serie FROM nfc")
+    #endregion
+    return nfcs
+
+def obtener_nfc_por_num_serie(num_serie: str):
+    """
+    Obtiene el NFC con el num_serie especificado de la base de datos y lo devuelve como un diccionario
+    """
+    #region obtener el NFC con el num_serie especificado
+    query = "SELECT * FROM nfc WHERE num_serie = %s"
+    parameters = (num_serie,)
+    nfc = db.realizar_consulta(query, params=parameters)
+    #endregion
+
+    #region verificar que se encontró el NFC
+    if len(nfc) == 0:
+        mensaje = "No se encontró el NFC con num_serie " + str(num_serie)
+        respuesta_fallida(mensaje, 404)
+    #endregion
+
+    #region convertir los datos a un diccionario
+    nfc = nfc[0]
+    #endregion
+    return nfc
+
+def obtener_nfc(id_nfc: int):
+    """
+    Obtiene el NFC con el id especificado de la base de datos y lo devuelve como un diccionario
+    """
+    #region obtener el NFC con el id especificado
+    query = "SELECT * FROM nfc WHERE id_nfc = %s"
+    parameters = (id_nfc,)
+    nfc = db.realizar_consulta(query, params=parameters)
+    #endregion
+
+    #region verificar que se encontró el NFC
+    if len(nfc) == 0:
+        mensaje = "No se encontró el NFC con id " + str(id_nfc)
+        respuesta_fallida(mensaje, 404)
+    #endregion
+
+    #region convertir los datos a un diccionario
+    nfc = nfc[0]
+    #endregion
+    return nfc
+
+
+def insertar_nfc(nfc: dict):
+    #region comprobar que no exista un nfc con el mismo num_serie
+    query = "SELECT * FROM nfc WHERE num_serie = %s"
+    parameters = (nfc["num_serie"],)
+    nfcs = db.realizar_consulta(query, params=parameters)
+    if len(nfcs) > 0:
+        mensaje = "Ya existe un nfc con num_serie " + str(nfc["num_serie"])
+        respuesta_fallida(mensaje, 400)
+    #endregion
+    return db.realizar_insercion("nfc", nfc)
+
+def actualizar_nfc(id: int, nfc: dict):
+    return db.realizar_actualizacion("nfc",id,nfc)
+
+#endregion
+
+#region funciones avanzadas nfc
+
+def actualizar_pedido_nfc(id_pedido: int, data: dict):
+    """
+    Actualiza el pedido con el id especificado. Solo estará permitido cambiar el estado.
+    """
+    #region obtener el pedido con el id especificado
+    pedido = obtener_pedido(id_pedido)
+    #endregion
+    #region verificar que el pedido esté asociado a la nfc con el num_serie especificado en el data
+    num_serie_nfc = data["num_serie"]
+    if (pedido["num_serie"] != num_serie_nfc):
+        mensaje = "El pedido no está asociado a la nfc con num_serie " + str(num_serie_nfc)
+        respuesta_fallida(mensaje, 400)
+    #endregion
+    #region actualiar el pedido
+    #eliminamos el num_serie del diccionario data
+    del data["num_serie"]
+    return actualizar_pedido(id_pedido, data) #llamando a este método habrá una query redundante. Se podría mejorar
+    #endregion
+
+#endregion
+
 
 #region codigo antiguo que se borrará más adelante
 

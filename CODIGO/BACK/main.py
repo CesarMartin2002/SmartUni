@@ -5,7 +5,9 @@ from starlette.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.responses import PlainTextResponse
-from endpoints import taquillas, casillero, paginasHTML, aulas, sesion, productos, pedidos
+
+#importamos todos los endpoints
+from endpoints import taquillas, casillero, paginasHTML, aulas, sesion, productos, pedidos, nfc
 import logica
 
 app = FastAPI()
@@ -69,6 +71,10 @@ app.include_router(productos.router)
 
 # Rutas para pedidos
 app.include_router(pedidos.router)
+#endregion
+
+#region rutas para nfc
+app.include_router(nfc.router)
 #endregion
 
 #region cosas que no entiendo del todo pero que prefiero no tocar por si acaso
