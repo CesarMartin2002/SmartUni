@@ -155,11 +155,12 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- object: public.NFC | type: TABLE --
 -- DROP TABLE IF EXISTS public.NFC CASCADE;
-CREATE TABLE public."NFC" (
-	id_nfc serial4 NOT NULL,
-	id_pedido_pedido int4 NULL,
-	num_serie varchar NOT NULL,
-	CONSTRAINT nfc_pk PRIMARY KEY (id_nfc)
+CREATE TABLE public.NFC (
+	id_NFC serial NOT NULL,
+	id_pedido_Pedido integer,
+	num_serie varchar,
+	CONSTRAINT NFC_pk PRIMARY KEY (id_NFC)
+
 );
 -- ddl-end --
 ALTER TABLE public.NFC OWNER TO postgres;
