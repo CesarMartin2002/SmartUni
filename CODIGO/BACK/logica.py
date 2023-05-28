@@ -510,8 +510,7 @@ def obtener_clase_proxima(id_aula):
 
 #endregion
 
-#region funciones de la cafeteria
-
+# funciones de cafeteria (region)
 def obtener_productos(filtro: str = ""):
     """
     Lista todos los productos de cafetería.

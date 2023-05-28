@@ -15,27 +15,21 @@
             <h1>TAQUILLAS</h1>
             <div id="taquillas"></div>
             <div class="menu">
-                <!-- <button class="btn-menu" onclick="window.open('resetearmaster/resetearMaster','_self'); return false">RESETEAR MASTER</button> -->
-                <button class="btn-menu" id="solicitud-btn">SOLICITAR TAQUILLA</button>
-
-                <!-- <button class="btn-menu">HISTORIAL DE CODIGOS</button>
-                <button class="btn-menu">VINCULAR CAJA</button>
-                <button class="btn-menu" onclick="window.open('notificaciones','_self'); return false">NOTIFICACIONES</button> -->
+                <button class="btn-menu" id="detalleTaquilla-btn">DETALLE TAQUILLA</button>
             </div>
         </main>
-            <script>
-                const taquillasBoton = document.getElementById('cafe-btn')
-                taquillasBoton.addEventListener('click', function(){
-                    window.location('/cafeteria')
-                })
-                const logo = document.getElementById('logo');
-                logo.addEventListener('click', function() {
-                    window.location.href = '/menu';
-                });   
-            </script>
-        <script src="/static/listarTaquillas.js" defer ></script>
+        <script src="/static/listarTaquillas.js" defer></script>
+        <script>
+            const detalleTaquillaBtn = document.getElementById('detalleTaquilla-btn');
+            detalleTaquillaBtn.addEventListener('click', function() {
+            // Obtener el id de la taquilla seleccionada
+            const selectedTaquillaId = document.querySelector('input[name="taquilla"]:checked').value;
+            
+            // Redirigir a la página de detalles de taquilla con el id correspondiente
+            window.location.href = '/taquillas/detalle?id=' + selectedTaquillaId;
+            });
+        </script>
     </body>
-
 </html>
 
 
