@@ -66,10 +66,6 @@ def reservar_taquilla(id_taquilla:int, id_usuario:int):
 
 #endpoint cancelar taquilla
 @router.put("/cancelarTaquilla/{id_taquilla}/{id_usuario}")
-def cancelar_taquilla(
-    id_taquilla: int = Path(..., title="ID de la taquilla", description="El ID de la taquilla a cancelar"),
-    id_usuario: int = Path(..., title="ID del usuario", description="El ID del usuario que cancela la taquilla")
-) -> dict:
     """Este Endpoint cancela la reserva o la asignacion al alumno
     Returns:
         dict: Informacion de la taquilla cancelada
