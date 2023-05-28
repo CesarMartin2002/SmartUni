@@ -47,7 +47,7 @@ async def post_taquilla(request: Request):
 @router.get("/taquillas/{id_taquilla}/{id_usuario}/{password}")
 def abrir_taquilla(id_taquilla: int, id_usuario: int, password: str):
     """
-    Este endpoint permite abrir una taquilla a partir de una taquilla y usuario
+    Este endpoint permite abrir una taquilla a partir de una taquilla, usuario y password
     """
     resultado = logica.abrir_taquilla(id_taquilla, id_usuario, password)
     return logica.respuesta_exitosa(resultado)
