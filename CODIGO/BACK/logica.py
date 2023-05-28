@@ -277,7 +277,7 @@ def reservar_taquilla(id_taquilla: int, id_usuario: int, contrasena: int):
     try:
         # Obtener la taquilla con el id especificado
         query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
-        parameters = (id_taquilla,)
+        parameters = (id_taquilla)
         taquilla = db.realizar_consulta(query, params=parameters)
 
         # Verificar que se encontró la taquilla
@@ -417,6 +417,9 @@ def obtener_clase_proxima(id_aula):
     query= "SELECT fecha_inicio FROM aula INNER JOIN asignatura INNER JOIN horario WHERE id_aula = %s AND fecha_inicio > now() ORDER BY fecha_inicio DESC LIMIT 1"
     #hay que probar la query
     params = (id_aula)
+    hora = db.realizar_consulta(query,params)
+    return hora
+
 
 
 #endregion

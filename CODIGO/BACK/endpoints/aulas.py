@@ -47,3 +47,11 @@ async def get_clase_proxima(id_aula: int):
     fecha_actual = datetime.datetime.now()
     fecha_futura = fecha_actual + datetime.timedelta(minutes=15)
     return fecha_futura >= prox_clase
+
+#insertat horario
+@router.post("/aulas/{id_aula}/horarios")
+async def post_horario(id_aula: int):
+    """
+    Inserta un nuevo horario de clase en la base de datos.
+    """
+    return logica.respuesta_exitosa(logica.insertar_horario(id_aula))
