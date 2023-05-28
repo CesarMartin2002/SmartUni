@@ -186,6 +186,90 @@ def enviar_correo_bienvenida(destinatarios):
 
   '''
   correos.enviar_correo(destinatarios, asunto, cuerpo_html)
+  
+def enviar_correo_taquilla_reservada(destinatarios):
+    asunto = 'Confirmación de reserva de taquilla'
+    cuerpo_html = '''
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Confirmación de reserva de taquilla</title>
+        <link href="https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+            body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #1164ce;
+            color: #fff;
+            }
+
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #fff;
+            }
+
+            /* Estilos del encabezado */
+            .header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .header img {
+                max-width: 200px;
+            }
+
+            /* Estilos del contenido */
+            .content {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .content h1 {
+                font-family: 'Asap Condensed', sans-serif;
+                font-weight: 700;
+            }
+
+            /* Estilos del pie de página */
+            .footer {
+                text-align: center;
+                font-size: 12px;
+                color: #999;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <img src="https://i.imgur.com/QVRrfct.png" alt="SmartUni Logo">
+            </div>
+
+            <div class="content">
+                <h1>Confirmación de reserva de taquilla</h1>
+                <p>Estimad@ estudiante,</p>
+                <p>Te informamos que se ha realizado la reserva de una taquilla con éxito.</p>
+                <p>Detalles de la reserva:</p>
+                <!-- Incluir los detalles relevantes de la taquilla reservada -->
+
+                <p>¡Disfruta de tu taquilla!</p>
+                <p>Atentamente,</p>
+                <p>El equipo de SmartUni</p>
+            </div>
+
+            <div class="footer">
+                <p>Este correo electrónico fue enviado desde la plataforma SmartUni. Por favor, no respondas a este mensaje.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    '''
+
+    correos.enviar_correo(destinatarios, asunto, cuerpo_html)
 #endregion
 
 #region funciones de taquillas
@@ -277,11 +361,7 @@ def reservar_taquilla(id_taquilla: int, id_usuario: int, contrasena: int):
     try:
         # Obtener la taquilla con el id especificado
         query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
-<<<<<<< HEAD
-        parameters = (id_taquilla)
-=======
         parameters = ([id_taquilla])
->>>>>>> c7718651685f357139deae0d9099a4ebb02b68d9
         taquilla = db.realizar_consulta(query, params=parameters)
 
         # Verificar que se encontró la taquilla
@@ -296,7 +376,9 @@ def reservar_taquilla(id_taquilla: int, id_usuario: int, contrasena: int):
         query = "UPDATE taquilla SET disponible = %s, usuario_id = %s, password = %s WHERE id_taquilla = %s"
         parameters = ([False, id_usuario, contrasena, id_taquilla])
         db.realizar_modificacion(query, params=parameters)
-
+        
+        #enviamos el correo de confirmacion
+        enviar_correo_taquilla_reservada([id_usuario[0]["reserva"]])
         return f"La taquilla {id_taquilla} ha sido reservada por el usuario {id_usuario} con la contraseña {contrasena}."
 
     except CustomException as e:
