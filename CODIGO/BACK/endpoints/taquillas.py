@@ -20,11 +20,11 @@ async def get_taquilla(id: int):
 
 
 @router.get("/taquillas") 
-async def get_taquillas(ala: str = Query(default=""), piso: int = Query(default=-1), pasillo: int = Query(default=-1)):
+async def get_taquillas(ala: str = Query(default=""), piso: int = Query(default=-1), pasillo: int = Query(default=-1), ocupado: bool = Query(default=False)):
     """
     Este endpoint devuelve todas las taquillas disponibles
     """
-    taquillas = logica.obtener_todasTaquillas(ala, piso, pasillo)
+    taquillas = logica.obtener_todasTaquillas(ala, piso, pasillo, ocupado)
     return logica.respuesta_exitosa(taquillas)
 
 

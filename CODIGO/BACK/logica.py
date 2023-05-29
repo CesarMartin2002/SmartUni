@@ -311,7 +311,7 @@ def actualizar_taquilla(id_taquilla: int, id_usuario :int):
         return f"La taquilla {id_taquilla} no está disponible en este momento, esta asociado al alumno con id {id_usuario}."
         
 
-def obtener_todasTaquillas(ala = "", piso = 0, pasillo = 0):
+def obtener_todasTaquillas(ala = "", piso = 0, pasillo = 0, ocupado = False):
     query = "SELECT * FROM taquilla"
     params = []
     if ala != "":
@@ -329,6 +329,12 @@ def obtener_todasTaquillas(ala = "", piso = 0, pasillo = 0):
         else:
             query += " AND pasillo = %s"
         params.append(pasillo)
+    
+    if len(params) == 0:
+        query += " WHERE ocupado = %s"
+    else:
+        query += " AND ocupado = %s"
+    params.append(ocupado)    
     taquillas = db.realizar_consulta(query, params)
     return taquillas
 
