@@ -1,6 +1,6 @@
--- Database generated with pgModeler (PostgreSQL Database Modeler).
+-- Database generated with pgModeler (aotdlhviQL Database Modeler).
 -- pgModeler  version: 0.9.3-beta1
--- PostgreSQL version: 13.0
+-- aotdlhviQL version: 13.0
 -- Project Site: pgmodeler.io
 -- Model Author: ---
 
@@ -23,7 +23,7 @@ CREATE TABLE public.Alumno (
 
 );
 -- ddl-end --
-ALTER TABLE public.Alumno OWNER TO postgres;
+ALTER TABLE public.Alumno OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: public.Aula | type: TABLE --
@@ -40,7 +40,7 @@ CREATE TABLE public.Aula (
 
 );
 -- ddl-end --
-ALTER TABLE public.Aula OWNER TO postgres;
+ALTER TABLE public.Aula OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: public.Asiento | type: TABLE --
@@ -53,7 +53,7 @@ CREATE TABLE public.Asiento (
 
 );
 -- ddl-end --
-ALTER TABLE public.Asiento OWNER TO postgres;
+ALTER TABLE public.Asiento OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Aula_fk | type: CONSTRAINT --
@@ -89,7 +89,7 @@ CREATE TABLE public.Taquilla (
 
 );
 -- ddl-end --
-ALTER TABLE public.Taquilla OWNER TO postgres;
+ALTER TABLE public.Taquilla OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Alumno_fk | type: CONSTRAINT --
@@ -105,12 +105,12 @@ CREATE TABLE public.Producto (
 	id_producto serial NOT NULL,
 	descripcion varchar(50),
 	precio money,
-	id_empleado_Empelado integer NOT NULL,
+	id_empleado_Empleado integer NOT NULL,
 	CONSTRAINT Producto_pk PRIMARY KEY (id_producto)
 
 );
 -- ddl-end --
-ALTER TABLE public.Producto OWNER TO postgres;
+ALTER TABLE public.Producto OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: public.Asignatura | type: TABLE --
@@ -123,7 +123,7 @@ CREATE TABLE public.Asignatura (
 
 );
 -- ddl-end --
-ALTER TABLE public.Asignatura OWNER TO postgres;
+ALTER TABLE public.Asignatura OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Aula_fk | type: CONSTRAINT --
@@ -143,7 +143,7 @@ CREATE TABLE public.Pedido (
 
 );
 -- ddl-end --
-ALTER TABLE public.Pedido OWNER TO postgres;
+ALTER TABLE public.Pedido OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Alumno_fk | type: CONSTRAINT --
@@ -163,7 +163,7 @@ CREATE TABLE public.NFC (
 
 );
 -- ddl-end --
-ALTER TABLE public.NFC OWNER TO postgres;
+ALTER TABLE public.NFC OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Pedido_fk | type: CONSTRAINT --
@@ -178,24 +178,6 @@ ON DELETE SET NULL ON UPDATE CASCADE;
 ALTER TABLE public.NFC ADD CONSTRAINT NFC_uq UNIQUE (id_pedido_Pedido);
 -- ddl-end --
 
--- object: public.Empelado | type: TABLE --
--- DROP TABLE IF EXISTS public.Empelado CASCADE;
-CREATE TABLE public.Empelado (
-	id_empleado serial NOT NULL,
-	CONSTRAINT Empelado_pk PRIMARY KEY (id_empleado)
-
-);
--- ddl-end --
-ALTER TABLE public.Empelado OWNER TO postgres;
--- ddl-end --
-
--- object: Empelado_fk | type: CONSTRAINT --
--- ALTER TABLE public.Producto DROP CONSTRAINT IF EXISTS Empelado_fk CASCADE;
-ALTER TABLE public.Producto ADD CONSTRAINT Empelado_fk FOREIGN KEY (id_empleado_Empelado)
-REFERENCES public.Empelado (id_empleado) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
 -- object: public.Horario | type: TABLE --
 -- DROP TABLE IF EXISTS public.Horario CASCADE;
 CREATE TABLE public.Horario (
@@ -208,7 +190,7 @@ CREATE TABLE public.Horario (
 
 );
 -- ddl-end --
-ALTER TABLE public.Horario OWNER TO postgres;
+ALTER TABLE public.Horario OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Asignatura_fk | type: CONSTRAINT --
@@ -228,7 +210,7 @@ CREATE TABLE public.Matricula (
 
 );
 -- ddl-end --
-ALTER TABLE public.Matricula OWNER TO postgres;
+ALTER TABLE public.Matricula OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Asignatura_fk | type: CONSTRAINT --
@@ -255,7 +237,7 @@ CREATE TABLE public.Pedido_Producto (
 
 );
 -- ddl-end --
-ALTER TABLE public.Pedido_Producto OWNER TO postgres;
+ALTER TABLE public.Pedido_Producto OWNER TO aotdlhvi;
 -- ddl-end --
 
 -- object: Pedido_fk | type: CONSTRAINT --
@@ -269,6 +251,24 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public.Pedido_Producto DROP CONSTRAINT IF EXISTS Producto_fk CASCADE;
 ALTER TABLE public.Pedido_Producto ADD CONSTRAINT Producto_fk FOREIGN KEY (id_producto_Producto)
 REFERENCES public.Producto (id_producto) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: public.Empleado | type: TABLE --
+-- DROP TABLE IF EXISTS public.Empleado CASCADE;
+CREATE TABLE public.Empleado (
+	id_empleado serial NOT NULL,
+	CONSTRAINT Empleado_pk PRIMARY KEY (id_empleado)
+
+);
+-- ddl-end --
+ALTER TABLE public.Empleado OWNER TO aotdlhvi;
+-- ddl-end --
+
+-- object: Empleado_fk | type: CONSTRAINT --
+-- ALTER TABLE public.Producto DROP CONSTRAINT IF EXISTS Empleado_fk CASCADE;
+ALTER TABLE public.Producto ADD CONSTRAINT Empleado_fk FOREIGN KEY (id_empleado_Empleado)
+REFERENCES public.Empleado (id_empleado) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
