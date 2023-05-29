@@ -317,13 +317,13 @@ def obtener_todasTaquillas(ala = "", piso = 0, pasillo = 0):
     if ala != "":
         query += " WHERE ala = %s"
         params.append(ala)
-    if piso != 0:
+    if piso != -1:
         if len(params) == 0:
             query += " WHERE piso = %s"
         else:
             query += " AND piso = %s"
         params.append(piso)
-    if pasillo != 0:
+    if pasillo != -1:
         if len(params) == 0:
             query += " WHERE pasillo = %s"
         else:
@@ -338,22 +338,18 @@ def crear_taquilla(data : dict):
     return taquilla
 
 #funcion para abrir una taquilla
-def abrir_taquilla(id_taquilla: int, id_usuario: int, password:int):
-    try:
-        # Obtener la taquilla con el id especificado
-        query = "SELECT * FROM taquilla WHERE id_taquilla = %s AND id_usuario = %s AND password = %s"
-        parameters = ([id_taquilla, id_usuario, password])
-        taquilla = db.realizar_consulta(query, params=parameters)
+def abrir_taquilla(id_taquilla: int, password:int):
+    # Obtener la taquilla con el id especificado
+    query = "SELECT * FROM taquilla WHERE id_taquilla = %s AND password = %s"
+    parameters = ([id_taquilla, password])
+    taquilla = db.realizar_consulta(query, params=parameters)
 
-        # Verificar si no se encontró la taquilla con los datos proporcionados
-        if len(taquilla) == 0:
-            mensaje = f"La contraseña ingresada no coincide con la contraseña de la taquilla"
-            respuesta_fallida(mensaje, 400)
+    # Verificar si no se encontró la taquilla con los datos proporcionados
+    if len(taquilla) == 0:
+        mensaje = f"La contraseña ingresada no coincide con la contraseña de la taquilla"
+        respuesta_fallida(mensaje, 400)
 
-        return True  # Contraseña correcta
-
-    except CustomException as e:
-        raise HTTPException(status_code=e.code, detail=e.message)
+    return True  # Contraseña correcta
 
 
 #funcion para reservar una taquilla

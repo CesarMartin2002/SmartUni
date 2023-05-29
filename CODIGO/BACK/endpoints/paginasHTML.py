@@ -53,3 +53,9 @@ def pagina_scan():
     with open("FRONT/entrega_pedido_nfc.html", "r", encoding="utf-8") as f:
         html = f.read()
     return HTMLResponse(html)
+
+@router.get("/lockers")
+def pagina_lockers():
+    with open("FRONT/taquillas.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(html)

@@ -21,7 +21,7 @@ pip install -r requirements.txt
 Una vez instaladas todas estas librerías podemos proceder a levantar el servidor con **uvicorn**  
 Para ello podemos ejecutar este comando:
 ```
-uvicorn --app-dir=BACK/ main:app --reload  
+uvicorn --app-dir=BACK/ main:app --port 0.0.0.0 --reload  
 ```
 
 ## Funcionamiento

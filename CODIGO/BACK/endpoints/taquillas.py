@@ -20,12 +20,11 @@ async def get_taquilla(id: int):
 
 
 @router.get("/taquillas") 
-async def get_taquillas(ala: str = Query(default=""), piso: int = Query(default=0), pasillo: int = Query(default=0)):
+async def get_taquillas(ala: str = Query(default=""), piso: int = Query(default=-1), pasillo: int = Query(default=-1)):
     """
     Este endpoint devuelve todas las taquillas disponibles
     """
     taquillas = logica.obtener_todasTaquillas(ala, piso, pasillo)
-    print("taquillas: ", taquillas)
     return logica.respuesta_exitosa(taquillas)
 
 
@@ -44,36 +43,36 @@ async def post_taquilla(request: Request):
 
 
 #endpoint abrir taquilla
-@router.get("/taquillas/{id_taquilla}/{id_usuario}/{password}")
-def abrir_taquilla(id_taquilla: int, id_usuario: int, password: str):
+@router.get("/taquillas/{id_taquilla}/{password}")
+def abrir_taquilla(id_taquilla: int, password: str):
     """
-    Este endpoint permite abrir una taquilla a partir de una taquilla, usuario y password
+    Este endpoint permite abrir una taquilla a partir de una taquilla, y password
     """
-    resultado = logica.abrir_taquilla(id_taquilla, id_usuario, password)
+    resultado = logica.abrir_taquilla(id_taquilla, password)
     return logica.respuesta_exitosa(resultado)
 
 
 #endpoint reservar taquilla
-@router.put("/reservarTaquilla/{id_taquilla}/{id_usuario}")
-def reservar_taquilla(id_taquilla:int, id_usuario:int):
+@router.put("/reservarTaquilla/{id_taquilla}/{id_alumno}")
+def reservar_taquilla(id_taquilla:int, id_alumno:int):
     """
-    Este endpoint permite reservar una taquilla a partir de una taquilla y usuario y genera una contraseña
+    Este endpoint permite reservar una taquilla a partir de una taquilla y alumno y genera una contraseña
     """
     numero = random.randint(1000, 9999)
     #numero_str = str(numero).zfill(4)      para el cambio a string
-    resultado = logica.reservar_taquilla(id_taquilla, id_usuario, numero)
+    resultado = logica.reservar_taquilla(id_taquilla, id_alumno, numero)
     
     return resultado
 
 
 #endpoint cancelar taquilla
-@router.put("/cancelarTaquilla/{id_taquilla}/{id_usuario}")
-def cancelar_taquilla(id_taquilla : int, id_usuario:int) -> dict:
+@router.put("/cancelarTaquilla/{id_taquilla}/{id_alumno}")
+def cancelar_taquilla(id_taquilla : int, id_alumno:int) -> dict:
     """Este Endpoint cancela la reserva o la asignacion al alumno
     Returns:
         dict: Informacion de la taquilla cancelada
     """
-    cancelar_taquilla = logica.cancelar_taquilla(id_taquilla, id_usuario)
+    cancelar_taquilla = logica.cancelar_taquilla(id_taquilla, id_alumno)
     return cancelar_taquilla
 
 
