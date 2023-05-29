@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="509,0" last-zoom="1" max-obj-count="14"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="14"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -49,7 +49,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="numeric" length="0"/>
 	</column>
 	<column name="ala">
-		<type name="character varying" length="5"/>
+		<type name="varchar" length="5"/>
 	</column>
 	<column name="num_ala">
 		<type name="numeric" length="0"/>
@@ -104,7 +104,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="serial" length="20"/>
 	</column>
 	<column name="password">
-		<type name="integer" length="0"/>
+		<type name="varchar" length="5"/>
 	</column>
 	<column name="ala">
 		<type name="varchar" length="5"/>

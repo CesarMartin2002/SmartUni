@@ -34,7 +34,7 @@ CREATE TABLE public.Aula (
 	luminosidad integer,
 	laboratorio bool,
 	planta numeric,
-	ala character varying(5),
+	ala varchar(5),
 	num_ala numeric,
 	CONSTRAINT Aula_pk PRIMARY KEY (id_aula)
 
@@ -79,7 +79,7 @@ ALTER TABLE public.Asiento ADD CONSTRAINT Asiento_uq UNIQUE (id_alumno_Alumno);
 -- DROP TABLE IF EXISTS public.Taquilla CASCADE;
 CREATE TABLE public.Taquilla (
 	id_taquilla serial NOT NULL,
-	password integer,
+	password varchar(5),
 	ala varchar(5),
 	piso integer,
 	pasillo integer,
