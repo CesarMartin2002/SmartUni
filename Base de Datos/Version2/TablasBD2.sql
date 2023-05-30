@@ -118,19 +118,11 @@ ALTER TABLE public.Producto OWNER TO aotdlhvi;
 CREATE TABLE public.Asignatura (
 	id_asignatura serial NOT NULL,
 	descripcion varchar(50),
-	id_aula_Aula integer NOT NULL,
 	CONSTRAINT Asignatura_pk PRIMARY KEY (id_asignatura)
 
 );
 -- ddl-end --
 ALTER TABLE public.Asignatura OWNER TO aotdlhvi;
--- ddl-end --
-
--- object: Aula_fk | type: CONSTRAINT --
--- ALTER TABLE public.Asignatura DROP CONSTRAINT IF EXISTS Aula_fk CASCADE;
-ALTER TABLE public.Asignatura ADD CONSTRAINT Aula_fk FOREIGN KEY (id_aula_Aula)
-REFERENCES public.Aula (id_aula) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
 -- object: public.Pedido | type: TABLE --
@@ -186,6 +178,7 @@ CREATE TABLE public.Horario (
 	hora_inicio time,
 	hora_fin time,
 	id_asignatura_Asignatura integer,
+	id_aula_Aula integer NOT NULL,
 	CONSTRAINT Horario_pk PRIMARY KEY (id_horario)
 
 );
@@ -269,6 +262,13 @@ ALTER TABLE public.Empleado OWNER TO aotdlhvi;
 -- ALTER TABLE public.Producto DROP CONSTRAINT IF EXISTS Empleado_fk CASCADE;
 ALTER TABLE public.Producto ADD CONSTRAINT Empleado_fk FOREIGN KEY (id_empleado_Empleado)
 REFERENCES public.Empleado (id_empleado) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: Aula_fk | type: CONSTRAINT --
+-- ALTER TABLE public.Horario DROP CONSTRAINT IF EXISTS Aula_fk CASCADE;
+ALTER TABLE public.Horario ADD CONSTRAINT Aula_fk FOREIGN KEY (id_aula_Aula)
+REFERENCES public.Aula (id_aula) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
