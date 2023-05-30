@@ -1,13 +1,16 @@
 // Define una variable global baseUrl que contiene el inicio de la URL
 const baseUrl = `${window.location.protocol}//${window.location.host}`;
+var hola;
 
-function cargarDatos() {
+async function cargarDatos() {
   // Obtiene los valores de las taquillas generando un botón con la información de cada una
-  var alumnoReservado = obtenerAlumnoReservado();
-  console.log(alumnoReservado);
-  if (alumnoReservado) {
+  var taquillaDeAlumno = await obtenertaquillaDeAlumno();
+  taquillaDeAlumno = taquillaDeAlumno[0];
+  hola = taquillaDeAlumno;
+  if (taquillaDeAlumno) {
+    console.log(taquillaDeAlumno);
     // Mostrar la taquilla reservada del alumno
-    mostrarTaquillaReservada(alumnoReservado);
+    mostrarTaquillaReservada(taquillaDeAlumno);
   } else {
     // Mostrar todas las taquillas disponibles
     fetch(`${baseUrl}/taquillas?ocupado=false`)
@@ -31,12 +34,12 @@ function cargarDatos() {
 window.onload = cargarDatos;
 
 // Función para mostrar la taquilla reservada del alumno
-function mostrarTaquillaReservada(alumnoReservado) {
-  
+function mostrarTaquillaReservada(taquillaDeAlumno) {
+  console.log(taquillaDeAlumno);
   var html = `
     <div class="taquilla">
-      <button class="btn btn-primary" onclick="window.location.href = '/taquillas/${alumnoReservado.id_taquilla}'">
-        Taquilla Reservada (${alumnoReservado.id_taquilla})
+      <button class="btn btn-primary" onclick="window.location.href = '/taquillas/${taquillaDeAlumno.id_taquilla}'">
+        Taquilla Reservada (${taquillaDeAlumno.id_taquilla})
       </button>
     </div>
     <br>
@@ -46,6 +49,7 @@ function mostrarTaquillaReservada(alumnoReservado) {
 }
 
 // Función que recibe el JSON y muestra las taquillas en la página
+//Se entra aquí si no hay taquilla reservada y se muestran todas las taquillas disponibles
 function mostrarDatos(data) {
   var taquillas = data.data;
   var html = '';
@@ -67,9 +71,11 @@ function mostrarDatos(data) {
 }
 
 // Función para obtener el ID del alumno reservado
-function obtenerAlumnoReservado() {
+async function obtenertaquillaDeAlumno() {
   // Obtener el ID del alumno del local storage o de las cookies, según sea el caso
-  var idAlumno = localStorage.getItem('id_alumno') || getCookie('id_alumno');
+  var idAlumno = getCookie('id_alumno');
+  //convertimos a entero idAlumno
+  idAlumno = parseInt(idAlumno);
 
   // Verificar si se obtuvo el ID del alumno
   if (idAlumno) {
@@ -81,17 +87,17 @@ function obtenerAlumnoReservado() {
           return taquillaReservada;
         } else {
           // No se encontró una taquilla reservada para el alumno
-          return null;
+          return false;
         }
       })
       .catch(error => {
         console.error(error);
-        return null;
+        return false;
       });
   }
 
   // El alumno no tiene una taquilla reservada o no se encontró el ID del alumno
-  return null;
+  return false;
 }
 
 // Función para obtener la información de la taquilla reservada del alumno

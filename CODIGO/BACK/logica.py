@@ -401,10 +401,10 @@ def cancelar_taquilla(id_taquilla: int, id_usuario: int) -> dict:
     taquilla_actualizada = obtener_taquilla(id_taquilla)
 
     return taquilla_actualizada
-#endregion
 
-#funcion para eliminar una taquilla a partir de su id y que nos muestre su informacion
 def eliminar_taquilla(id_taquilla: int):
+#funcion para eliminar una taquilla a partir de su id y que nos muestre su informacion
+
     # Obtener la taquilla con el id especificado
     taquilla = obtener_taquilla(id_taquilla)
     # Verificar que se encontró la taquilla
@@ -424,6 +424,7 @@ def obtener_taquilla_reservada_por_alumno(id_alumno:int):
     parameters = ([id_alumno])
     taquilla = db.realizar_consulta(query, params=parameters)
     return taquilla
+#endregion
     
 #region funciones de las aulas
 
@@ -454,7 +455,7 @@ def obtener_aulas(ala,planta,numero):
     #region convertir los datos a un diccionario añadiendo los nombres de cada aula.
     for aula in aulas:
             letra_ala = aula['ala'][0]
-            nombre_aula = f"{letra_ala}{'L' if aula['laboratorio'] else 'A'}{aula['num_ala']}"
+            nombre_aula = (f"{letra_ala}{'L' if aula['laboratorio'] else 'A'}{aula['num_ala']}").upper()
             aula['nombre'] = nombre_aula
     #endregion
     return aulas
@@ -479,7 +480,7 @@ def obtener_aula(id_aula: int):
     #region convertir los datos a un diccionario añadiendo el nombre del aula.
     aula = aula[0]
     letra_ala = aula['ala'][0]
-    nombre_aula = f"{letra_ala}{'L' if aula['laboratorio'] else 'A'}{aula['num_ala']}"
+    nombre_aula = (f"{letra_ala}{'L' if aula['laboratorio'] else 'A'}{aula['num_ala']}").upper()
     aula['nombre'] = nombre_aula
     #endregion
     return aula
@@ -502,7 +503,7 @@ def obtener_clase_proxima(id_aula):
 
 #endregion
 
-# funciones de cafeteria (region)
+#region funciones de cafeteria
 def obtener_productos(filtro: str = ""):
     """
     Lista todos los productos de cafetería.
@@ -654,9 +655,9 @@ def actualizar_pedido(id_pedido: int, data: dict):
     if data["estado"] not in [0, 1, 2, 3, 4]:
         mensaje = "El estado debe ser 0, 1, 2 , 3 y 4"
         respuesta_fallida(mensaje, 400)
-    # if pedido["estado"] == 3:
-    #     mensaje = "El pedido ya está completado y no se puede modificar"
-    #     respuesta_fallida(mensaje, 400)
+    if pedido["estado"] == 4:
+        mensaje = "El pedido ya está completado y no se puede modificar"
+        respuesta_fallida(mensaje, 400)
     if pedido["estado"] >=  data["estado"] :
         mensaje = "La modificación del estado no es válida"
         respuesta_fallida(mensaje, 400)
@@ -718,6 +719,7 @@ def actualizar_pedido(id_pedido: int, data: dict):
     return pedido
 
 
+#endregion
 #endregion
 
 #region funciones nfc básicas
@@ -812,7 +814,6 @@ def actualizar_pedido_nfc(id_pedido: int, data: dict):
     #endregion
 
 #endregion
-
 
 #region codigo antiguo que se borrará más adelante
 

@@ -20,12 +20,12 @@ function mostrarDatos(data) {
   var html = '';
 
   for (var i = 0; i < aulas.length; i++) {
-    var numero_aula = `Aula ${aulas[i].id_aula}`;
+    var nombre_aula = `Aula ${aulas[i].nombre}`;
 
     html += `
       <div class="aula">
         <button class="btn btn-primary" onclick="window.location.href = '/aulas/${aulas[i].id_aula}'">
-          ${numero_aula}
+          ${nombre_aula}
         </button>
       </div>
       <br>
