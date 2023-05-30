@@ -41,6 +41,9 @@ function mostrarTaquillaReservada(taquillaDeAlumno) {
       <button class="btn btn-primary" onclick="window.location.href = '/taquillas/${taquillaDeAlumno.id_taquilla}'">
         Taquilla Reservada (${taquillaDeAlumno.id_taquilla})
       </button>
+      <button class="btn btn-danger" onclick="cancelarReserva(${taquillaDeAlumno.id_taquilla})">
+        Cancelar Reserva
+      </button>
     </div>
     <br>
   `;
