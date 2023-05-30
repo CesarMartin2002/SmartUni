@@ -77,7 +77,7 @@ def cancelar_taquilla(id_taquilla : int, id_alumno:int) -> dict:
 
 
 #endpoint para eliminar una taquilla
-@router.delete("/taquillas/{id}")
+@router.delete("/taquillas/{id_taquilla}")
 def eliminar_taquilla(id_taquilla: int):
     """
     Este endpoint permite eliminar una taquilla a partir de su id
@@ -85,4 +85,14 @@ def eliminar_taquilla(id_taquilla: int):
     resultado = logica.eliminar_taquilla(id_taquilla)
     return logica.respuesta_exitosa(resultado)
 
+@router.get("/taquilla/Alumno/{id_alumno}")
+async def obtener_taquilla_reservada(id_alumno: int):
+    """
+    Este endpoint devuelve la taquilla reservada por el alumno
+    """
+    taquilla_reservada = logica.obtener_taquilla_reservada_por_alumno(id_alumno)
+    if taquilla_reservada:
+        return logica.respuesta_exitosa(taquilla_reservada)
+    else:
+        return logica.respuesta_fallida("No se encontró una taquilla reservada para el alumno con id: " + str(id_alumno))
 

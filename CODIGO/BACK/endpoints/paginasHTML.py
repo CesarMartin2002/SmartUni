@@ -19,19 +19,19 @@ def registrarse():
     return HTMLResponse(html)
 
 @router.get("/menu")
-def registrarse():
+def menu():
     with open("FRONT/bienvenida.html", "r", encoding="utf-8") as f:
         html = f.read()
     return HTMLResponse(html)
 
 @router.get("/cafeteria")
-def registrarse():
+def pagina_cafeteria():
     with open("FRONT/cafeteria.html", "r", encoding="utf-8") as f:
         html = f.read()
     return HTMLResponse(html)
 
 @router.get("/cafeteria/pedido")
-def registrarse():
+def pagina_cafeteriaPedido():
     with open("FRONT/cafeteria_pedido.html", "r", encoding="utf-8") as f:
         html = f.read()
     return HTMLResponse(html)
@@ -59,3 +59,9 @@ def pagina_lockers():
     with open("FRONT/taquillas.html", "r", encoding="utf-8") as f:
         html = f.read()
     return HTMLResponse(html)
+
+@router.get("/aula")
+def pagina_aula():
+    with open("FRONT/aulas.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(html)    
