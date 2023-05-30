@@ -274,11 +274,6 @@ def enviar_correo_taquilla_reservada(destinatarios):
 
 #region funciones de taquillas
 
-#un grupo de taquillas peternece a un casillero
-def obtener_casillero(id: int):
-    return {"id": id, "nombre": "Casillero 1"}
-
-# me devuelve la informacion de UNA taquilla
 def obtener_taquilla(id_taquilla: int):
     # devolverla como un diccionario con sus propiedades (por ejemplo, {'id': 1, 'ocupado': True, 'usuario': None})
     # Si no se encuentra ninguna taquilla con ese id, se debe retornar un error (por ejemplo, {'success': False, 'message': 'No se encontró la taquilla con id 1'})
@@ -286,7 +281,7 @@ def obtener_taquilla(id_taquilla: int):
     parameters = (id_taquilla,)
     taquilla = db.realizar_consulta(query, params=parameters)
     if len(taquilla) == 0:
-        respuesta_fallida(message="No se encontró la taquilla con id " + str(id_taquilla), code=404)
+        respuesta_fallida("No se encontró la taquilla con id " + str(id_taquilla), 404)
     return taquilla
 
 def obtener_usuario_de_taquilla(id_taquilla: int):
@@ -311,8 +306,8 @@ def actualizar_taquilla(id_taquilla: int, id_usuario :int):
         return f"La taquilla {id_taquilla} no está disponible en este momento, esta asociado al alumno con id {id_usuario}."
         
 
-def obtener_todasTaquillas(ala = "", piso = -1, pasillo = -1, ocupado = False):
-    query = "SELECT * FROM taquilla"
+def obtener_todasTaquillas(ala = "", piso = -1, pasillo = -1, ocupado = -1):
+    query = "SELECT id_taquilla, piso, ala, pasillo, ocupado FROM taquilla"
     params = []
     if ala != "":
         query += " WHERE ala = %s"
@@ -329,12 +324,12 @@ def obtener_todasTaquillas(ala = "", piso = -1, pasillo = -1, ocupado = False):
         else:
             query += " AND pasillo = %s"
         params.append(pasillo)
-    
-    if len(params) == 0:
-        query += " WHERE ocupado = %s"
-    else:
-        query += " AND ocupado = %s"
-    params.append(ocupado)    
+    if ocupado != -1:
+        if len(params) == 0:
+            query += " WHERE ocupado = %s"
+        else:
+            query += " AND ocupado = %s"
+        params.append(ocupado)    
     taquillas = db.realizar_consulta(query, params)
     return taquillas
 
