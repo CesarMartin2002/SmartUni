@@ -58,7 +58,7 @@ def abrir_taquilla(id_taquilla: int, password: str):
 
 
 #endpoint reservar taquilla
-@router.put("/reservarTaquilla/{id_taquilla}/{id_alumno}")
+@router.put("/taquillas/reservar/{id_taquilla}/{id_alumno}")
 def reservar_taquilla(id_taquilla:int, id_alumno:int):
     """
     Este endpoint permite reservar una taquilla a partir de una taquilla y alumno y genera una contraseña
@@ -67,18 +67,18 @@ def reservar_taquilla(id_taquilla:int, id_alumno:int):
     #numero_str = str(numero).zfill(4)      para el cambio a string
     resultado = logica.reservar_taquilla(id_taquilla, id_alumno, numero)
     
-    return resultado
+    return logica.respuesta_exitosa(resultado)
 
 
 #endpoint cancelar taquilla
-@router.put("/cancelarTaquilla/{id_taquilla}/{id_alumno}")
+@router.put("/taquillas/cancelar/{id_taquilla}/{id_alumno}")
 def cancelar_taquilla(id_taquilla : int, id_alumno:int) -> dict:
     """Este Endpoint cancela la reserva o la asignacion al alumno
     Returns:
         dict: Informacion de la taquilla cancelada
     """
     cancelar_taquilla = logica.cancelar_taquilla(id_taquilla, id_alumno)
-    return cancelar_taquilla
+    return logica.respuesta_exitosa(cancelar_taquilla)
 
 
 #endpoint para eliminar una taquilla

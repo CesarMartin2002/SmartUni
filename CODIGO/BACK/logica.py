@@ -340,89 +340,110 @@ def crear_taquilla(data : dict):
 
 #funcion para abrir una taquilla
 def abrir_taquilla(id_taquilla: int, password:int):
-    # Obtener la taquilla con el id especificado
+    #region Obtener la taquilla con el id especificado
+
     query = "SELECT * FROM taquilla WHERE id_taquilla = %s AND password = %s"
     parameters = ([id_taquilla, password])
     taquilla = db.realizar_consulta(query, params=parameters)
-
-    # Verificar si no se encontró la taquilla con los datos proporcionados
+    #endregion
+    #region Verificar si no se encontró la taquilla con los datos proporcionados
     if len(taquilla) == 0:
         mensaje = f"La contraseña ingresada no coincide con la contraseña de la taquilla"
         respuesta_fallida(mensaje, 400)
-
+    #endregion
     return True  # Contraseña correcta
 
 
-#funcion para reservar una taquilla
+#region funcion para reservar una taquilla
 def reservar_taquilla(id_taquilla: int, id_usuario: int, password: int):
-    # Obtener la taquilla con el id especificado
-    query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
-    parameters = ([id_taquilla])
-    taquilla = db.realizar_consulta(query, params=parameters)
-
-    # Verificar que se encontró la taquilla
-    if len(taquilla) == 0:
-        raise CustomException(message="No se encontró la taquilla con id " + str(id_taquilla), code=404)
-
-    # Verificar que la taquilla no está ocupada
+    
+    taquilla = obtener_taquilla(id_taquilla)
+    # region Verificar que la taquilla no está ocupada
     if  taquilla[0]['ocupado']:
-        raise CustomException(message="La taquilla con id " + str(id_taquilla) + " no está disponible", code=400)
-
-    # Actualizar la taquilla con el id del usuario que la reservó
-    query = "UPDATE taquilla SET ocupado = %s, id_alumno_alumno = %s, password = %s WHERE id_taquilla = %s"
-    parameters = ([True, id_usuario, password, id_taquilla])
-    db.realizar_actualizacion(query, params=parameters)
+        respuesta_fallida("La taquilla con id " + str(id_taquilla) + " no está disponible",400)
+    #endregion
+    
+    #region verificar que el alumno no tengo ninguna otra taquilla
+    query = "SELECT * FROM taquilla WHERE id_alumno_alumno = %s"
+    parameters = ([id_usuario])
+    taquilla = db.realizar_consulta(query, params=parameters)
+    if len(taquilla) != 0:
+        respuesta_fallida("El alumno con id " + str(id_usuario) + " ya tiene una taquilla",400)
+    #endregion
+    
+    # region Actualizar la taquilla con el id del usuario que la reservó
+    data = {
+        "ocupado": True,
+        "id_alumno_alumno": id_usuario,
+        "password": password
+    }
+    db.realizar_actualizacion("taquilla",id_taquilla, data)
+    #endregion
     
     #enviamos el correo de confirmacion
-    enviar_correo_taquilla_reservada([id_usuario[0]["reserva"]])
-    return f"La taquilla {id_taquilla} ha sido reservada por el usuario {id_usuario} con la contraseña {password}."
+    #enviar_correo_taquilla_reservada([id_usuario])
+    return obtener_taquilla(id_taquilla)
+#endregion
 
-#cancelar una taquilla
+#region cancelar una taquilla
 def cancelar_taquilla(id_taquilla: int, id_usuario: int) -> dict:
-    # Verificar que la taquilla está reservada por el alumno
+    #region Verificar que la taquilla está reservada por el alumno
     query = "SELECT * FROM taquilla WHERE id_taquilla = %s AND id_alumno_alumno = %s"
     parameters = ([id_taquilla, id_usuario])
     taquilla = db.realizar_consulta(query, params=parameters)
     if len(taquilla) == 0:
         mensaje = f"La taquilla {id_taquilla} no está reservada por el alumno {id_usuario}"
         respuesta_fallida(mensaje, 400)
+    #endregion
+    
+    #region Actualizar la taquilla con el id del usuario que la reservó
+    data = {
+        "ocupado": False,
+        "id_alumno_alumno": None
+    }
+    db.realizar_actualizacion("taquilla",id_taquilla,data)
+    #endregion
 
-    # Actualizar la taquilla con el id del usuario que la reservó
-    query = "UPDATE taquilla SET ocupado = %s, id_alumno_alumno = %s WHERE id_taquilla = %s"
-    parameters = ([False, None, id_taquilla])
-    db.realizar_actualizacion(query, params=parameters)
-
-    # Obtener la información actualizada de la taquilla
+    #region Obtener la información actualizada de la taquilla
     taquilla_actualizada = obtener_taquilla(id_taquilla)
+    #endregion
 
     return taquilla_actualizada
+#endregion
 
+#region funcion para eliminar una taquilla a partir de su id y que nos muestre su informacion (de momento no se usa)
 def eliminar_taquilla(id_taquilla: int):
-#funcion para eliminar una taquilla a partir de su id y que nos muestre su informacion
 
-    # Obtener la taquilla con el id especificado
+    #region Obtener la taquilla con el id especificado
     taquilla = obtener_taquilla(id_taquilla)
-    # Verificar que se encontró la taquilla
+    #endregion
+    #region Verificar que se encontró la taquilla
     if len(taquilla) == 0:
         mensaje = f"No se encontró la taquilla con id {id_taquilla}"
         respuesta_fallida(mensaje, 404)
+    #endregion
 
-    # Eliminar la taquilla
+    #region Eliminar la taquilla
     query = "DELETE FROM taquilla WHERE id_taquilla = %s"
     parameters = ([id_taquilla])
     db.realizar_modificacion(query, params=parameters)
+    #endregion
 
     return taquilla
+#endregion
 
+#region obtener la taquilla que ha reservado el usuario
 def obtener_taquilla_reservada_por_alumno(id_alumno:int):
     query = "SELECT * FROM taquilla WHERE id_alumno_alumno = %s"
     parameters = ([id_alumno])
     taquilla = db.realizar_consulta(query, params=parameters)
     return taquilla
 #endregion
+#endregion
     
 #region funciones de las aulas
 
+#region listado de las aulas
 def obtener_aulas(ala,planta,numero):
     """
     Lista todas las aulas de la base de datos.
@@ -454,7 +475,9 @@ def obtener_aulas(ala,planta,numero):
             aula['nombre'] = nombre_aula
     #endregion
     return aulas
+#endregion
 
+#region sacar el aula dado el id
 def obtener_aula(id_aula: int):
     """
     Obtiene el aula con el id especificado de la base de datos y lo devuelve como un diccionario
@@ -479,21 +502,26 @@ def obtener_aula(id_aula: int):
     aula['nombre'] = nombre_aula
     #endregion
     return aula
+#endregion
 
+#region insertar nueva aula
 def insertar_aula(aula: dict):
     return obtener_aula(db.realizar_insercion("aula", aula))
+#endregion
 
+#region actualizar aula
 def actualizar_aula(id: int, aula: dict):
     return obtener_aula(db.realizar_actualizacion("aula",id,aula))
+#endregion
 
-
+#region sacar proxima clase
 def obtener_clase_proxima(id_aula):
     query= "SELECT fecha_inicio FROM aula INNER JOIN asignatura INNER JOIN horario WHERE id_aula = %s AND fecha_inicio > now() ORDER BY fecha_inicio DESC LIMIT 1"
     #hay que probar la query
     params = (id_aula)
     hora = db.realizar_consulta(query,params)
     return hora
-
+#endregion
 
 
 #endregion
