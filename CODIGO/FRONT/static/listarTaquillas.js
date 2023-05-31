@@ -62,10 +62,16 @@ function mostrarDatos(data) {
 
     html += `
       <div class="taquilla">
-        <button class="btn btn-primary" onclick="window.location.href = '/taquillas/${taquillas[i].id_taquilla}'">
+        <button id= i class="btn btn-primary" onclick="window.location.href = '/taquillas/${taquillas[i].id_taquilla}'">
           ${numero_taquilla}
         </button>
       </div>
+      <script>
+      const taquillaBtn = document.getElementById('i');
+            taquillaBtn.addEventListener('click', function() {
+                // Aquí agregar la lógica que deseo ejecutar cuando se hace clic en el botón 'Clase'
+                window.location.href = '/reservaTaquilla/${taquillas[i].id_taquilla}';
+      </script>
       <br>
     `;
   }

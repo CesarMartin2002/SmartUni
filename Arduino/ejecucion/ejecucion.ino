@@ -60,6 +60,8 @@ Keypad teclado =Keypad(makeKeymap(hexaKeys),rowPins,colPins,ROWS,COLS);
 int horaNow=0;
 int minNow=0;
 
+int id=1;   //id de la taquilla
+
 
 void setup() {
   Serial.begin(1200);

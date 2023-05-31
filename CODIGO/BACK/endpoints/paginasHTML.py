@@ -60,9 +60,15 @@ def pagina_lockers():
         html = f.read()
     return HTMLResponse(html)
 
-@router.get("/detalleTaquilla")
+@router.get("/detalleTaquilla")#no hay html de detalle taquilla
 def pagina_detalleTaquilla():
     with open("FRONT/detalle_taquilla.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(html)
+
+@router.get("/reservaTaquilla")
+def pagina_reservaTaquilla():
+    with open("FRONT/reserva_taquilla.html", "r", encoding="utf-8") as f:
         html = f.read()
     return HTMLResponse(html)
 
