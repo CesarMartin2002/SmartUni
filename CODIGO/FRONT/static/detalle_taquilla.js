@@ -42,6 +42,16 @@ function obtenerInformacionTaquillaReservada(idAlumno) {
       });
 }
 
+function getCookieValue(name) {
+  const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+  for (const cookie of cookies) {
+    if (cookie.startsWith(name + "=")) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+  return null;
+}
+
 async function obtenertaquillaDeAlumno() {
     // Obtener el ID del alumno del local storage o de las cookies, según sea el caso
     var idAlumno = getCookie('id_alumno');
@@ -77,7 +87,7 @@ function getLastPathParameter() {
     return pathSegments[pathSegments.length - 1];
   }
 
-function cargarDatos(){
+async function cargarDatos(){
     id=parseInt(getLastPathParameter()); 
     fetch(`/taquillas/${id}`)
     .then(response => response.json())
@@ -97,15 +107,79 @@ function cargarDatos(){
 
 function mostrarDatos(data) {
     var taquilla = data.data;
+    var taquilla = taquilla[0]
     console.log(taquilla);
     var html = '';
+    var num_taquilla = `Taquilla número ${taquilla.id_taquilla}`;
+    var ala_taquilla = `Ala: ${taquilla.ala}`;
+    var piso_taquilla = `Piso: ${taquilla.piso}`;
+    var pasillo_taquilla = `Pasillo: ${taquilla.piso}`;
+    var reservar_taquilla = taquilla.ocupado ? 'CANCELAR TAQUILLA' : 'SOLICITAR TAQUILLA';
+    var buttonFunction = taquilla.ocupado ? `cancelarTaquilla(${taquilla.id_taquilla})` : `reservarTaquilla(${taquilla.id_taquilla})`;
+
     html += `
-        
+        <div class="taquilla">
+        <h2>${num_taquilla}</h2>  
+        <h2>${ala_taquilla}</h2>
+        <h2>${piso_taquilla}</h2> 
+        <h2>${pasillo_taquilla}</h2>
+        <button id= i class="btn btn-primary" onclick="${buttonFunction}">
+          ${reservar_taquilla}
+        </button>
+        </div>
       `;
     
-  
     document.getElementById('taquillas').innerHTML = html;
 }
 
+function reservarTaquilla(idTaquilla) {
+  const url = `/taquillas/reservar/${idTaquilla}`;
+  const idAlumno = parseInt(getCookieValue("id_alumno"));
+  const data = {
+    id_alumno: idAlumno
+  };
 
+  console.log(idAlumno)
 
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('Se ha reservado la taquilla con éxito');
+        window.location.reload(); // Recargar la página
+      } else {
+        console.log('No se ha reservado la taquilla :(');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+function cancelarTaquilla(idTaquilla) {
+  const idAlumno = parseInt(getCookieValue("id_alumno"));
+  const url = `/taquillas/cancelar/${idTaquilla}/${idAlumno}`;
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    }  
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('Se ha cancelado la reserva de la taquilla');
+        window.location.reload(); // Recargar la página
+      } else {
+        console.log('No se ha cancelado la taquilla :(');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}

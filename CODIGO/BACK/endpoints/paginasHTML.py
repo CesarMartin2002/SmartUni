@@ -67,6 +67,7 @@ def pagina_detalleTaquilla():
     with open("FRONT/detalle_taquilla.html", "r", encoding="utf-8") as f:
         html = f.read()
     return HTMLResponse(html)
+    
 #endregion
 
 #region aulas
