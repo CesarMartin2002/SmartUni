@@ -348,14 +348,14 @@ def abrir_taquilla(id_taquilla: int, password:int):
     #endregion
     #region Verificar si no se encontró la taquilla con los datos proporcionados
     if len(taquilla) == 0:
-        mensaje = f"La contraseña ingresada no coincide con la contraseña de la taquilla"
+        mensaje = f"La contraseña o el id_taquilla no son correctos."
         respuesta_fallida(mensaje, 400)
     #endregion
     return True  # Contraseña correcta
 
 
 #region funcion para reservar una taquilla
-def reservar_taquilla(id_taquilla: int, id_usuario: int, password: int):
+def reservar_taquilla(id_taquilla: int, data: dict):
     
     taquilla = obtener_taquilla(id_taquilla)
     # region Verificar que la taquilla no está ocupada
@@ -365,18 +365,13 @@ def reservar_taquilla(id_taquilla: int, id_usuario: int, password: int):
     
     #region verificar que el alumno no tengo ninguna otra taquilla
     query = "SELECT * FROM taquilla WHERE id_alumno_alumno = %s"
-    parameters = ([id_usuario])
+    parameters = ([data["id_alumno_alumno"]])
     taquilla = db.realizar_consulta(query, params=parameters)
     if len(taquilla) != 0:
-        respuesta_fallida("El alumno con id " + str(id_usuario) + " ya tiene una taquilla",400)
+        respuesta_fallida("El alumno con id " + str(data["id_alumno_alumno"]) + " ya tiene una taquilla",400)
     #endregion
     
     # region Actualizar la taquilla con el id del usuario que la reservó
-    data = {
-        "ocupado": True,
-        "id_alumno_alumno": id_usuario,
-        "password": password
-    }
     db.realizar_actualizacion("taquilla",id_taquilla, data)
     #endregion
     
@@ -562,12 +557,18 @@ def obtener_producto(id_producto: int):
     #endregion
     return producto
 
-def obtener_pedidos():
+def obtener_pedidos(id_alumno: int = -1):
     """
     Lista todos los pedidos de cafetería.
     """
     #region obtener los pedidos de la base de datos
-    pedidos = db.realizar_consulta("SELECT id_pedido, correo_alumno, productos_ids, productos_descripciones, estado from vista_pedidos")
+    query = "SELECT id_pedido, correo_alumno, productos_ids, productos_descripciones, estado from vista_pedidos"
+    params = []
+    if id_alumno != -1:
+        query += " WHERE id_alumno = %s"
+        params.append(id_alumno)
+    
+    pedidos = db.realizar_consulta(query,params)
     #endregion
     for pedido in pedidos:
         pedido["productos_ids"] = pedido["productos_ids"].split("|")

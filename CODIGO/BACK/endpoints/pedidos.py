@@ -1,14 +1,14 @@
-from fastapi import APIRouter,Request
+from fastapi import APIRouter,Request, Query
 import logica
 
 router = APIRouter()
 
 @router.get("/cafeteria/pedidos")
-async def get_pedidos():
+async def get_pedidos(id_alumno: int = Query(default=-1)):
     """
     Obtiene todos los pedidos que se han realizado en la cafetería.
     """
-    return logica.respuesta_exitosa(logica.obtener_pedidos())
+    return logica.respuesta_exitosa(logica.obtener_pedidos(id_alumno))
 
 @router.get("/cafeteria/pedidos/{id_pedido}")
 async def get_pedido(id_pedido: int):

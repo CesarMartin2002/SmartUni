@@ -9,7 +9,6 @@ router = APIRouter()
 # a partir de aquí se definen las rutas
 
 
-
 @router.get("/taquillas/{id}")
 async def get_taquilla(id: int):
     """
@@ -48,24 +47,34 @@ async def post_taquilla(request: Request):
 
 
 #endpoint abrir taquilla
-@router.get("/abrirTaquilla/{id_taquilla}/{password}")
-def abrir_taquilla(id_taquilla: int, password: str):
+@router.post("/taquillas/{id_taquilla}")
+async def abrir_taquilla(id_taquilla: int, request: Request):
     """
     Este endpoint permite abrir una taquilla a partir de una taquilla, y password
     """
+    data = await request.json()
+    password = data["password"]
     resultado = logica.abrir_taquilla(id_taquilla, password)
     return logica.respuesta_exitosa(resultado)
 
 
 #endpoint reservar taquilla
-@router.put("/taquillas/reservar/{id_taquilla}/{id_alumno}")
-def reservar_taquilla(id_taquilla:int, id_alumno:int):
+@router.put("/taquillas/reservar/{id_taquilla}")
+async def reservar_taquilla(id_taquilla:int, request: Request):
     """
     Este endpoint permite reservar una taquilla a partir de una taquilla y alumno y genera una contraseña
     """
     numero = random.randint(1000, 9999)
+    data = await request.json()
+    id_alumno = data["id_alumno"]
+    json = {"password": numero,
+            "id_alumno_alumno": id_alumno,
+            "ocupado": True
+            }
+
     #numero_str = str(numero).zfill(4)      para el cambio a string
-    resultado = logica.reservar_taquilla(id_taquilla, id_alumno, numero)
+    # resultado = logica.reservar_taquilla(id_taquilla, id_alumno, numero)
+    resultado = logica.reservar_taquilla(id_taquilla, json)
     
     return logica.respuesta_exitosa(resultado)
 
