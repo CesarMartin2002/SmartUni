@@ -9,7 +9,7 @@
 -- 
 -- object: new_database | type: DATABASE --
 -- DROP DATABASE IF EXISTS new_database;
--- CREATE DATABASE new_database;
+--CREATE DATABASE new_database;
 -- ddl-end --
 
 
@@ -17,7 +17,7 @@
 -- DROP TABLE IF EXISTS public.Alumno CASCADE;
 CREATE TABLE public.Alumno (
 	id_alumno serial NOT NULL,
-	correo varchar(20),
+	correo varchar(30),
 	password varchar(20),
 	CONSTRAINT Alumno_pk PRIMARY KEY (id_alumno)
 
