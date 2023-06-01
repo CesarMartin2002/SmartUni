@@ -1,5 +1,7 @@
+//Obtenemos la url base del sitio
 const baseUrl = `${window.location.protocol}//${window.location.host}`;
 
+//funcion que se ejecuta al cargar la pagina
 window.onload = function () {
   let x = document.cookie;
   if (!x.includes("correo")) {
@@ -8,21 +10,27 @@ window.onload = function () {
   }
 };
 
+//obtenemos los elementos del DOM que vamos a utilizar
 const btnScan = document.getElementById("scan-btn");
 const btnSimulateScan = document.getElementById("simulate-scan-btn");
 
+//agregamos los eventos a los botones
 btnScan.addEventListener("click", escaneoReal);
 btnSimulateScan.addEventListener("click", escaneoSimulado);
 
+//funcion que se ejecuta al escanear un nfc la pagina
 async function scanNFC() {
   try {
     return new Promise((resolve, reject) => {
+      //creamos un nuevo lector de nfc
       const ndef = new NDEFReader();
+      //iniciamos el escaneo
       ndef.onreading = event => {
         const serialNumber = event.serialNumber;
         console.log(`> Serial Number: ${serialNumber}`);
         resolve(serialNumber);
       };
+      //si hay un error al leer la tarjeta
       ndef.onreadingerror = () => {
         console.error("No se puede leer la tarjeta NFC. ¿Intentar con otra?");
         document.getElementById("header-info").innerHTML = "No se puede leer la tarjeta NFC. ¿Intentar con otra?";

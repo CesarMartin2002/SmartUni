@@ -565,7 +565,7 @@ def obtener_pedidos(id_alumno: int = -1):
     query = "SELECT id_pedido, correo_alumno, productos_ids, productos_descripciones, estado from vista_pedidos"
     params = []
     if id_alumno != -1:
-        query += " WHERE id_alumno = %s"
+        query += " WHERE id_alumno_alumno = %s"
         params.append(id_alumno)
     
     pedidos = db.realizar_consulta(query,params)
