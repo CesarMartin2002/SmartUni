@@ -6,6 +6,7 @@ async function cargarDatos() {
   fetch(`${baseUrl}/taquillas?ocupado=false`)
     .then(response => response.json())
     .then(data => {
+
       console.log(data);
       if (data.data.length > 0) {
         mostrarDatos(data);
@@ -21,7 +22,17 @@ async function cargarDatos() {
 }
 
 // Llamamos a cargarDatos al cargar la página
-window.onload = cargarDatos;
+window.onload= function(){
+  let x = document.cookie;
+  if(!x.includes("correo")){
+      alert("Debes iniciar sesión para acceder a esta página.");
+      window.location.replace("/");
+
+  }
+  cargarDatos();
+}
+const btnMenu = Array.from(document.querySelectorAll('.btn-menu'));
+
 
 // Función para mostrar la taquilla reservada del alumno
 function mostrarTaquillaReservada(taquillaDeAlumno) {
@@ -52,7 +63,7 @@ function mostrarDatos(data) {
 
     html += `
       <div class="taquilla">
-        <button id= i class="btn btn-primary" onclick="window.location.href = '/taquillas/${taquillas[i].id_taquilla}'">
+        <button id= i class="btn btn-primary" onclick="window.location.href = '/detalleTaquilla/${taquillas[i].id_taquilla}'">
           ${numero_taquilla}
         </button>
       </div>
