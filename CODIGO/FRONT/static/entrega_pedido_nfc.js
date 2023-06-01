@@ -9,42 +9,91 @@ window.onload = function () {
 };
 
 const btnScan = document.getElementById("scan-btn");
+const btnSimulateScan = document.getElementById("simulate-scan-btn");
 
-btnScan.addEventListener("click", async () => {
-  const header = document.getElementById("header-info");
-  header.innerHTML = "Aproxime un NFC";
+btnScan.addEventListener("click", escaneoReal);
+btnSimulateScan.addEventListener("click", escaneoSimulado);
 
-  const serialNumber = "04:b2:36:58:70:00:00"; // Aquí puedes reemplazar con el serial que desees para hacer pruebas
-
+async function scanNFC() {
   try {
-    await handleNFCRead(serialNumber);
-
-    const idAlumno = getCookieValue("id_alumno");
-    const idPedido = getLastPathParameter();
-
-    const data = {
-      num_serie: serialNumber,
-      id_alumno: idAlumno,
-      estado: 3,
-    };
-
-    const response = (await sendPutRequest(idPedido, data)).json();
-
-    if (response.status === 200) {
-      header.innerHTML = "Éxito";
-    } else {
-      header.innerHTML = response.data.message || "Error";
-    }
+    return new Promise((resolve, reject) => {
+      const ndef = new NDEFReader();
+      ndef.onreading = event => {
+        const serialNumber = event.serialNumber;
+        console.log(`> Serial Number: ${serialNumber}`);
+        resolve(serialNumber);
+      };
+      ndef.onreadingerror = () => {
+        console.error("No se puede leer la tarjeta NFC. ¿Intentar con otra?");
+        document.getElementById("header-info").innerHTML = "No se puede leer la tarjeta NFC. ¿Intentar con otra?";
+        reject(null);
+      };
+      ndef.scan();
+    });
   } catch (error) {
-    console.error("Error:", error);
-    header.innerHTML = "Error: " + error.message;
+    console.error("Error al iniciar el escaneo NFC:", error);
+    document.getElementById("header-info").innerHTML = "Error al iniciar el escaneo NFC: " + error.message;
+    return null;
   }
-});
-
-async function handleNFCRead(serialNumber) {
-  const header = document.getElementById("header-info");
-  header.innerHTML = "Serial del NFC: " + serialNumber;
 }
+
+
+async function escaneoReal(){
+  var ncf = await scanNFC();
+  console.log(ncf);
+  if (ncf != null){
+    ncf = ncf.toString();
+    // document.getElementById("header-info").innerHTML = ncf;
+    consultarPedidoNfc(ncf);
+
+  }
+}
+
+function escaneoSimulado(){
+  const ncf = "123456789";
+  // document.getElementById("header-info").innerHTML = ncf;
+  consultarPedidoNfc(ncf);
+}
+
+function consultarPedidoNfc(nfc) {
+  //el id del pedido se obtiene de la url de la pagina pasandolo a int
+  const idPedido = parseInt(getLastPathParameter());
+  const id_alumno = parseInt(getCookieValue("id_alumno"));
+  const url = `${baseUrl}/cafeteria/pedidos/nfc/${idPedido}`;
+  const data = {
+    num_serie: nfc,
+    id_alumno: id_alumno,
+    estado: 3
+  };
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => {
+      if (response.ok) {
+        document.getElementById("header-info").innerHTML = "Verificación exitosa.";
+        //cambiamos en el css el color de la variable en root llamada --main-bg a #58e76b
+        document.documentElement.style.setProperty('--main-bg', '#58e76b');
+        //ocultamos el boton de escanear
+        document.getElementById("scan-btn").style.display = "none";
+        //ocultamos el boton de simular escaneo
+        document.getElementById("simulate-scan-btn").style.display = "none";
+      } else {
+        document.getElementById("header-info").innerHTML = "Verificación fallida.";
+        //cambiamos en el css el color de la variable en root llamada --main-bg a #e75858
+        document.documentElement.style.setProperty('--main-bg', '#e75858');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+
 
 function getCookieValue(name) {
   const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
@@ -80,4 +129,3 @@ async function sendPutRequest(idPedido, data) {
     throw error;
   }
 }
-

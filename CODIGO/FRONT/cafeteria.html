@@ -13,7 +13,7 @@
             <h1>CAFETERÍA</h1>
             <div class="menu">
                 <button id="pedido-btn">Realizar pedido</button>
-                <button>Consultar horario</button>
+                <button id="mis-pedidos-btn">Mis pedidos</button>
                 <button>Próximos eventos</button>
             </div>
         </main>
@@ -22,6 +22,10 @@
             const pedidoBtn = document.getElementById('pedido-btn');
             pedidoBtn.addEventListener('click', function() {
                 window.location.href += '/pedido';
+            });
+            const misPedidosBtn = document.getElementById('mis-pedidos-btn');
+            misPedidosBtn.addEventListener('click', function() {
+                window.location.href += '/mis_pedidos';
             });
         </script>
     </body>
