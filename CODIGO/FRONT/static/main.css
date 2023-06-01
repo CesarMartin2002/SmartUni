@@ -251,6 +251,43 @@ main {
     border-radius: 2rem;
   }
   
+  /*cambios de mi intento de CSS */
+  .btn-danger {
+    background-color: red;
+    color: white;
+    /* Otros estilos personalizados */
+  }
+  
+
+  /* Estilos para el detalle del pedido */
+.detallepedido {
+  background-color: #c5dee9;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.detallepedido h2 {
+  font-size: 18px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333333;
+}
+
+.detallepedido ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 0;
+}
+
+.detallepedido li {
+  margin-bottom: 5px;
+}
+
+.negrita {
+  font-weight: bold;
+}
+/*FIN CAMBIOS*/
+
   @keyframes slideIn {
     from {
       transform: translate(-50%, 100%) scale(1);

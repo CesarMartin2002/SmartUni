@@ -7,6 +7,8 @@ window.onload = function () {
   if (!x.includes("correo")) {
     alert("Debes iniciar sesión para acceder a esta página.");
     window.location.replace("/");
+  } else {
+    obtenerDetallePedido(); // Llamada para obtener el detalle del pedido al cargar la página
   }
 };
 
@@ -18,6 +20,64 @@ const btnSimulateScan = document.getElementById("simulate-scan-btn");
 //agregamos los eventos a los botones
 btnScan.addEventListener("click", escaneoReal);
 btnSimulateScan.addEventListener("click", escaneoSimulado);
+
+
+// función para obtener el detalle del pedido
+function obtenerDetallePedido() {
+  // obtenemos el ID del pedido
+  const idPedido = getLastPathParameter();
+  
+  // construimos la URL para obtener el detalle del pedido
+  const url = `${baseUrl}/cafeteria/pedidos/${idPedido}`;
+
+  // realizamos la petición GET para obtener el detalle del pedido
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al obtener el pedido');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // mostramos los datos del pedido
+      mostrarDetallePedido(data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+// función para mostrar el detalle del pedido
+function mostrarDetallePedido(data) {
+  var pedido = data.data;
+  var idPedido = `Pedido <span class="negrita">${pedido.id_pedido}</span>`;
+  var correoAlumno = `<li><span class="negrita">Correo del alumno => </span>${pedido.correo_alumno}</li>`;
+  var productos = '';
+
+  for (var j = 0; j < pedido.productos_ids.length; j++) {
+    //var productoId = pedido.productos_ids[j];
+    var productoDescripcion = pedido.productos_descripciones[j];
+    productos += `<li><span class="negrita">Nombre producto => </span> ${productoDescripcion}</li>`;
+  }
+
+  var estado = `<li><span class="negrita">Estado => </span>${pedido.estado}</li>`;
+
+  var html = `
+    <div class="detallepedido">
+      <h2>${idPedido}</h2>
+      <ul>${correoAlumno}</ul>
+      <ul>${productos}</ul>
+      <ul>${estado}</ul>
+    </div>
+    <br>
+  `;
+
+  document.getElementById('pedidos').innerHTML = html;
+}
+
+
+
+
 
 //funcion que se ejecuta al escanear un nfc la pagina
 async function scanNFC() {
@@ -102,7 +162,24 @@ function consultarPedidoNfc(nfc) {
     });
 }
 
+// Función para obtener el valor de una cookie por su nombre
+function getCookie(name) {
+  var cookieName = name + '=';
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var cookieArray = decodedCookie.split(';');
 
+  for (var i = 0; i < cookieArray.length; i++) {
+    var cookie = cookieArray[i];
+    while (cookie.charAt(0) === ' ') {
+      cookie = cookie.substring(1);
+    }
+    if (cookie.indexOf(cookieName) === 0) {
+      return cookie.substring(cookieName.length, cookie.length);
+    }
+  }
+
+  return '';
+}
 
 function getCookieValue(name) {
   const cookies = document.cookie.split(";").map((cookie) => cookie.trim());

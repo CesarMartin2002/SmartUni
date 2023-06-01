@@ -37,14 +37,22 @@ function mostrarPedidos(data) {
     if (pedidos.length > 0) {
       for (var i = 0; i < pedidos.length; i++) {
         var id_pedido = `Pedido ${pedidos[i].id_pedido}`;
-        var lista_productos = `Pedido ${pedidos[i].productos_ids}`;
-        for (var j= 0; j<lista_productos;i++){
-            var nombre_producto = `Pedido ${pedidos[i].productos_descripciones[j]}`;
-  
+        //poner el boton primary en rojo si el estado es > 3
+        if (pedidos[i].estado >= 0) {
+            html += `
+            <div class="pedido">
+                <button class="btn btn-danger" onclick="verDetallesPedido('${pedidos[i].id_pedido}')">
+                ${id_pedido}
+                </button>
+            </div>
+            <br>
+            `;
+        }
+        else{
             html += `
             <div class="pedido">
                 <button class="btn btn-primary" onclick="verDetallesPedido('${pedidos[i].id_pedido}')">
-                ${id_pedido} | ${nombre_producto}
+                ${id_pedido}
                 </button>
             </div>
             <br>
@@ -57,6 +65,7 @@ function mostrarPedidos(data) {
   
     document.getElementById('pedidos').innerHTML = html;
   }
+  
   
 
 // Función que redirige a la página de detalles del pedido seleccionado
