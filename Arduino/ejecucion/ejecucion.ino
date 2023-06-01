@@ -3,12 +3,18 @@
 #include <ESP32Servo.h>
 #include <HTTPClient.h>
 #include <WiFi.h>
+#include <TimeLib.h>
 #define BUZZZER_PIN  33 // PIN 32 CONECTADO AL BUZZER
 //////////////////////////
 //*****WiFi config******//
 //////////////////////////
 #define WIFI_SSID "POCO F3"
 #define WIFI_PASSWORD "12345678"
+//////////////////////////
+//*********Time*********//
+//////////////////////////
+#define TIME_HEADER  "T"   // Header tag for serial time sync message
+#define TIME_REQUEST  7    // ASCII bell character requests a time sync message 
 /////////////////////////
 //connection components//
 /////////////////////////
@@ -41,13 +47,8 @@ String contra;//attempt key convertida a int para eliminar letras
 byte rowPins[ROWS] = {23,22,21,19};//row son los pines a negro
 byte colPins[COLS] = {18,17,16,15};//col los pines a blanco
 Keypad teclado =Keypad(makeKeymap(hexaKeys),rowPins,colPins,ROWS,COLS);
-//////////////////////////
-//*********misc*********//
-//////////////////////////
-/**
-int horaNow=0;
-int minNow=0;
-**/
+
+
 
 void setup() {
   Serial.begin(1200);
@@ -89,18 +90,17 @@ void loop() {
         z=0;
       }
     }
-    /**
+    
     //conditional para el sensor temp //
     //buscar como usar date en arduino //
-    if((minNow<=minute()-5 && horaNow==hour()) || (horaNow<hour())){
-      //si sigue siendo la misma hora y hace 5 minutos que no actualizamos los tiempos, o ha cambiado la hora consultamos
-      horaNow=hour();//actualizamos la hora actual
-      minNow=minute();//actualizamos el minuto actual
+    if(minute()%5==0 && second()==0) {
+      //cada 5 minutos entra en el codigo
+      Serial.println("hago llamada de temp y luz");
 
       //conexion con sistema aqui para luz y temp//
-
+      delay(1000);
     }
-    */
+    
   }
   else{
 
