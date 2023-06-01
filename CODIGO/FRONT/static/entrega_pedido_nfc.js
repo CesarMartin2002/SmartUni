@@ -10,6 +10,7 @@ window.onload = function () {
   }
 };
 
+
 //obtenemos los elementos del DOM que vamos a utilizar
 const btnScan = document.getElementById("scan-btn");
 const btnSimulateScan = document.getElementById("simulate-scan-btn");

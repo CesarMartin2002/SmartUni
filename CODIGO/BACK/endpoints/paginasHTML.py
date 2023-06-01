@@ -22,7 +22,7 @@ def registrarse():
 #region menu
 @router.get("/menu")
 def menu():
-    with open("FRONT/bienvenida.html", "r", encoding="utf-8") as f:
+    with open("FRONT/menu.html", "r", encoding="utf-8") as f:
         html = f.read()
     return HTMLResponse(html)
 #endregion
@@ -40,9 +40,15 @@ def pagina_cafeteriaPedido():
         html = f.read()
     return HTMLResponse(html)
 
-@router.get("/cafeteria/scan/{id}")
+@router.get("/cafeteria/detalles_pedido/{id}")
 def pagina_scan():
     with open("FRONT/entrega_pedido_nfc.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(html)
+
+@router.get("/cafeteria/mis_pedidos")
+def pagina_mispedidos():
+    with open("FRONT/mis_pedidos.html", "r", encoding="utf-8") as f:
         html = f.read()
     return HTMLResponse(html)
 #endregion
