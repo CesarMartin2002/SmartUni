@@ -49,11 +49,18 @@ body.cafe:before {
   background-color: var(--main-bg-semi);
 }
 
-body.cafe .menu{
+.wide-menu {
+  width: 70rem !important;
+  padding-left: 5rem !important;
+  padding-right: 5rem !important;
+}
 
+body.cafe .menu{
   background-color: var(--menu-bg-semi);
   backdrop-filter: blur(3px);
 }
+
+
 
 main {
     margin: 2rem auto;
@@ -105,6 +112,21 @@ main {
 
 /*.menu input[type="submit"]*/
 
+#producto button{
+  margin-top: 0rem;
+}
+
+.btn-minus,
+.btn-plus {
+  padding: 0 !important;
+  width: 50px !important;
+  height: 50px !important;
+  /* max-height: 30px !important; */
+  border-radius: 50% !important;
+  font-size: 12px !important;
+  margin: 5px !important; 
+  display: block !important;
+}
 
 .menu button {
   width: 70%;
@@ -127,6 +149,8 @@ main {
   scale: 1.1;
 }
 
+
+
 .btn-menu {
   position: relative;
   cursor: pointer;
@@ -145,15 +169,7 @@ main {
   align-items: center;
 }
 
-.btn-minus,
-.btn-plus {
-  width: 30px !important;
-  height: 30px !important;
-  max-height: 30px !important;
-  border-radius: 50% !important;
-  font-size: 12px !important;
-  margin: 5px !important; 
-}
+
 
 .margen{
     background: var(--main-bg);
@@ -364,7 +380,7 @@ h2{
 
 .btn{
   text-decoration: none;
-  min-height: 8.5rem;
+  /* min-height: 8.5rem; */
   max-height: 8.5rem;
 
   flex-flow: row wrap;
