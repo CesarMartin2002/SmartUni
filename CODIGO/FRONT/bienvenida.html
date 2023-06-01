@@ -21,7 +21,7 @@
             </div>
         </main>
 
-        <script src="/static/bienvenida.js"></script>
+        
         <script>
             const pedidoBtn = document.getElementById('cafe-btn');
             pedidoBtn.addEventListener('click', function() {
@@ -35,8 +35,7 @@
             const taquillasBtn = document.getElementById('taquillas-btn');
             taquillasBtn.addEventListener('click', function() {
                 // Aquí agregar la lógica que deseo ejecutar cuando se hace clic en el botón 'TAQUILLAS'
-                // para redirigir a la página 'taquillas.html', puedes usar:
-                window.location.href = '/lockers';
+                obtenerTaquillaReservada();
             });
             const claseBtn = document.getElementById('clases-btn');
             claseBtn.addEventListener('click', function() {
@@ -44,5 +43,6 @@
                 window.location.href = '/aula';
             });
         </script>
+        <script src="/static/bienvenida.js"></script>
     </body>
 </html>

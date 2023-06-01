@@ -3,31 +3,21 @@ const baseUrl = `${window.location.protocol}//${window.location.host}`;
 var hola;
 
 async function cargarDatos() {
-  // Obtiene los valores de las taquillas generando un botón con la información de cada una
-  var taquillaDeAlumno = await obtenertaquillaDeAlumno();
-  taquillaDeAlumno = taquillaDeAlumno[0];
-  hola = taquillaDeAlumno;
-  if (taquillaDeAlumno) {
-    console.log(taquillaDeAlumno);
-    // Mostrar la taquilla reservada del alumno
-    mostrarTaquillaReservada(taquillaDeAlumno);
-  } else {
-    // Mostrar todas las taquillas disponibles
-    fetch(`${baseUrl}/taquillas?ocupado=false`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        if (data.data.length > 0) {
-          mostrarDatos(data);
-        } else {
-          var mensaje = 'No hay taquillas disponibles en este momento.';
-          document.getElementById('taquillas').innerHTML = `<p>${mensaje}</p>`;
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
+  fetch(`${baseUrl}/taquillas?ocupado=false`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if (data.data.length > 0) {
+        mostrarDatos(data);
+      } else {
+        var mensaje = 'No hay taquillas disponibles en este momento.';
+        document.getElementById('taquillas').innerHTML = `<p>${mensaje}</p>`;
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  
 }
 
 // Llamamos a cargarDatos al cargar la página
@@ -66,12 +56,6 @@ function mostrarDatos(data) {
           ${numero_taquilla}
         </button>
       </div>
-      <script>
-      const taquillaBtn = document.getElementById('i');
-            taquillaBtn.addEventListener('click', function() {
-                // Aquí agregar la lógica que deseo ejecutar cuando se hace clic en el botón 'Clase'
-                window.location.href = '/reservaTaquilla/${taquillas[i].id_taquilla}';
-      </script>
       <br>
     `;
   }
