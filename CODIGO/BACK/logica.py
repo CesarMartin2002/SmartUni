@@ -512,25 +512,29 @@ def actualizar_aula(id: int, aula: dict):
 #region obtener asignaturas que se dan en un aula
 def obtener_asignatura_aula(id_aula: int=-1):
     #region obtener las asignaturas de la base de datos
-    query = "SELECT id_asignatura, descripcion, laboratorio, planta, ala, dia, hora_inicio, hora_fin from vista_asignaturas"
+    query = "SELECT id_asignatura, descripcion, laboratorio, planta, ala, dia, hora_inicio, hora_fin, num_ala from vista_asignaturas"
     params = []
     if id_aula != -1:
         query += " WHERE id_aula = %s"
         params.append(id_aula)
     
-    asignatura = db.realizar_consulta(query,params)
+    asignaturas = db.realizar_consulta(query,params)
     #endregion
-
+    print(len(asignaturas))
     #region verificar que se encontró la asignatura
-    if len(asignatura) == 0:
+    if len(asignaturas) == 0:
         mensaje = "No se encontraron asignaturas en la clase " + str(id_aula)
         respuesta_fallida(mensaje, 404)
     #endregion
 
-    #region convertir los datos a un diccionario
-    asignatura = asignatura[0]
+    #region convertir los datos a un diccionario añadiendo los nombres de cada aula.
+    for asig in asignaturas:
+            letra_ala = asig['ala'][0]
+            nombre_aula = (f"{letra_ala}{'L' if asig['laboratorio'] else 'A'}{asig['num_ala']}").upper()
+            asig['nombre'] = nombre_aula
     #endregion
-    return asignatura
+
+    return asignaturas
 
 #endregion
 
