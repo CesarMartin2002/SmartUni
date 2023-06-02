@@ -111,15 +111,19 @@ function mostrarDatos(data) {
     console.log(taquilla);
     var html = '';
     var num_taquilla = `Taquilla número ${taquilla.id_taquilla}`;
+    var password = taquilla.ocupado ? `Contraseña: ${taquilla.password}` : '';
     var ala_taquilla = `Ala: ${taquilla.ala}`;
     var piso_taquilla = `Piso: ${taquilla.piso}`;
     var pasillo_taquilla = `Pasillo: ${taquilla.piso}`;
     var reservar_taquilla = taquilla.ocupado ? 'CANCELAR TAQUILLA' : 'SOLICITAR TAQUILLA';
     var buttonFunction = taquilla.ocupado ? `cancelarTaquilla(${taquilla.id_taquilla})` : `reservarTaquilla(${taquilla.id_taquilla})`;
+    var titulo = taquilla.ocupado ? 'MI TAQUILLA' : 'RESERVAR TAQUILLA';
 
     html += `
         <div class="taquilla">
-        <h2>${num_taquilla}</h2>  
+        <h1>${titulo}</h1>
+        <h2>${num_taquilla}</h2> 
+        <h2>${password}</h2>  
         <h2>${ala_taquilla}</h2>
         <h2>${piso_taquilla}</h2> 
         <h2>${pasillo_taquilla}</h2>
@@ -182,4 +186,9 @@ function cancelarTaquilla(idTaquilla) {
     .catch(error => {
       console.error('Error:', error);
     });
+}
+
+function mostrarMensaje(mensaje) {
+  const mensajeElement = document.getElementById('mensaje');
+  mensajeElement.innerText = mensaje;
 }
