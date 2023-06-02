@@ -111,15 +111,18 @@ function mostrarDatos(data) {
     console.log(taquilla);
     var html = '';
     var num_taquilla = `Taquilla número ${taquilla.id_taquilla}`;
+    var pass_taquilla = `Contraseña: ${taquilla.password}`;
     var ala_taquilla = `Ala: ${taquilla.ala}`;
     var piso_taquilla = `Piso: ${taquilla.piso}`;
     var pasillo_taquilla = `Pasillo: ${taquilla.piso}`;
     var reservar_taquilla = taquilla.ocupado ? 'CANCELAR TAQUILLA' : 'SOLICITAR TAQUILLA';
     var buttonFunction = taquilla.ocupado ? `cancelarTaquilla(${taquilla.id_taquilla})` : `reservarTaquilla(${taquilla.id_taquilla})`;
 
-    html += `
+    if(taquilla.ocupado){
+      html += `
         <div class="taquilla">
         <h2>${num_taquilla}</h2>  
+        <h2>${pass_taquilla}</h2>  
         <h2>${ala_taquilla}</h2>
         <h2>${piso_taquilla}</h2> 
         <h2>${pasillo_taquilla}</h2>
@@ -128,9 +131,27 @@ function mostrarDatos(data) {
         </button>
         </div>
       `;
+    }
+    else{
+      html += `
+        <div class="taquilla">
+        <h2>${num_taquilla}</h2>    
+        <h2>${ala_taquilla}</h2>
+        <h2>${piso_taquilla}</h2> 
+        <h2>${pasillo_taquilla}</h2>
+        <button id= i class="btn btn-primary" onclick="${buttonFunction}">
+          ${reservar_taquilla}
+        </button>
+        </div>
+      `;
+    }
+
+    
     
     document.getElementById('taquillas').innerHTML = html;
 }
+
+
 
 function reservarTaquilla(idTaquilla) {
   const url = `/taquillas/reservar/${idTaquilla}`;
@@ -174,7 +195,7 @@ function cancelarTaquilla(idTaquilla) {
     .then(response => {
       if (response.ok) {
         console.log('Se ha cancelado la reserva de la taquilla');
-        window.location.reload(); // Recargar la página
+        window.location.href = '/lockers'; // Nos lleva a la página de taquillas
       } else {
         console.log('No se ha cancelado la taquilla :(');
       }
