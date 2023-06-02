@@ -47,7 +47,7 @@ async def get_aula(id_aula: int):
 
 
 #consultar disponibilidad de aulas
-@router.get("/aulas/{id_aula}")
+@router.get("/aulas/disponibilidad/{id_aula}")
 async def get_clase_proxima(id_aula: int):
     prox_clase = logica.obtener_clase_proxima(id_aula)
     #si prox_clase es en los proximos 15 minutos devolver true sino false
