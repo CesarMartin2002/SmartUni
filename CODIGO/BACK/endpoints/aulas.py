@@ -39,7 +39,7 @@ async def put_aula(id_aula: int, request: Request):
 A partir de aqui se definen los endpoints para los horarios de las aulas
 """
 @router.get("/aulas/asignaturas/{id_aula}")
-async def get_aula(id_aula: int):
+async def get_asignaturas_aula(id_aula: int):
     """
     Obtiene las asignaturas que se dan en un aula, según su id.
     """
@@ -55,10 +55,18 @@ async def get_clase_proxima(id_aula: int):
     fecha_futura = fecha_actual + datetime.timedelta(minutes=15)
     return fecha_futura >= prox_clase
 
+@router.get("/aulas/horarios/{id_horario}")
+async def get_horario(id_horario: int):
+    """
+    Obtiene una horario en específico, según su id.
+    """
+    return logica.respuesta_exitosa(logica.obtener_horario(id_horario))
+
 #insertar horario
-@router.post("/aulas/horarios/{id_aula}")
-async def post_horario(id_aula: int):
+@router.post("/aulas/horarios")
+async def post_horario(request: Request):
     """
     Inserta un nuevo horario de clase en la base de datos.
     """
-    return logica.respuesta_exitosa(logica.insertar_horario(id_aula))
+    data = await request.json()
+    return logica.respuesta_exitosa(logica.insertar_horario(data))

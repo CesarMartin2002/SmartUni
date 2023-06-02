@@ -538,6 +538,35 @@ def obtener_asignatura_aula(id_aula: int=-1):
 
 #endregion
 
+#region sacar el horario dado el id
+def obtener_horario(id_horario: int):
+    """
+    Obtiene el horario con el id especificado de la base de datos y lo devuelve como un diccionario
+    """
+    #region obtener el horario con el id especificado
+    query = "SELECT * FROM horario WHERE id_horario = %s"
+    parameters = (id_horario,)
+    horario = db.realizar_consulta(query, params=parameters)
+    #endregion
+
+    #region verificar que se encontró el horario
+    if len(horario) == 0:
+        print("No se encontró el horario con id " + str(id_horario))
+        mensaje = "No se encontró el horario con id " + str(id_horario)
+        respuesta_fallida(mensaje, 404)
+    #endregion
+
+    #region convertir los datos a un diccionario
+    horario = horario[0]
+    #endregion
+    return horario
+#endregion
+
+#region insertar horario
+def insertar_horario(horario: dict):
+    return obtener_horario(db.realizar_insercion("horario",horario))
+#endregion
+
 #region sacar proxima clase
 def obtener_clase_proxima(id_aula):
     query= "SELECT fecha_inicio FROM aula INNER JOIN asignatura INNER JOIN horario WHERE id_aula = %s AND fecha_inicio > now() ORDER BY fecha_inicio DESC LIMIT 1"
