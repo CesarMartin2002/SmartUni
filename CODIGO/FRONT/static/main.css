@@ -254,14 +254,13 @@ main {
   /*cambios de mi intento de CSS */
   .btn-danger {
     background-color: red;
-    color: white;
+    color: rgb(204, 58, 58);
     /* Otros estilos personalizados */
   }
   
 
   /* Estilos para el detalle del pedido */
 .detallepedido {
-  background-color: #c5dee9;
   padding: 10px;
   border-radius: 5px;
 }
@@ -270,13 +269,14 @@ main {
   font-size: 18px;
   margin-bottom: 5px;
   font-weight: bold;
-  color: #333333;
+  color: #eae0e0;
 }
 
 .detallepedido ul {
   list-style-type: none;
   padding-left: 0;
   margin-top: 0;
+  color: #eae0e0;
 }
 
 .detallepedido li {
@@ -285,6 +285,7 @@ main {
 
 .negrita {
   font-weight: bold;
+  color: #f7f2f2;
 }
 /*FIN CAMBIOS*/
 
