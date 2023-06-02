@@ -509,6 +509,31 @@ def actualizar_aula(id: int, aula: dict):
     return obtener_aula(db.realizar_actualizacion("aula",id,aula))
 #endregion
 
+#region obtener asignaturas que se dan en un aula
+def obtener_asignatura_aula(id_aula: int=-1):
+    #region obtener las asignaturas de la base de datos
+    query = "SELECT id_asignatura, descripcion, laboratorio, planta, ala, dia, hora_inicio, hora_fin from vista_asignaturas"
+    params = []
+    if id_aula != -1:
+        query += " WHERE id_aula = %s"
+        params.append(id_aula)
+    
+    asignatura = db.realizar_consulta(query,params)
+    #endregion
+
+    #region verificar que se encontró la asignatura
+    if len(asignatura) == 0:
+        mensaje = "No se encontraron asignaturas en la clase " + str(id_aula)
+        respuesta_fallida(mensaje, 404)
+    #endregion
+
+    #region convertir los datos a un diccionario
+    asignatura = asignatura[0]
+    #endregion
+    return asignatura
+
+#endregion
+
 #region sacar proxima clase
 def obtener_clase_proxima(id_aula):
     query= "SELECT fecha_inicio FROM aula INNER JOIN asignatura INNER JOIN horario WHERE id_aula = %s AND fecha_inicio > now() ORDER BY fecha_inicio DESC LIMIT 1"

@@ -62,7 +62,7 @@ def pagina_lockers():
         html = f.read()
     return HTMLResponse(html)
 
-@router.get("/detalleTaquilla/{id}")#no hay html de detalle taquilla
+@router.get("/detalleTaquilla/{id}")
 def pagina_detalleTaquilla():
     with open("FRONT/detalle_taquilla.html", "r", encoding="utf-8") as f:
         html = f.read()
@@ -76,7 +76,13 @@ def pagina_detalleTaquilla():
 def pagina_aula():
     with open("FRONT/aulas.html", "r", encoding="utf-8") as f:
         html = f.read()
-    return HTMLResponse(html)    
+    return HTMLResponse(html) 
+
+@router.get("/detalleAula/{id}")
+def pagina_detalleAula():
+    with open("FRONT/detalle_aula.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(html)       
 #endregion
 
 #region testeos adicionales

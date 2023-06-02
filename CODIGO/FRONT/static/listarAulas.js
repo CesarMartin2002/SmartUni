@@ -24,7 +24,7 @@ function mostrarDatos(data) {
 
     html += `
       <div class="aula">
-        <button class="btn btn-primary" onclick="window.location.href = '/aulas/${aulas[i].id_aula}'">
+        <button class="btn btn-primary" onclick="window.location.href = '/detalleAula/${aulas[i].id_aula}'">
           ${nombre_aula}
         </button>
       </div>

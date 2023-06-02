@@ -38,6 +38,13 @@ async def put_aula(id_aula: int, request: Request):
 """
 A partir de aqui se definen los endpoints para los horarios de las aulas
 """
+@router.get("/aulas/asignaturas/{id_aula}")
+async def get_aula(id_aula: int):
+    """
+    Obtiene las asignaturas que se dan en un aula, según su id.
+    """
+    return logica.respuesta_exitosa(logica.obtener_asignatura_aula(id_aula))
+
 
 #consultar disponibilidad de aulas
 @router.get("/aulas/{id_aula}")
