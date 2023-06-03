@@ -802,7 +802,30 @@ def actualizar_pedido(id_pedido: int, data: dict):
 
 
 #endregion
+
+def obtener_pedido_estrella(id_alumno: int = -1):
+    """
+    Lista todos los pedidos de cafetería.
+    """
+    #region obtener el pedido estrella
+    query = "SELECT id_producto, descripcion, COUNT(*) AS cantidad from vista_pedido_estrella"
+    params = []
+    if id_alumno != -1:
+        query += " WHERE id_alumno_alumno = %s"
+        params.append(id_alumno)
+    
+    query += " GROUP BY id_producto, descripcion ORDER BY cantidad DESC LIMIT 1"
+    pedido_estrella = db.realizar_consulta(query,params)
+    #endregion
+
+    #region convertir los datos a un diccionario
+    pedido_estrella = pedido_estrella[0]
+    #endregion
+    return pedido_estrella
+
 #endregion
+
+
 
 #region funciones nfc básicas
 
