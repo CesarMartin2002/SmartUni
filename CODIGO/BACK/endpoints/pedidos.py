@@ -3,6 +3,14 @@ import logica
 
 router = APIRouter()
 
+@router.get("/cafeteria/pedidos/estrella")
+async def get_pedido_estrella(id_alumno: int = Query(default=-1)):
+    """
+    Detalla la descripción del producto más pedido.
+    """
+    return logica.respuesta_exitosa(logica.obtener_pedido_estrella(id_alumno))
+
+
 @router.get("/cafeteria/pedidos")
 async def get_pedidos(id_alumno: int = Query(default=-1)):
     """
@@ -36,9 +44,3 @@ async def put_pedido(id_pedido: int, request: Request):
     pedido = logica.actualizar_pedido(id_pedido, data)
     return logica.respuesta_exitosa(pedido)
 
-@router.get("/cafeteria/pedidos/estrella")
-async def get_pedido_estrella(id_alumno: int = Query(default=-1)):
-    """
-    Detalla la descripción del producto más pedido.
-    """
-    return logica.respuesta_exitosa(logica.obtener_pedido_estrella(id_alumno))
