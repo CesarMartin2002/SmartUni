@@ -818,6 +818,12 @@ def obtener_pedido_estrella(id_alumno: int = -1):
     pedido_estrella = db.realizar_consulta(query,params)
     #endregion
 
+    #region verificar que se encontró el pedido estrella
+    if len(pedido_estrella) == 0:
+        mensaje = "Debes tener al menos un pedido para obtener el pedido estrella"
+        respuesta_fallida(mensaje, 404)
+    #endregion
+
     #region convertir los datos a un diccionario
     pedido_estrella = pedido_estrella[0]
     #endregion
