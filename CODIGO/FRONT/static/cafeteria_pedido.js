@@ -87,16 +87,23 @@ function productoEstrella(){
       
     }
     )
-  fetch(rutaAlumno)
-    .then(response => response.json())
+    fetch(rutaAlumno)
+    .then(response => {
+      if (response.status === 400) {
+        document.getElementById('productoAlumno').style.display = 'none';
+        throw new Error('Error en la respuesta del servidor');
+      } else {
+        return response.json();
+      }
+    })
     .then(data => {
       console.log(data);
       var producto = data.data;
       var nombre = producto.descripcion;
       var idProducto = `Id producto => ${producto.id_producto}`;
-      var cantidad = `Nº de veces que se ha pedido =>${producto.cantidad}`;
+      var cantidad = `Nº de veces que se ha pedido => ${producto.cantidad}`;
       var html = '';
-      
+  
       var html = `
         <div class="detallepedido">
           <ul>${nombre}</ul>
@@ -105,11 +112,14 @@ function productoEstrella(){
         </div>
         <br>
       `;
-      
+  
       document.getElementById('productoAlumno').innerHTML = html;
-      
-    }
-    )
+    })
+    .catch(error => {
+      console.error(error);
+      // Aquí puedes realizar acciones adicionales en caso de error.
+    });
+  
 }
 
 // Función para obtener el valor de una cookie por su nombre
