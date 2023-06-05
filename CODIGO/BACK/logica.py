@@ -695,8 +695,8 @@ def crear_pedido(data: dict):
     #region insertar los productos del pedido
     for producto in data["productos"]:
         data_pedido_producto = {
-            "id_pedido": id_pedido,
-            "id_producto": producto
+            "id_pedido_pedido": id_pedido,
+            "id_producto_producto": producto
         }
         db.realizar_insercion("pedido_producto", data_pedido_producto)
     #endregion

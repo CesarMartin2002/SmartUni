@@ -2,6 +2,7 @@
 const baseUrl = `${window.location.protocol}//${window.location.host}`;
 var filtro = "";
 const id_alumno = getCookie('id_alumno');
+var cantidades = new Map();
 function cargarDatos(){
   //obtiene los valores de los records generando un boton con la informacion de cada uno
   filtro = document.getElementById("input").value;
@@ -13,7 +14,6 @@ function cargarDatos(){
     .then(data => {
       console.log(data);
       mostrarDatos(data);
-      
     }
     )
 }
@@ -29,8 +29,11 @@ function mostrarDatos(data) {
   for (var i = 0; i < productos.length; i++) {
     nombre = productos[i].descripcion;
     precio = productos[i].precio;
-    
+    if (!cantidades.has(productos[i].id_producto))
+    cantidades.set(productos[i].id_producto, 0);
+
     html += `
+    <div class="cantidad-prod">
       <div class="producto">
         <button class="btn btn-minus" onclick="restarCantidad(${productos[i].id_producto})">-</button>
         <button class="btn btn-primary" onclick="window.location.href = 'productos/${productos[i].id_producto}'">
@@ -38,23 +41,33 @@ function mostrarDatos(data) {
         </button>
         <button class="btn btn-plus" onclick="sumarCantidad(${productos[i].id_producto})">+</button>
       </div>
+      <p class="cantidad" id="cantidad${productos[i].id_producto}">Cantidad: ${cantidades.get(productos[i].id_producto)}</p>
+    </div>
       <br>
     `;
+    document.getElementById('productos').innerHTML = html;
+
+
   }
-  
-  document.getElementById('productos').innerHTML = html;
+
 }
 
 // Funciones para restar y sumar la cantidad de productos
 function restarCantidad(idProducto) {
   console.log("restar cantidad");
   console.log(idProducto);
+  if (cantidades.get(idProducto) > 0) {
+    cantidades.set(idProducto, cantidades.get(idProducto) - 1);
+  }
+  document.getElementById(`cantidad${idProducto}`).innerHTML = `Cantidad: ${cantidades.get(idProducto)}`;
   // Implementa la lógica para restar la cantidad del producto con el id proporcionado
 }
 
 function sumarCantidad(idProducto) {
   console.log("sumar cantidad");
   console.log(idProducto);
+  cantidades.set(idProducto, cantidades.get(idProducto) + 1);
+  document.getElementById(`cantidad${idProducto}`).innerHTML = `Cantidad: ${cantidades.get(idProducto)}`;
   // Implementa la lógica para sumar la cantidad del producto con el id proporcionado
 }
 
@@ -104,6 +117,52 @@ function productoEstrella(){
       // Aquí puedes realizar acciones adicionales en caso de error.
     });
   
+}
+
+// Función para crear un pedido
+function crearPedido() {
+  var productos = [];
+  for (let [key, value] of cantidades) {
+    if (value > 0) {
+      for (let i = 0; i < value; i++) {
+        productos.push(key);
+      };
+    }
+  }
+  if (productos.length == 0) {
+    alert("No hay productos seleccionados");
+    return;
+  }
+
+  json = {
+    "id_alumno": id_alumno,
+    "productos": productos
+  }
+
+  var url = `/cafeteria/pedidos`;
+  var data = JSON.stringify(json);
+  console.log(data);
+  fetch(url, {
+    method: 'POST',
+    body: data,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      alert("Pedido realizado correctamente. El id de su pedido es: " + data.data.id_pedido + ".");
+      window.location.href = '/cafeteria/mis_pedidos';
+    }
+    )
+    .catch(error => {
+      console.error(error);
+      // Aquí puedes realizar acciones adicionales en caso de error.
+    }
+    );
+
+
 }
 
 // Función para obtener el valor de una cookie por su nombre

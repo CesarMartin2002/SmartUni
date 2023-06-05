@@ -112,8 +112,13 @@ main {
 
 /*.menu input[type="submit"]*/
 
-#producto button{
-  margin-top: 0rem;
+.producto button{
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+
+.cantidad{
+  margin-top: 1rem;
 }
 
 .btn-minus,
@@ -350,6 +355,12 @@ h2{
     font-weight: 700;
     margin: 1rem;   
 
+}
+
+p{
+    text-align: center;
+    color: rgb(255, 255, 255);
+    margin-bottom: 1rem;
 }
 
 h3{
