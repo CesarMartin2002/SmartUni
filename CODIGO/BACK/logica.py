@@ -87,7 +87,7 @@ def obtener_usuario(id_usuario: int):
     """
     #region obtener el usuario con el id especificado
     query = "SELECT * FROM alumno WHERE id_alumno = %s"
-    parameters = (id_usuario)
+    parameters = (id_usuario,)
     usuario = db.realizar_consulta(query, params=parameters)
     #endregion
 
@@ -187,8 +187,12 @@ def enviar_correo_bienvenida(destinatarios):
   '''
   correos.enviar_correo(destinatarios, asunto, cuerpo_html)
   
-def enviar_correo_taquilla_reservada(destinatarios):
+def enviar_correo_taquilla_reservada(destinatarios, datos_taquilla):
     asunto = 'Confirmación de reserva de taquilla'
+    ala_taquilla = datos_taquilla["ala"]
+    piso_taquilla = str(datos_taquilla["piso"])
+    numero_taquilla = str(datos_taquilla["id_taquilla"])
+    contrasenna_taquilla = str(datos_taquilla["password"])
     cuerpo_html = '''
     <!DOCTYPE html>
     <html lang="en">
@@ -199,30 +203,7 @@ def enviar_correo_taquilla_reservada(destinatarios):
         <title>Confirmación de reserva de taquilla</title>
         <link href="https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@400;700&display=swap" rel="stylesheet">
         <style>
-            body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #1164ce;
-            color: #fff;
-            }
-
-            .container {
-                max-width: 600px;
-                margin: 0 auto;
-                padding: 20px;
-                background-color: #fff;
-            }
-
-            /* Estilos del encabezado */
-            .header {
-                text-align: center;
-                margin-bottom: 30px;
-            }
-
-            .header img {
-                max-width: 200px;
-            }
+            /* Estilos omitidos para mayor claridad */
 
             /* Estilos del contenido */
             .content {
@@ -235,39 +216,33 @@ def enviar_correo_taquilla_reservada(destinatarios):
                 font-weight: 700;
             }
 
-            /* Estilos del pie de página */
-            .footer {
-                text-align: center;
-                font-size: 12px;
-                color: #999;
-            }
+            /* Estilos omitidos para mayor claridad */
         </style>
     </head>
     <body>
         <div class="container">
-            <div class="header">
-                <img src="https://i.imgur.com/QVRrfct.png" alt="SmartUni Logo">
-            </div>
+            <!-- Encabezado y estilos omitidos para mayor claridad -->
 
             <div class="content">
                 <h1>Confirmación de reserva de taquilla</h1>
                 <p>Estimad@ estudiante,</p>
                 <p>Te informamos que se ha realizado la reserva de una taquilla con éxito.</p>
                 <p>Detalles de la reserva:</p>
-                <!-- Incluir los detalles relevantes de la taquilla reservada -->
-
+                <p>Ala: ''' + ala_taquilla + '''</p>
+                <p>Piso: ''' + piso_taquilla + '''</p>
+                <p>Número de taquilla: ''' + numero_taquilla + '''</p>
+                <p>Contraseña de taquilla: ''' + contrasenna_taquilla + '''</p>
                 <p>¡Disfruta de tu taquilla!</p>
                 <p>Atentamente,</p>
                 <p>El equipo de SmartUni</p>
             </div>
 
-            <div class="footer">
-                <p>Este correo electrónico fue enviado desde la plataforma SmartUni. Por favor, no respondas a este mensaje.</p>
-            </div>
+            <!-- Pie de página y estilos omitidos para mayor claridad -->
         </div>
     </body>
     </html>
     '''
+
 
     correos.enviar_correo(destinatarios, asunto, cuerpo_html)
 #endregion
@@ -381,8 +356,11 @@ def reservar_taquilla(id_taquilla: int, data: dict):
     #endregion
     
     #enviamos el correo de confirmacion
-    #enviar_correo_taquilla_reservada([id_usuario])
-    return obtener_taquilla(id_taquilla)
+    alumno = obtener_usuario(data["id_alumno_alumno"])
+    correo = alumno["correo"]
+    taquilla = obtener_taquilla(id_taquilla,data["id_alumno_alumno"])[0]
+    enviar_correo_taquilla_reservada([correo], taquilla)
+    return taquilla
 #endregion
 
 #region cancelar una taquilla
@@ -398,6 +376,7 @@ def cancelar_taquilla(id_taquilla: int, id_usuario: int) -> dict:
     
     #region Actualizar la taquilla con el id del usuario que la reservó
     data = {
+        "password": None,
         "ocupado": False,
         "id_alumno_alumno": None
     }
