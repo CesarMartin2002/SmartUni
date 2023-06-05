@@ -250,5 +250,18 @@ def realizar_actualizacion(nombre_tabla: str,id: int, data: dict):
     conn.close()
     return id
 
-    
+def ejecutar_sentencia(sql:str):
+    """
+    Ejecuta una sentencia sql en la base de datos, ya sea un insert, update, delete, etc.
+    NO HAY COMPROBACIÓN DE QUE LA SENTENCIA SEA CORRECTA, SE EJECUTA TAL CUAL SE ENVÍA
+    DEBE HABER SIDO COMPROBADA ANTES DE ENVIARLA A ESTA FUNCIÓN
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
+    print ("Realizando: "+sql)
+    cursor.execute(sql)
+    print("Sentencia ejecutada correctamente")
+    conn.commit()
+    cursor.close()
+    conn.close()
     

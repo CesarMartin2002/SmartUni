@@ -630,7 +630,7 @@ def obtener_pedidos(id_alumno: int = -1):
     if id_alumno != -1:
         query += " WHERE id_alumno_alumno = %s"
         params.append(id_alumno)
-    
+    query += " ORDER BY id_pedido DESC"
     pedidos = db.realizar_consulta(query,params)
     #endregion
     for pedido in pedidos:
@@ -677,7 +677,8 @@ def crear_pedido(data: dict):
     #endregion
 
     #region verificar que todos los productos existan
-    for producto in data["productos"]:
+    productos_sin_duplicar = set(data["productos"])
+    for producto in productos_sin_duplicar:
         if obtener_producto(producto) is None:
             mensaje = f"No se encontró el producto con id {producto['id_producto']}"
             respuesta_fallida(mensaje, 404)
@@ -693,12 +694,22 @@ def crear_pedido(data: dict):
     #endregion
 
     #region insertar los productos del pedido
+
+    sql = "INSERT INTO pedido_producto (id_pedido_pedido, id_producto_producto) VALUES "
     for producto in data["productos"]:
-        data_pedido_producto = {
-            "id_pedido_pedido": id_pedido,
-            "id_producto_producto": producto
-        }
-        db.realizar_insercion("pedido_producto", data_pedido_producto)
+        sql += f"({id_pedido}, {producto}),"
+    sql = sql[:-1] #quitamos la última coma
+    db.ejecutar_sentencia(sql)
+
+    #region COMENTADO version anterior sin optimizar pero mas segura
+    # for producto in data["productos"]:
+    #     data_pedido_producto = {
+    #         "id_pedido_pedido": id_pedido,
+    #         "id_producto_producto": producto
+    #     }
+    #     db.realizar_insercion("pedido_producto", data_pedido_producto)
+    #endregion
+
     #endregion
 
     #region obtener el pedido insertado

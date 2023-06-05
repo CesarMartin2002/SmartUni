@@ -85,3 +85,10 @@ async function obtenerTaquillaReservada() {
         window.location.href = '/lockers';
     }
 }
+
+function cerrarSesion(){
+  //borra todas las cookies
+  document.cookie = "id_alumno=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  document.cookie = "correo=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  window.location.replace("/");
+}
