@@ -59,7 +59,7 @@ function mostrarDetallePedido(data) {
     var productoDescripcion = pedido.productos_descripciones[j];
     productos += `<li><span class="negrita">Nombre producto => </span> ${productoDescripcion}</li>`;
   }
-  var estado = pedido.estado
+  var estado = pedido.estado;
   if (estado == 0){
     estado = `<li><span class="negrita">Estado => </span>✅ - Aprobación pendiente</li>`;
   }else if (estado == 1){
