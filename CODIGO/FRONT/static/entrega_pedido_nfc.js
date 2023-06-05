@@ -59,8 +59,19 @@ function mostrarDetallePedido(data) {
     var productoDescripcion = pedido.productos_descripciones[j];
     productos += `<li><span class="negrita">Nombre producto => </span> ${productoDescripcion}</li>`;
   }
-
-  var estado = `<li><span class="negrita">Estado => </span>${pedido.estado}</li>`;
+  var estado = pedido.estado
+  if (estado == 0){
+    estado = `<li><span class="negrita">Estado => </span>✅ - Aprobación pendiente</li>`;
+  }else if (estado == 1){
+    estado = `<li><span class="negrita">Estado => </span>🧑‍🍳 - Preparando en cocina</li>`;
+  }else if (estado == 2){
+    estado = `<li><span class="negrita">Estado => </span>👜 - Listo para recoger</li>`;
+  }else if (estado == 3){
+    estado = `<li><span class="negrita">Estado => </span>🍽️ - Consumiendo</li>`;
+  }else{
+    estado = `<li><span class="negrita">Estado => </span>😀 - Finalizado</li>`;
+  }
+  
 
   var html = `
     <div class="detallepedido">

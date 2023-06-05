@@ -9,12 +9,12 @@ router = APIRouter()
 # a partir de aquí se definen las rutas
 
 
-@router.get("/taquillas/{id}")
-async def get_taquilla(id: int):
+@router.get("/taquillas/{id_taquilla}")
+async def get_taquilla(id_taquilla: int, id_alumno: int = Query(default=-1)):
     """
     Este endpoint devuelve una taquilla en particular a partir de su id
     """
-    taquilla = logica.obtener_taquilla(id)
+    taquilla = logica.obtener_taquilla(id_taquilla,id_alumno)
     return logica.respuesta_exitosa(taquilla)
 
 

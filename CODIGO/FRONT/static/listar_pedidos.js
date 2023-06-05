@@ -37,8 +37,8 @@ function mostrarPedidos(data) {
     if (pedidos.length > 0) {
       for (var i = 0; i < pedidos.length; i++) {
         var id_pedido = `Pedido ${pedidos[i].id_pedido}`;
-        //poner el boton primary en rojo si el estado es > 3
-        if (pedidos[i].estado >= 0) {
+        //poner el boton primary en rojo si el estado es >= 3
+        if (pedidos[i].estado >= 3) {
             html += `
             <div class="pedido">
                 <button class="btn btn-danger" onclick="verDetallesPedido('${pedidos[i].id_pedido}')">

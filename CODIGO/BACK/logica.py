@@ -274,14 +274,19 @@ def enviar_correo_taquilla_reservada(destinatarios):
 
 #region funciones de taquillas
 
-def obtener_taquilla(id_taquilla: int):
+def obtener_taquilla(id_taquilla: int, id_alumno = -1):
     # devolverla como un diccionario con sus propiedades (por ejemplo, {'id': 1, 'ocupado': True, 'usuario': None})
     # Si no se encuentra ninguna taquilla con ese id, se debe retornar un error (por ejemplo, {'success': False, 'message': 'No se encontró la taquilla con id 1'})
     query = "SELECT * FROM taquilla WHERE id_taquilla = %s"
-    parameters = (id_taquilla,)
+    parameters = [id_taquilla]
     taquilla = db.realizar_consulta(query, params=parameters)
     if len(taquilla) == 0:
         respuesta_fallida("No se encontró la taquilla con id " + str(id_taquilla), 404)
+    #region para comprobar si esta ocupada y coincide el id_alumno
+    if (taquilla[0]['ocupado']):
+        if(taquilla[0]['id_alumno_alumno'] != id_alumno):
+            respuesta_fallida("La taquilla con id " + str(id_taquilla) + " no pertenece al alumno " + str(id_alumno), 403) 
+    #endregion    
     return taquilla
 
 def obtener_usuario_de_taquilla(id_taquilla: int):

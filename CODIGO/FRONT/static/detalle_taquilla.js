@@ -1,4 +1,4 @@
-
+const id_alumno = getCookie('id_alumno');
 window.onload= function(){
     let x = document.cookie;
     if(!x.includes("correo")){
@@ -30,18 +30,6 @@ function getCookie(name) {
     return '';
 }
 
-function obtenerInformacionTaquillaReservada(idAlumno) {
-    return fetch(`${baseUrl}/taquilla/Alumno/${idAlumno}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.code === 200) {
-          return data.data; // Supongamos que la información de la taquilla reservada se encuentra en data.data
-        } else {
-          return null; // No se encontró una taquilla reservada para el alumno
-        }
-      });
-}
-
 function getCookieValue(name) {
   const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
   for (const cookie of cookies) {
@@ -52,34 +40,7 @@ function getCookieValue(name) {
   return null;
 }
 
-async function obtenertaquillaDeAlumno() {
-    // Obtener el ID del alumno del local storage o de las cookies, según sea el caso
-    var idAlumno = getCookie('id_alumno');
-    //convertimos a entero idAlumno
-    idAlumno = parseInt(idAlumno);
-  
-    // Verificar si se obtuvo el ID del alumno
-    if (idAlumno) {
-      // Lógica para obtener la información de la taquilla reservada para el alumno con el ID obtenido
-      return obtenerInformacionTaquillaReservada(idAlumno)
-        .then(taquillaReservada => {
-          if (taquillaReservada) {
-            // El alumno tiene una taquilla reservada
-            return taquillaReservada;
-          } else {
-            // No se encontró una taquilla reservada para el alumno
-            return false;
-          }
-        })
-        .catch(error => {
-          console.error(error);
-          return false;
-        });
-    }
-  
-    // El alumno no tiene una taquilla reservada o no se encontró el ID del alumno
-    return false;
-}
+
 
 function getLastPathParameter() {
     const path = window.location.pathname;
@@ -87,23 +48,41 @@ function getLastPathParameter() {
     return pathSegments[pathSegments.length - 1];
   }
 
-async function cargarDatos(){
-    id=parseInt(getLastPathParameter()); 
-    fetch(`/taquillas/${id}`)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      if (data.data.length > 0) {
-        mostrarDatos(data);
-      } else {
-        var mensaje = 'No hay taquillas disponibles en este momento.';
-        document.getElementById('taquillas').innerHTML = `<p>${mensaje}</p>`;
-      }
-    })
-    .catch(error => {
-      console.error(error);
-    });
-}
+  async function cargarDatos() {
+    id = parseInt(getLastPathParameter()); 
+    fetch(`/taquillas/${id}?id_alumno=${id_alumno}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else if (response.status === 403) {
+          throw new Error('Error 403: No tienes acceso a esta taquilla.');
+        } else if (response.status === 404) {
+          throw new Error('Error 404: No existe esta taquilla.');
+        } else {
+          throw new Error('Error en la solicitud.');
+        }
+      })
+      .then(data => {
+        console.log(data);
+        if (data.data.length > 0) {
+          mostrarDatos(data);
+        } else {
+          var mensaje = 'No hay taquillas disponibles en este momento.';
+          document.getElementById('taquillas').innerHTML = `<p>${mensaje}</p>`;
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        var mensajeError = 'Ha ocurrido un error en la solicitud.';
+        if (error.message === 'Error 403: No tienes acceso a esta taquilla.') {
+          mensajeError = 'No tienes acceso a esta taquilla.';
+        }else if (error.message === 'Error 404: No existe esta taquilla.') {
+          mensajeError = 'No existe esta taquilla.';
+        }
+        document.getElementById('taquillas').innerHTML = `<h2 style="color:red">${mensajeError}</h2>`;
+      });
+  }
+  
 
 function mostrarDatos(data) {
     var taquilla = data.data;

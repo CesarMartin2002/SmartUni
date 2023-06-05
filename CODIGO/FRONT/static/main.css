@@ -253,7 +253,7 @@ main {
   
   /*cambios de mi intento de CSS */
   .btn-danger {
-    background-color: red;
+    background-color: red!important;
     color: rgb(204, 58, 58);
     /* Otros estilos personalizados */
   }
