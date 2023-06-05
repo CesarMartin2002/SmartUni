@@ -512,7 +512,7 @@ def actualizar_aula(id: int, aula: dict):
 #region obtener asignaturas que se dan en un aula
 def obtener_asignatura_aula(id_aula: int=-1):
     #region obtener las asignaturas de la base de datos
-    query = "SELECT id_asignatura, descripcion, laboratorio, planta, ala, dia, hora_inicio, hora_fin, num_ala from vista_asignaturas"
+    query = "SELECT id_asignatura, descripcion, temperatura, laboratorio, planta, ala, dia, hora_inicio, hora_fin, num_ala from vista_asignaturas"
     params = []
     if id_aula != -1:
         query += " WHERE id_aula = %s"

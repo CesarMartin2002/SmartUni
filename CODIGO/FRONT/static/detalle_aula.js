@@ -41,20 +41,22 @@ function mostrarDatos(data) {
   var html = '';
 
   var nombre_aula = `Aula ${aula[0].nombre}`;
+  var temperatura = `🌡️Temperatura: ${aula[0].temperatura}ºC`;
 
   html += `
       <div class="aula">
       <h1>${nombre_aula}</h1>  
+      <h2>${temperatura}</h2>
       </div>
       <br>
       `;   
   //consultar las asignaturas de un aula
   var asignaturas = '';
   for (var i = 0; i < aula.length; i++) {
-    var descripcion = `Asignatura: ${aula[i].descripcion}`;
-    var dia = `Fecha: ${aula[i].dia}`;
-    var hora_inicio = `Desde: ${aula[i].hora_inicio}`;
-    var hora_fin = `Hasta: ${aula[i].hora_fin}`;
+    var descripcion = `📖Asignatura: ${aula[i].descripcion}`;
+    var dia = `🗓️Fecha: ${aula[i].dia}`;
+    var hora_inicio = `⏰Desde: ${aula[i].hora_inicio}`;
+    var hora_fin = `⏰Hasta: ${aula[i].hora_fin}`;
     
     //asignaturas += `${descripcion}<br>${dia}<br>${hora_inicio}<br><br>`;
     
