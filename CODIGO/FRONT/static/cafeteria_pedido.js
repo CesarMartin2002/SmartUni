@@ -77,7 +77,16 @@ function productoEstrella(){
   rutaAlumno = `/cafeteria/pedidos/estrella?id_alumno=${id_alumno}`;
   console.log(ruta);
   fetch(ruta)
-    .then(response => response.json())
+    .then(response => {
+      if (response.status == 404) {
+        document.getElementById('productoAlumno').style.display = 'none';
+        return;
+        // throw new Error("No hay pedidos");
+      }
+      if (response.ok) {
+        return response.json();
+      }
+    })
     .then(data => {
       console.log(data);
       // mostrarEstrella(data);
@@ -98,8 +107,15 @@ function productoEstrella(){
     }
     )
     fetch(rutaAlumno)
+    .then(response => {
+      if (response.status == 404) {
+        throw new Error("El alumno no ha realizado pedidos aun, por ende no se le puede mostrar ninguna recomendacion.");
+      }
+      if (response.ok) {
+        return response.json();
+      }
+    })
     .then(data => {
-      console.log(data);
       var producto = data.data;
       var nombre = producto.descripcion;
       var html = document.getElementById('productoAlumno').innerHTML;
@@ -114,7 +130,6 @@ function productoEstrella(){
     .catch(error => {
       document.getElementById('productoAlumno').style.display = 'none';
       console.error(error);
-      // Aquí puedes realizar acciones adicionales en caso de error.
     });
   
 }
