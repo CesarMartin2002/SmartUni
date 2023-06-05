@@ -70,17 +70,14 @@ function productoEstrella(){
       // mostrarEstrella(data);
       var producto = data.data;
       var nombre = producto.descripcion;
-      var idProducto = `Id producto => ${producto.id_producto}`;
-      var cantidad = `Nº de veces que se ha pedido =>${producto.cantidad}`;
-      var html = '';
+      // var idProducto = `Id producto => ${producto.id_producto}`;
+      // var cantidad = `Nº de veces que se ha pedido =>${producto.cantidad}`;
+      var html = document.getElementById('productoEstrella').innerHTML;
       
-      var html = `
-        <div class="detallepedido">
-          <ul>${nombre}</ul>
-          <ul>${idProducto}</ul>
-          <ul>${cantidad}</ul>
-        </div>
-        <br>
+      var html = html+`
+          <h3>${nombre}</h3>
+          <br>
+
       `;
       
       document.getElementById('productoEstrella').innerHTML = html;
@@ -88,34 +85,21 @@ function productoEstrella(){
     }
     )
     fetch(rutaAlumno)
-    .then(response => {
-      if (response.status === 400) {
-        document.getElementById('productoAlumno').style.display = 'none';
-        throw new Error('Error en la respuesta del servidor');
-      } else {
-        return response.json();
-      }
-    })
     .then(data => {
       console.log(data);
       var producto = data.data;
       var nombre = producto.descripcion;
-      var idProducto = `Id producto => ${producto.id_producto}`;
-      var cantidad = `Nº de veces que se ha pedido => ${producto.cantidad}`;
-      var html = '';
+      var html = document.getElementById('productoAlumno').innerHTML;
   
-      var html = `
-        <div class="detallepedido">
-          <ul>${nombre}</ul>
-          <ul>${idProducto}</ul>
-          <ul>${cantidad}</ul>
-        </div>
-        <br>
+      var html = html+`
+          <h3>${nombre}</h3>
+          <br>
       `;
   
       document.getElementById('productoAlumno').innerHTML = html;
     })
     .catch(error => {
+      document.getElementById('productoAlumno').style.display = 'none';
       console.error(error);
       // Aquí puedes realizar acciones adicionales en caso de error.
     });

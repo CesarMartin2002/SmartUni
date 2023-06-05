@@ -51,8 +51,8 @@ body.cafe:before {
 
 .wide-menu {
   width: 70rem !important;
-  padding-left: 5rem !important;
-  padding-right: 5rem !important;
+  padding-left: 3rem !important;
+  padding-right: 3rem !important;
 }
 
 body.cafe .menu{
@@ -349,6 +349,16 @@ h2{
     color: rgb(255, 255, 255);
     font-weight: 700;
     margin: 1rem;   
+
+}
+
+h3{
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-weight: 500;
+    font-size: medium;
+    margin: auto;   
+
 
 }
 
