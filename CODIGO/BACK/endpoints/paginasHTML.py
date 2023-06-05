@@ -40,6 +40,12 @@ def pagina_cafeteriaPedido():
         html = f.read()
     return HTMLResponse(html)
 
+@router.get("/cafeteria/detalles_producto/{id}")
+def pagina_cafeteriaProducto():
+    with open("FRONT/cafeteria_producto.html", "r", encoding="utf-8") as f:
+        html = f.read()
+    return HTMLResponse(html)
+
 @router.get("/cafeteria/detalles_pedido/{id}")
 def pagina_scan():
     with open("FRONT/entrega_pedido_nfc.html", "r", encoding="utf-8") as f:

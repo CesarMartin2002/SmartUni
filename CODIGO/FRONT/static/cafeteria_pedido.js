@@ -36,7 +36,7 @@ function mostrarDatos(data) {
     <div class="cantidad-prod">
       <div class="producto">
         <button class="btn btn-minus" onclick="restarCantidad(${productos[i].id_producto})">-</button>
-        <button class="btn btn-primary" onclick="window.location.href = 'productos/${productos[i].id_producto}'">
+        <button class="btn btn-primary" onclick="verProducto('${productos[i].id_producto}')">
           ${nombre} | ${precio}
         </button>
         <button class="btn btn-plus" onclick="sumarCantidad(${productos[i].id_producto})">+</button>
@@ -50,6 +50,12 @@ function mostrarDatos(data) {
 
   }
 
+}
+//Funcion que redirige al html de ver un producto
+function verProducto(idProducto) {
+  // Redirigir a la página que muestra los detalles del pedido con el ID especificado
+  console.log("Se mete aqui")
+  window.location.href = `/cafeteria/detalles_producto/${idProducto}`;
 }
 
 // Funciones para restar y sumar la cantidad de productos

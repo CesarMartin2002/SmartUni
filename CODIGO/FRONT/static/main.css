@@ -110,6 +110,32 @@ main {
   transition: background 1s;
 }
 
+.menu img{
+  /* align-self: center;
+  width: 100%;
+  flex-flow: column wrap;
+  width: 40rem;
+  max-width: 80%;
+  position: relative;
+  cursor: text;
+  background: #FFFFFF;
+  border: none;
+  padding: 2rem;
+  color: #253347;
+  font-weight: 700;
+  margin: 2rem;
+  border-radius: 2rem;
+  transition: background 1s; */
+  margin: auto !important;
+  width:30rem !important;
+  height: auto !important;
+  display: block !important;
+  margin-top: 2rem !important;
+  border-radius: 2rem !important;
+  /* width: 100%; */
+
+}
+
 /*.menu input[type="submit"]*/
 
 .producto button{
