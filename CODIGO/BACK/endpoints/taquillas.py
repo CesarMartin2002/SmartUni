@@ -4,7 +4,7 @@ import logica
 import random
 
 
-router = APIRouter() 
+router = APIRouter(tags=["Taquillas"]) 
 
 # a partir de aquí se definen las rutas
 
@@ -89,15 +89,6 @@ def cancelar_taquilla(id_taquilla : int, id_alumno:int) -> dict:
     cancelar_taquilla = logica.cancelar_taquilla(id_taquilla, id_alumno)
     return logica.respuesta_exitosa(cancelar_taquilla)
 
-
-#endpoint para eliminar una taquilla
-@router.delete("/taquillas/{id_taquilla}")
-def eliminar_taquilla(id_taquilla: int):
-    """
-    Este endpoint permite eliminar una taquilla a partir de su id
-    """
-    resultado = logica.eliminar_taquilla(id_taquilla)
-    return logica.respuesta_exitosa(resultado)
 
 @router.get("/taquilla/Alumno/{id_alumno}")
 async def obtener_taquilla_reservada(id_alumno: int):

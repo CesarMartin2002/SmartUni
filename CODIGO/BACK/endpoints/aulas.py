@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Query
 import logica
 import datetime
 
-router = APIRouter()
+router = APIRouter(tags=["Aulas"])
 
 @router.get("/aulas")
 async def get_aulas(ala: str = Query(default=""),planta: int = Query(default=0),numero: int = Query(default=0)):
@@ -49,6 +49,10 @@ async def get_asignaturas_aula(id_aula: int):
 #consultar disponibilidad de aulas
 @router.get("/aulas/disponibilidad/{id_aula}")
 async def get_clase_proxima(id_aula: int):
+    """
+    Se utiliza para saber si un aula está en uso en los próximos minutos.
+    Principalmente usado por el Arduino para saber si debe encender o apagar el aire acondicionado.
+    """
     prox_clase = logica.obtener_clase_proxima(id_aula)
     #si prox_clase es en los proximos 15 minutos devolver true sino false
     fecha_actual = datetime.datetime.now()

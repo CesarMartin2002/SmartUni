@@ -390,27 +390,6 @@ def cancelar_taquilla(id_taquilla: int, id_usuario: int) -> dict:
     return taquilla_actualizada
 #endregion
 
-#region funcion para eliminar una taquilla a partir de su id y que nos muestre su informacion (de momento no se usa)
-def eliminar_taquilla(id_taquilla: int):
-
-    #region Obtener la taquilla con el id especificado
-    taquilla = obtener_taquilla(id_taquilla)
-    #endregion
-    #region Verificar que se encontró la taquilla
-    if len(taquilla) == 0:
-        mensaje = f"No se encontró la taquilla con id {id_taquilla}"
-        respuesta_fallida(mensaje, 404)
-    #endregion
-
-    #region Eliminar la taquilla
-    query = "DELETE FROM taquilla WHERE id_taquilla = %s"
-    parameters = ([id_taquilla])
-    db.realizar_modificacion(query, params=parameters)
-    #endregion
-
-    return taquilla
-#endregion
-
 #region obtener la taquilla que ha reservado el usuario
 def obtener_taquilla_reservada_por_alumno(id_alumno:int):
     query = "SELECT * FROM taquilla WHERE id_alumno_alumno = %s"

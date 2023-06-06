@@ -7,10 +7,10 @@ from fastapi.staticfiles import StaticFiles
 from starlette.responses import PlainTextResponse
 
 #importamos todos los endpoints
-from endpoints import taquillas, casillero, paginasHTML, aulas, sesion, productos, pedidos, nfc
+from endpoints import taquillas, paginasHTML, aulas, sesion, productos, pedidos, nfc
 import logica
 
-app = FastAPI()
+app = FastAPI(title="SmartUni", description="Documentación de la API de SmartUni", version="1.0.0", redoc_url="/api/redoc", contact={"name": "Ver repositorio", "url": "https://github.com/CesarMartin2002/Proyecto-ubicua"},)
 
 #region manejo de errores
 # Middleware to handle all exceptions
@@ -51,32 +51,28 @@ async def print_interrupt_exception_handler(request, exc):
 #endregion
 
 #region rutas de los endpoints
-# Rutas para taquillas
-app.include_router(taquillas.router)
-
-# Rutas para casillero
-app.include_router(casillero.router)
-
-# Rutas para paginas HTML
-app.include_router(paginasHTML.router)
-
-# Rutas para aulas
-app.include_router(aulas.router)
 
 # Rutas para sesion
 app.include_router(sesion.router)
+
+# Rutas para taquillas
+app.include_router(taquillas.router)
+
+# Rutas para aulas
+app.include_router(aulas.router)
 
 # Rutas para productos
 app.include_router(productos.router)
 
 # Rutas para pedidos
 app.include_router(pedidos.router)
-#endregion
 
-#region rutas para nfc
+# Rutas para nfc
 app.include_router(nfc.router)
-#endregion
 
+# Rutas para paginas HTML
+app.include_router(paginasHTML.router)
+#endregion
 #region cosas que no entiendo del todo pero que prefiero no tocar por si acaso
 # CORS settings
 origins = [

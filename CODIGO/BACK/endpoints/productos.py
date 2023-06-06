@@ -2,7 +2,7 @@ from fastapi import APIRouter,Request
 from fastapi import Query
 import logica
 
-router = APIRouter()
+router = APIRouter(tags=["Productos"])
 
 @router.get("/cafeteria/productos")
 async def get_productos(filtro: str = Query(default="")):

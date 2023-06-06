@@ -1,7 +1,7 @@
 from fastapi import APIRouter,Request
 import logica
 
-router = APIRouter()
+router = APIRouter(tags=["Sesion"])
 
 @router.post("/login")
 async def login(request: Request):

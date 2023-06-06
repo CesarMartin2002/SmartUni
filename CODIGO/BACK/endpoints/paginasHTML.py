@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
 import logica
 
-router = APIRouter()
+router = APIRouter(tags=["FRONTEND - Páginas HTML"])
 
 #region sesion
 @router.get("/")

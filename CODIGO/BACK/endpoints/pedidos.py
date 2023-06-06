@@ -1,7 +1,7 @@
 from fastapi import APIRouter,Request, Query
 import logica
 
-router = APIRouter()
+router = APIRouter(tags=["Pedidos"])
 
 @router.get("/cafeteria/pedidos/estrella")
 async def get_pedido_estrella(id_alumno: int = Query(default=-1)):
