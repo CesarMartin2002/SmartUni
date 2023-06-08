@@ -19,8 +19,8 @@
 //connection components//
 /////////////////////////
 String idTaquilla="2";
-//String host="http://192.168.1.151:8000"; //LOMBA
-String host="http://192.168.1.159:8000"; //CESAR
+String host="http://192.168.1.151:8000"; //LOMBA
+//String host="http://192.168.1.159:8000"; //CESAR
 String endpointLock="/taquillas/"+idTaquilla;
 //////////////////////////
 //***init components****//
@@ -135,20 +135,22 @@ void tonoAceptacion(){
 }
 
 void abrirCaja(){
+contador=0;
 int distancia=readUltrasonicDistance(pinTrigger,pinEco);
 servo1.write(0);
 Serial.println("abro");
+delay(2000);
 while(contador<5){
     distancia=readUltrasonicDistance(pinTrigger,pinEco);
     Serial.println(distancia);
-    if(distancia<35){
+    if(distancia<=35){
       contador++;
       tone(BUZZZER_PIN, NOTE_C4, 100);
     }
     else{
       contador=0;
     }
-    delay(500);
+    delay(1000);
   }
 Serial.println("cierro");
 servo1.write(180);
@@ -167,7 +169,7 @@ long readUltrasonicDistance(int triggerPin, int echoPin){
   digitalWrite(triggerPin,LOW);
   //escuchamos
   pinMode(echoPin,INPUT);
-  return 0.01723*pulseIn(echoPin,HIGH);
+  return 0.1723*pulseIn(echoPin,HIGH);
 }
 
 //*****************************
@@ -194,8 +196,8 @@ void setup_wifi(){
 }
 
 bool llamadaLocker(String contra){
-  String msgLock = "{\"password\": \""+contra+"\"}";
-  serial.println(msgLock);
+  String msgLock = "{\"password\": \""+contra.substring(0,4)+"\"}";
+  Serial.println(msgLock);
   HTTPClient http;
   http.begin(host+endpointLock);        //Indicamos el destino
   http.addHeader("Content-Type", "application/json"); //Preparamos el header text/plain si solo vamos a enviar texto plano sin un paradigma llave:valor.
