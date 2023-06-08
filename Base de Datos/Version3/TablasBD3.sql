@@ -106,6 +106,8 @@ CREATE TABLE public.Producto (
 	descripcion varchar(50),
 	precio money,
 	id_empleado_Empleado integer NOT NULL,
+	detalles varchar,
+	imagen varchar,
 	CONSTRAINT Producto_pk PRIMARY KEY (id_producto)
 
 );

@@ -39,21 +39,22 @@ INSERT INTO EMPLEADO DEFAULT VALUES;
 --SELECT * FROM EMPLEADO
 
 --PRODUCTO(id, descripcion, precio, id_empleado)
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('bocadillo de lomo', 2.00, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('bocadillo de bacon', 2.00, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('bocadillo de tortilla', 2.00, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('bocadillo de pollo', 2.00, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('bocadillo de francesa', 2.00, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('bocadillo de atun', 2.00, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('extra queso', 0.50, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('extra tomate', 0.50, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('extra pimiento', 0.50, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('extra huevo', 0.70, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('extra bacon', 0.70, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('sandwich mixto', 1.80, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('sandwich vegetal', 2.50, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('hamburguesa con patatas', 4.00, 1);
-INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado) VALUES ('ensalada', 4.00, 1);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('bocadillo de lomo', 2.00, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('bocadillo de bacon', 2.00, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('bocadillo de tortilla', 2.00, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('bocadillo de pollo', 2.00, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('bocadillo de francesa', 2.00, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('bocadillo de atun', 2.00, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('extra queso', 0.50, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('extra tomate', 0.50, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('extra pimiento', 0.50, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('extra huevo', 0.70, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('extra bacon', 0.70, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('sandwich mixto', 1.80, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('sandwich vegetal', 2.50, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('hamburguesa con patatas', 4.00, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('ensalada', 4.00, 1, null, null);
+INSERT INTO PRODUCTO (descripcion, precio, id_empleado_Empleado, detalles, imagen) VALUES ('cafe', 1.00, 1, null, null);
 --SELECT * FROM PRODUCTO;
 
 --ASIGNATURA(id, descripcion)
