@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,65" last-zoom="1" max-obj-count="15"
+<dbmodel pgmodeler-ver="0.9.3-beta1" use-changelog="false" last-position="0,7" last-zoom="1" max-obj-count="15"
 	 default-schema="public" default-owner="postgres">
 <database name="new_database" is-template="false" allow-conns="true">
 </database>
@@ -389,11 +389,19 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="integer" length="0"/>
 	</column>
 	<column name="tiempo_calentar">
-		<type name="time" length="0"/>
+		<type name="integer" length="0"/>
 	</column>
 	<constraint name="Historico_aula_pk" type="pk-constr" table="public.&quot;Historico_aula&quot;">
 		<columns names="id_historico_aula" ref-type="src-columns"/>
 	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_aula_Aula" index="3"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="Aula_fk" index="1"/>
+	</customidxs>
 </table>
 
 <relationship name="tiene2" type="rel1n" layer="0"

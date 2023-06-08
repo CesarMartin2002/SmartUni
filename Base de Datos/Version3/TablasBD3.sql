@@ -106,8 +106,6 @@ CREATE TABLE public.Producto (
 	descripcion varchar(50),
 	precio money,
 	id_empleado_Empleado integer NOT NULL,
-	detalles varchar,
-	imagen varchar,
 	CONSTRAINT Producto_pk PRIMARY KEY (id_producto)
 
 );
@@ -279,7 +277,7 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 CREATE TABLE public.Historico_aula (
 	id_historico_aula serial NOT NULL,
 	temperatura_previa integer,
-	tiempo_calentar time,
+	tiempo_calentar integer,
 	id_aula_Aula integer NOT NULL,
 	CONSTRAINT Historico_aula_pk PRIMARY KEY (id_historico_aula)
 
