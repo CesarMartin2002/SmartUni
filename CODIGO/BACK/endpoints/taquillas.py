@@ -71,9 +71,6 @@ async def reservar_taquilla(id_taquilla:int, request: Request):
             "id_alumno_alumno": id_alumno,
             "ocupado": True
             }
-
-    #numero_str = str(numero).zfill(4)      para el cambio a string
-    # resultado = logica.reservar_taquilla(id_taquilla, id_alumno, numero)
     resultado = logica.reservar_taquilla(id_taquilla, json)
     
     return logica.respuesta_exitosa(resultado)
@@ -93,7 +90,7 @@ def cancelar_taquilla(id_taquilla : int, id_alumno:int) -> dict:
 @router.get("/taquilla/Alumno/{id_alumno}")
 async def obtener_taquilla_reservada(id_alumno: int):
     """
-    Este endpoint devuelve la taquilla reservada por el alumno
+    Este endpoint devuelve el ID de la taquilla reservada por el alumno dado
     """
     taquilla_reservada = logica.obtener_taquilla_reservada_por_alumno(id_alumno)
     if taquilla_reservada:

@@ -19,7 +19,8 @@
 //connection components//
 /////////////////////////
 String idTaquilla="2";
-String host="http://192.168.1.151:8000";
+//String host="http://192.168.1.151:8000"; //LOMBA
+String host="http://192.168.1.159:8000"; //CESAR
 String endpointLock="/taquillas/"+idTaquilla;
 //////////////////////////
 //***init components****//
