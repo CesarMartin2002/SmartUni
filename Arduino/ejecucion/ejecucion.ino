@@ -48,7 +48,8 @@ String contra;//attempt key convertida a int para eliminar letras
 byte rowPins[ROWS] = {23,22,21,19};//row son los pines a negro
 byte colPins[COLS] = {18,17,16,15};//col los pines a blanco
 Keypad teclado =Keypad(makeKeymap(hexaKeys),rowPins,colPins,ROWS,COLS);
-
+int contador=0;
+bool anterior=false;
 
 
 void setup() {
@@ -56,6 +57,7 @@ void setup() {
   setup_wifi();
   pinMode(ledpin, OUTPUT);
   servo1.attach(12);
+
   /**
   horaNow=hour();//obtenemos la hora actual
   minNow=minute();//obtenemos el minuto actual
@@ -94,7 +96,7 @@ void loop() {
     
     //conditional para el sensor temp //
     //buscar como usar date en arduino //
-    if(minute()%5==0 && second()==0) {
+    if(minute()%1==0 && second()==0) {
       //cada 5 minutos entra en el codigo
       Serial.println("hago llamada de temp y luz");
 
@@ -133,12 +135,23 @@ void tonoAceptacion(){
 }
 
 void abrirCaja(){
-  int distancia=readUltrasonicDistance(pinTrigger,pinEco);
-  servo1.write(0);
-  Serial.println("abro");
-  delay(3000);
-  Serial.println("cierro");
-  servo1.write(180);
+int distancia=readUltrasonicDistance(pinTrigger,pinEco);
+servo1.write(0);
+Serial.println("abro");
+while(contador<5){
+    distancia=readUltrasonicDistance(pinTrigger,pinEco);
+    Serial.println(distancia);
+    if(distancia<35){
+      contador++;
+      tone(BUZZZER_PIN, NOTE_C4, 100);
+    }
+    else{
+      contador=0;
+    }
+    delay(500);
+  }
+Serial.println("cierro");
+servo1.write(180);
 }
 
 long readUltrasonicDistance(int triggerPin, int echoPin){
@@ -182,6 +195,7 @@ void setup_wifi(){
 
 bool llamadaLocker(String contra){
   String msgLock = "{\"password\": \""+contra+"\"}";
+  serial.println(msgLock);
   HTTPClient http;
   http.begin(host+endpointLock);        //Indicamos el destino
   http.addHeader("Content-Type", "application/json"); //Preparamos el header text/plain si solo vamos a enviar texto plano sin un paradigma llave:valor.
