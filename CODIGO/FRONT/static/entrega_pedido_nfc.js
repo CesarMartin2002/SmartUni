@@ -1,5 +1,8 @@
 //Obtenemos la url base del sitio
 const baseUrl = `${window.location.protocol}//${window.location.host}`;
+var estado = 0;
+const id_alumno = parseInt(getCookieValue("id_alumno"));
+
 
 //funcion que se ejecuta al cargar la pagina
 window.onload = function () {
@@ -16,10 +19,12 @@ window.onload = function () {
 //obtenemos los elementos del DOM que vamos a utilizar
 const btnScan = document.getElementById("scan-btn");
 const btnSimulateScan = document.getElementById("simulate-scan-btn");
+const btnAvanzar = document.getElementById("avanzar-btn");
 
 //agregamos los eventos a los botones
 btnScan.addEventListener("click", escaneoReal);
 btnSimulateScan.addEventListener("click", escaneoSimulado);
+btnAvanzar.addEventListener("click", avanzar);
 
 
 // función para obtener el detalle del pedido
@@ -59,17 +64,18 @@ function mostrarDetallePedido(data) {
     var productoDescripcion = pedido.productos_descripciones[j];
     productos += `<li><span class="negrita">Nombre producto => </span> ${productoDescripcion}</li>`;
   }
-  var estado = pedido.estado;
+  estado = pedido.estado;
+  var estadoHtml = '';
   if (estado == 0){
-    estado = `<li><span class="negrita">Estado => </span>✅ - Aprobación pendiente</li>`;
+    estadoHtml = `<li id="estado"><span class="negrita">Estado => </span>✅ - Aprobación pendiente</li>`;
   }else if (estado == 1){
-    estado = `<li><span class="negrita">Estado => </span>🧑‍🍳 - Preparando en cocina</li>`;
+    estadoHtml = `<li id="estado"><span  class="negrita">Estado => </span>🧑‍🍳 - Preparando en cocina</li>`;
   }else if (estado == 2){
-    estado = `<li><span class="negrita">Estado => </span>👜 - Listo para recoger</li>`;
+    estadoHtml = `<li id="estado"><span  class="negrita">Estado => </span>👜 - Listo para recoger</li>`;
   }else if (estado == 3){
-    estado = `<li><span class="negrita">Estado => </span>🍽️ - Consumiendo</li>`;
+    estadoHtml = `<li id="estado"><span class="negrita">Estado => </span>🍽️ - Consumiendo</li>`;
   }else{
-    estado = `<li><span class="negrita">Estado => </span>😀 - Finalizado</li>`;
+    estadoHtml = `<li id="estado"><span class="negrita">Estado => </span>😀 - Finalizado</li>`;
   }
   
 
@@ -78,7 +84,7 @@ function mostrarDetallePedido(data) {
       <h2>${idPedido}</h2>
       <ul>${correoAlumno}</ul>
       <ul>${productos}</ul>
-      <ul>${estado}</ul>
+      <ul>${estadoHtml}</ul>
     </div>
     <br>
   `;
@@ -135,10 +141,56 @@ function escaneoSimulado(){
   consultarPedidoNfc(ncf);
 }
 
+function actualizarEstado(){
+  if (estado == 0){
+    estadoHtml = `<span class="negrita">Estado => </span>✅ - Aprobación pendiente`;
+  }else if (estado == 1){
+    estadoHtml = `<span class="negrita">Estado => </span>🧑‍🍳 - Preparando en cocina`;
+  }else if (estado == 2){
+    estadoHtml = `<span class="negrita">Estado => </span>👜 - Listo para recoger`;
+  }else if (estado == 3){
+    estadoHtml = `<span class="negrita">Estado => </span>🍽️ - Consumiendo`;
+  }else{
+    estadoHtml = `<span class="negrita">Estado => </span>😀 - Finalizado`;
+  }
+  document.getElementById("estado").innerHTML = estadoHtml;
+}
+
+function avanzar(){
+  if (estado == 4){
+    return;
+  }
+  const idPedido = parseInt(getLastPathParameter());
+  const url = `${baseUrl}/cafeteria/pedidos/${idPedido}`;
+  const data = {
+    estado: estado + 1,
+    id_alumno: id_alumno
+  };
+
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => {
+      if (response.ok) {
+        estado = estado + 1;
+        actualizarEstado();
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    }
+  );
+
+  
+}
+
 function consultarPedidoNfc(nfc) {
   //el id del pedido se obtiene de la url de la pagina pasandolo a int
   const idPedido = parseInt(getLastPathParameter());
-  const id_alumno = parseInt(getCookieValue("id_alumno"));
   const url = `${baseUrl}/cafeteria/pedidos/nfc/${idPedido}`;
   const data = {
     num_serie: nfc,
@@ -162,6 +214,7 @@ function consultarPedidoNfc(nfc) {
         document.getElementById("scan-btn").style.display = "none";
         //ocultamos el boton de simular escaneo
         document.getElementById("simulate-scan-btn").style.display = "none";
+        document.getElementById("estado").innerHTML = "🍽️ - Consumiendo";
       } else {
         document.getElementById("header-info").innerHTML = "Verificación fallida.";
         //cambiamos en el css el color de la variable en root llamada --main-bg a #e75858
