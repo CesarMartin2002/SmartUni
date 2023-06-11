@@ -4,7 +4,18 @@
 #include <HTTPClient.h>
 #include <WiFi.h>
 #include <TimeLib.h>
+#include <DHT.h>
 #define BUZZZER_PIN  33 // PIN 32 CONECTADO AL BUZZER
+#define DHTPIN 13 //Define the digital pin where the sensor is connected
+#define DHTTYPE DHT11
+//////////////////////////
+//******DHT config******//
+//////////////////////////
+DHT dht(DHTPIN, DHTTYPE); //Initialize the DHT11 sensor
+float t;
+int ran;
+int randr;
+bool actuando=false;
 //////////////////////////
 //*****WiFi config******//
 //////////////////////////
@@ -22,6 +33,10 @@ String idTaquilla="2";
 String host="http://192.168.1.151:8000"; //LOMBA
 //String host="http://192.168.1.159:8000"; //CESAR
 String endpointLock="/taquillas/"+idTaquilla;
+String endpointHistorico="http://192.168.1.151:8000/aulas/1/historico";
+String endpointClimatizar="http://192.168.1.151:8000/aulas/1/climatizar";
+String endpointTemp="http://192.168.1.151:8000/aulas/1";
+
 //////////////////////////
 //***init components****//
 //////////////////////////
@@ -52,16 +67,14 @@ int contador=0;
 bool anterior=false;
 
 
+
 void setup() {
   Serial.begin(1200);
   setup_wifi();
   pinMode(ledpin, OUTPUT);
   servo1.attach(12);
+  dht.begin(); //Start the DHT sensor
 
-  /**
-  horaNow=hour();//obtenemos la hora actual
-  minNow=minute();//obtenemos el minuto actual
-**/
 }
 
 void loop() {
@@ -93,25 +106,25 @@ void loop() {
         z=0;
       }
     }
-    
-    //conditional para el sensor temp //
-    //buscar como usar date en arduino //
-    if(minute()%1==0 && second()==0) {
-      //cada 5 minutos entra en el codigo
-      Serial.println("hago llamada de temp y luz");
 
+    if(minute()%2==0 && second()==0 && actuando==false) {
+      //cada 5 minutos entra en el codigo
+      Serial.println("hago llamada de temp");
+      if(llamadaClima()){
+        actuando=true;
+        ran=random(10, 20);
+        randr = ran+minute();
+      }
       //conexion con sistema aqui para luz y temp//
       delay(1000);
     }
-    
+
+    actualizaTemp();
+    updateClima();
   }
   else{
-
      Serial.println("Error en la conexión WIFI");
-
   }
-
-
 }
 
 void tonoError(){
@@ -214,4 +227,82 @@ bool llamadaLocker(String contra){
     http.end();  //libero recursos
     return codigo_respuesta==200;  
   }
+}
+
+void actualizaTemp(){
+  HTTPClient http;
+  if(minute()%2==0 && second()==10) {
+    //cada 5 minutos entra en el codigo
+    Serial.println("actualizo la temperatura");
+    t = dht.readTemperature();
+    //llamada
+    String dataTemp = "{\"temperatura\": \""+String(t)+"\"}";
+    http.begin(endpointTemp);        //Indicamos el destino
+    http.addHeader("Content-Type", "application/json"); //Preparamos el header text/plain si solo vamos a enviar texto plano sin un paradigma llave:valor.
+    //Enviamos el post pasándole, los datos que queremos enviar. (esta función nos devuelve un código que guardamos en un int)
+    int codigo_respuesta = http.PUT(dataTemp);
+    if(codigo_respuesta>0){
+      Serial.println("Código HTTP ► " + String(codigo_respuesta));   //Print return code
+      if(codigo_respuesta == 200){
+        String cuerpo_respuesta = http.getString();
+        Serial.println("El servidor respondió ▼ ");
+        Serial.println(cuerpo_respuesta);
+      }
+    }else{
+     Serial.print("Error enviando POST, código: ");
+     Serial.println(codigo_respuesta);
+    }
+    http.end();  //libero recursos
+    delay(1000);
+  }
+}
+
+void updateClima(){
+  HTTPClient http;
+  if(minute()==randr && second()==0 && actuando) {
+    //cada 5 minutos entra en el codigo
+    t = dht.readTemperature(); //Read temperatura in Celsius degrees
+    Serial.println("hago update en historico");
+    //lamada post
+    String dataClimatizar = "{\"id_aula_aula\":1,\"temperatura_previa\":"+String(t)+",\"tiempo_calentar\":"+String(ran)+"}";
+    http.begin(endpointHistorico);        //Indicamos el destino
+    http.addHeader("Content-Type", "application/json"); //Preparamos el header text/plain si solo vamos a enviar texto plano sin un paradigma llave:valor.
+    //Enviamos el post pasándole, los datos que queremos enviar. (esta función nos devuelve un código que guardamos en un int)
+    int codigo_respuesta = http.POST(dataClimatizar);
+    if(codigo_respuesta>0){
+      Serial.println("Código HTTP ► " + String(codigo_respuesta));   //Print return code
+      if(codigo_respuesta == 200){
+        String cuerpo_respuesta = http.getString();
+        Serial.println("El servidor respondió ▼ ");
+        Serial.println(cuerpo_respuesta);
+      }
+    }else{
+     Serial.print("Error enviando POST, código: ");
+     Serial.println(codigo_respuesta);
+    }
+    http.end();  //libero recursos
+    delay(1000);
+    actuando=false;
+  }
+}
+
+bool llamadaClima(){
+  HTTPClient http;
+  http.begin(endpointClimatizar);        //Indicamos el destino
+  http.addHeader("Content-Type", "application/json"); //Preparamos el header text/plain si solo vamos a enviar texto plano sin un paradigma llave:valor.
+  //Enviamos el post pasándole, los datos que queremos enviar. (esta función nos devuelve un código que guardamos en un int)
+  int codigo_respuesta = http.GET();
+  if(codigo_respuesta>0){
+      Serial.println("Código HTTP ► " + String(codigo_respuesta));   //Print return code
+      if(codigo_respuesta == 200){
+        String cuerpo_respuesta = http.getString();
+        Serial.println("El servidor respondió ▼ ");
+        Serial.println(cuerpo_respuesta);
+      }
+    }else{
+     Serial.print("Error enviando GET, código: ");
+     Serial.println(codigo_respuesta);
+    }
+  http.end();  //libero recursos
+  return codigo_respuesta==200;
 }
