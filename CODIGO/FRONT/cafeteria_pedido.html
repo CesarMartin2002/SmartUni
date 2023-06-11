@@ -9,7 +9,7 @@
     </head>
     <body class="cafe">
         <main>
-            <img class="logo" src="/static/images/logo.png" alt="Logo">
+            <img class="logo" id="logo" src="/static/images/logo.png" alt="Logo">
             <h1>REALIZAR PEDIDO</h1>
             <div class="menu">
                 <div id="productoEstrella">  
@@ -33,7 +33,12 @@
                 </div>
             </div>
         </main>
-
+        <script>
+            const logo = document.getElementById('logo');
+            logo.addEventListener('click', function() {
+                window.location.href = '/menu';
+            });
+        </script>
         <script src="/static/cafeteria_pedido.js"></script>
     </body>
 </html>

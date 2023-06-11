@@ -11,11 +11,17 @@
     </head>
     <body>
         <main>
-            <img class="logo" src="/static/images/logo.png" alt="Logo">
+            <img class="logo" id="logo" src="/static/images/logo.png" alt="Logo">
             <div class="wide-menu menu">
                 <div id="producto"></div>
             </div>
         </main>
+        <script>
+            const logo = document.getElementById('logo');
+            logo.addEventListener('click', function() {
+                window.location.href = '/menu';
+            });
+        </script>
         <script src="/static/cafeteria_producto.js" defer></script>
     </body>
 </html>

@@ -9,7 +9,7 @@
     </head>
     <body class="cafe">
         <main>
-            <img class="logo" src="/static/images/logo.png" alt="Logo">
+            <img class="logo" id="logo" src="/static/images/logo.png" alt="Logo">
             <div class="menu">
                 <h1>CAFETERÍA</h1>
                 <button id="pedido-btn">Realizar pedido</button>
@@ -21,6 +21,10 @@
             const pedidoBtn = document.getElementById('pedido-btn');
             pedidoBtn.addEventListener('click', function() {
                 window.location.href += '/pedido';
+            });
+            const logo = document.getElementById('logo');
+            logo.addEventListener('click', function() {
+                window.location.href = '/menu';
             });
             const misPedidosBtn = document.getElementById('mis-pedidos-btn');
             misPedidosBtn.addEventListener('click', function() {
