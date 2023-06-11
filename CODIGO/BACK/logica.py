@@ -738,8 +738,11 @@ def actualizar_pedido(id_pedido: int, data: dict):
     #endregion
 
     #region verificar que el estado sea válido
-    if data["estado"] not in [0, 1, 2, 3, 4]:
-        mensaje = "El estado debe ser 0, 1, 2 , 3 y 4"
+    if  (data["estado"] < 0 and data["estado"] > 5) :
+        mensaje = "El estado debe ser 0, 1, 2 , 3, 4 o 5"
+        respuesta_fallida(mensaje, 400)
+    if pedido["estado"] == 5:
+        mensaje = "El pedido ya está cancelado y no se puede modificar"
         respuesta_fallida(mensaje, 400)
     if pedido["estado"] == 4:
         mensaje = "El pedido ya está completado y no se puede modificar"

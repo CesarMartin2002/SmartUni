@@ -74,8 +74,11 @@ function mostrarDetallePedido(data) {
     estadoHtml = `<li id="estado"><span  class="negrita">Estado => </span>👜 - Listo para recoger</li>`;
   }else if (estado == 3){
     estadoHtml = `<li id="estado"><span class="negrita">Estado => </span>🍽️ - Consumiendo</li>`;
-  }else{
+  }else if (estado == 4){
     estadoHtml = `<li id="estado"><span class="negrita">Estado => </span>😀 - Finalizado</li>`;
+  }
+  else{
+    estadoHtml = `<li id="estado"><span class="negrita">Estado => </span>❌ - Cancelado</li>`;
   }
   
 
@@ -150,8 +153,11 @@ function actualizarEstado(){
     estadoHtml = `<span class="negrita">Estado => </span>👜 - Listo para recoger`;
   }else if (estado == 3){
     estadoHtml = `<span class="negrita">Estado => </span>🍽️ - Consumiendo`;
-  }else{
+  }else if (estado == 4){
     estadoHtml = `<span class="negrita">Estado => </span>😀 - Finalizado`;
+  }
+  else {
+    estadoHtml = `<span class="negrita">Estado => </span>❌ - Cancelado`;
   }
   document.getElementById("estado").innerHTML = estadoHtml;
 }
@@ -214,6 +220,7 @@ function consultarPedidoNfc(nfc) {
         document.getElementById("scan-btn").style.display = "none";
         //ocultamos el boton de simular escaneo
         document.getElementById("simulate-scan-btn").style.display = "none";
+        estado = 3;
         document.getElementById("estado").innerHTML = "🍽️ - Consumiendo";
       } else {
         document.getElementById("header-info").innerHTML = "Verificación fallida.";
