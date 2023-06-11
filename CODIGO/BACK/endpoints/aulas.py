@@ -32,8 +32,16 @@ async def put_aula(id_aula: int, request: Request):
     Actualiza una aula en la base de datos. El aula a actualizar se especifica según su id en la URL.
     """
     data = await request.json()
-    return logica.respuesta_exitosa(logica.actualizar_aula(id_aula, data))
+    aula = logica.actualizar_aula(id_aula, data)
+    return logica.respuesta_exitosa(aula)
 
+@router.post("/aulas/{id_aula}/historico")
+async def post_historico_aula(id_aula: int, request: Request):
+    """
+    Inserta un nuevo historico de aula en la base de datos.
+    """
+    data = await request.json()
+    return logica.respuesta_exitosa(logica.insertar_historico_aula(id_aula, data))
 
 """
 A partir de aqui se definen los endpoints para los horarios de las aulas

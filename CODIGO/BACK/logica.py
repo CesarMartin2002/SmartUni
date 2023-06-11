@@ -472,6 +472,36 @@ def actualizar_aula(id: int, aula: dict):
     return obtener_aula(db.realizar_actualizacion("aula",id,aula))
 #endregion
 
+#region actualizar historico aula
+def insertar_historico_aula(id: int, data: dict):
+    id_aula = data["id_aula_aula"]
+    aula = obtener_aula(id_aula)
+    if (aula == None):
+        mensaje = "No se encontró el aula con id " + str(id_aula)
+        respuesta_fallida(mensaje, 404)
+    return db.realizar_insercion("historico_aula", data)
+#endregion
+
+#region obtener climatizar aula
+def obtener_climatizar_aula(id_aula: int):
+    #region comprobar que exista el aula
+    aula = obtener_aula(id_aula)
+    if (aula == None):
+        mensaje = "No se encontró el aula con id " + str(id_aula)
+        respuesta_fallida(mensaje, 404)
+    #endregion
+    query = "SELECT actuar from vista_resumen_aula where id_aula = %s"
+    parameters = (id_aula,)
+    actuar = db.realizar_consulta(query, params=parameters)[0]
+    if (not actuar):
+        mensaje = "No se debe empezar a climatizar el aula"
+        respuesta_fallida(mensaje, 400)
+    return actuar
+
+
+
+
+
 #region obtener asignaturas que se dan en un aula
 def obtener_asignatura_aula(id_aula: int=-1):
     #region obtener las asignaturas de la base de datos
