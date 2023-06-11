@@ -5,6 +5,7 @@ from psycopg2 import IntegrityError
 from fastapi import HTTPException
 import logica
 import json
+import datetime
 
 def get_connection():
     conn = psycopg2.connect(
@@ -12,7 +13,8 @@ def get_connection():
         user='aotdlhvi',
         password='yJMYPFXps-4hLoQ2KO5iEzXs7o-bJxyJ',
         host='trumpet.db.elephantsql.com',
-        port='5432')
+        port='5432',
+        options='-c timezone=Europe/Madrid')
     if conn:
         print('Conectado a la base de datos')
     else:
@@ -28,6 +30,7 @@ def realizar_consulta(sql:str, params=None):
     print("sql: ", sql)
     print("params: ", params)
     cursor.execute(sql, params)
+    print("Query resultante: ", cursor.query.decode("utf-8") + ";")
     column_names = [desc[0] for desc in cursor.description]  # get the column names from the cursor
     results = [dict(zip(column_names, row)) for row in cursor.fetchall()]  # convert each row to a dictionary
     cursor.close()

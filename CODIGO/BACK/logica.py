@@ -491,8 +491,8 @@ def obtener_climatizar_aula(id_aula: int):
         respuesta_fallida(mensaje, 404)
     #endregion
     query = "SELECT actuar from vista_resumen_aula where id_aula = %s"
-    parameters = (id_aula,)
-    actuar = db.realizar_consulta(query, params=parameters)[0]
+    parameters = tuple([id_aula])
+    actuar = db.realizar_consulta(query, params=parameters)[0]["actuar"]
     if (not actuar):
         mensaje = "No se debe empezar a climatizar el aula"
         respuesta_fallida(mensaje, 400)

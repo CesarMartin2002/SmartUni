@@ -43,6 +43,13 @@ async def post_historico_aula(id_aula: int, request: Request):
     data = await request.json()
     return logica.respuesta_exitosa(logica.insertar_historico_aula(id_aula, data))
 
+@router.get("/aulas/{id_aula}/climatizar")
+async def get_climatizar_aula(id_aula: int):
+    """
+    Según el id de un aula, devuelve si se debe climatizar o no el aula.
+    """
+    return logica.respuesta_exitosa(logica.obtener_climatizar_aula(id_aula))
+
 """
 A partir de aqui se definen los endpoints para los horarios de las aulas
 """
