@@ -407,10 +407,13 @@ h3{
     margin-right: auto;
     width: 35rem;
     max-width: 80%;
-    margin-bottom: 5rem;
-    
+    margin-bottom: 5rem;    
 }
 
+#logo{
+
+  cursor: pointer;
+}
 
 .filterDiv {
   display: flex;
