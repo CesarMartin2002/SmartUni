@@ -11,13 +11,19 @@
     </head>
     <body>
         <main>
-            <img class="logo" src="/static/images/logo.png" alt="Logo">
+            <img id ="logo"class="logo" src="/static/images/logo.png" alt="Logo">
             <div class="menu">
                 <h1>TAQUILLAS</h1>
                 <div id="taquillas"></div>
             </div>
 
         </main>
+        <script>
+            const logo = document.getElementById('logo');
+            logo.addEventListener('click', function() {
+                window.location.href = '/menu';
+            });
+        </script>
         <script src="/static/listarTaquillas.js" defer></script>
     </body>
 </html>

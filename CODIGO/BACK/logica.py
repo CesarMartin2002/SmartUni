@@ -688,21 +688,32 @@ def crear_pedido(data: dict):
         sql += f"({id_pedido}, {producto}),"
     sql = sql[:-1] #quitamos la última coma
     db.ejecutar_sentencia(sql)
-
-    #region COMENTADO version anterior sin optimizar pero mas segura
-    # for producto in data["productos"]:
-    #     data_pedido_producto = {
-    #         "id_pedido_pedido": id_pedido,
-    #         "id_producto_producto": producto
-    #     }
-    #     db.realizar_insercion("pedido_producto", data_pedido_producto)
-    #endregion
-
     #endregion
 
     #region obtener el pedido insertado
     pedido = obtener_pedido(id_pedido)
     #endregion
+
+    #region enviar correo al alumno
+    #obtenemos los datos del pedido
+    alumno = pedido["correo_alumno"]
+    productos = pedido["productos_descripciones"]
+    #enviamos el correo
+    cuerpoHtml = f"""   
+    <h1>¡Hola {alumno}!</h1>
+    <p>Gracias por realizar tu pedido en la cafetería de la escuela utilizando SmartUni™.</p>
+    <p>Tu pedido ha sido registrado con éxito.</p>
+    <p>Productos:</p>
+    <ul>
+    """
+    for producto in productos:
+        cuerpoHtml += f"<li>{producto}</li>"
+    cuerpoHtml += "</ul>"
+    cuerpoHtml += "<p>En breve recibirás un correo con el estado de tu pedido.</p>"
+    cuerpoHtml += "<p>¡Gracias por utilizar SmartUni™!</p>"
+    correos.enviar_correo(alumno, "Pedido registrado", cuerpoHtml)
+    #endregion
+    
 
     return pedido
 
@@ -765,6 +776,7 @@ def actualizar_pedido(id_pedido: int, data: dict):
         }
         db.realizar_actualizacion("nfc", pedido["id_nfc"], data_pedido)
         #endregion
+
     #region si el estado es 1, deberá asociarse un nfc de los disponibles al pedido
     if data["estado"] == 1:
         #region si ya hay un nfc asociado, se debe liberar dicho nfc
@@ -793,9 +805,6 @@ def actualizar_pedido(id_pedido: int, data: dict):
         #endregion
     #endregion
 
-    #region obtener el pedido actualizado
-    pedido = obtener_pedido(id_pedido)
-    #endregion
 
     #region actualizar el pedido
     data_pedido = {
@@ -804,6 +813,34 @@ def actualizar_pedido(id_pedido: int, data: dict):
     db.realizar_actualizacion("pedido", id_pedido, data_pedido)
     #endregion
 
+    #region obtener el pedido actualizado
+    pedido = obtener_pedido(id_pedido)
+    #endregion
+
+    #region notificar de cuando el pedido está listo
+    if data["estado"] == 2:
+        #region obtenemos los datos para enviar el correo
+        correo = pedido["correo_alumno"]
+        productos = pedido["productos_descripciones"]
+        id_nfc = pedido["id_nfc"]
+        #endregion
+        #region enviamos el correo a ese 
+        cuerpo = f"""
+        <h1>¡Hola {correo}!</h1>
+        <p>Tu pedido está listo para ser recogido en la cafetería.</p>
+        <p>Estos son los productos que has pedido:</p>
+        <ul>
+        """
+        for producto in productos:
+            cuerpo += f"<li>{producto}</li>"
+        cuerpo += "</ul>"
+        if id_nfc is not None:
+            cuerpo += f"<p>Recuerda que debes recofer el pedido con el nfc {id_nfc}</p>"
+
+        correos.enviar_correo(correo, "Tu pedido está listo", cuerpo)
+
+        #endregion
+    #endregion
 
     return pedido
 
@@ -838,7 +875,7 @@ def obtener_pedido_estrella(id_alumno: int = -1):
 
 #endregion
 
-
+#endregion
 
 #region funciones nfc básicas
 

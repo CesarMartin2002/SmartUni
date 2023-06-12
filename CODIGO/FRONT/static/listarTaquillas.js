@@ -59,7 +59,7 @@ function mostrarDatos(data) {
   var html = '';
 
   for (var i = 0; i < taquillas.length; i++) {
-    var numero_taquilla = `Taquilla ${taquillas[i].id_taquilla}`;
+    var numero_taquilla = `Taquilla ${taquillas[i].id_taquilla} | ${taquillas[i].ala} P${taquillas[i].piso}`;
 
     html += `
       <div class="taquilla">

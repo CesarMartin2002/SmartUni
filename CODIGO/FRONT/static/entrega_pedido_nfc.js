@@ -2,7 +2,7 @@
 const baseUrl = `${window.location.protocol}//${window.location.host}`;
 var estado = 0;
 const id_alumno = parseInt(getCookieValue("id_alumno"));
-
+var idNfc;
 
 //funcion que se ejecuta al cargar la pagina
 window.onload = function () {
@@ -59,10 +59,11 @@ function mostrarDetallePedido(data) {
   var correoAlumno = `<li><span class="negrita">Correo del alumno => </span>${pedido.correo_alumno}</li>`;
   var productos = '';
 
+
   for (var j = 0; j < pedido.productos_ids.length; j++) {
     //var productoId = pedido.productos_ids[j];
     var productoDescripcion = pedido.productos_descripciones[j];
-    productos += `<li><span class="negrita">Nombre producto => </span> ${productoDescripcion}</li>`;
+    productos += `<p> ${productoDescripcion}</p>`;
   }
   estado = pedido.estado;
   var estadoHtml = '';
@@ -81,18 +82,29 @@ function mostrarDetallePedido(data) {
     estadoHtml = `<li id="estado"><span class="negrita">Estado => </span>❌ - Cancelado</li>`;
   }
   
-
-  var html = `
-    <div class="detallepedido">
-      <h2>${idPedido}</h2>
+    var htmlNFC = `<li  id="idNFC"><span class="negrita">NFC A ESCANEAR => </span>${pedido.id_nfc}</li>`;
+    idNfc = pedido.id_nfc;
+  
+    var html = `
+    <div class="detallepedido" style="text-align: center;">
+      <h2 style = "font-size: 30px;">${idPedido}</h2>
       <ul>${correoAlumno}</ul>
-      <ul>${productos}</ul>
       <ul>${estadoHtml}</ul>
+      <ul>${htmlNFC}</ul>
+      <br>
+      <h3 style = "font-size: 20px;">Productos:</h3>
+      <ul>${productos}</ul>
     </div>
     <br>
   `;
 
+
+  
   document.getElementById('pedidos').innerHTML = html;
+  if (!pedido.id_nfc) {
+    //se esconde el elemento con id idNFC
+    document.getElementById("idNFC").style.display = "none";
+  }
 }
 
 
@@ -185,6 +197,24 @@ function avanzar(){
         estado = estado + 1;
         actualizarEstado();
       }
+      return response.json();
+
+    })
+    .then(data => {
+      console.log('Success:', data);
+      pedido = data.data;
+      if (pedido.id_nfc) {
+        //se muestra el elemento con id idNFC
+        idNfc = pedido.id_nfc;
+        document.getElementById("idNFC").innerHTML = `<span class="negrita">NFC A ESCANER => </span>${idNfc}`;
+        document.getElementById("idNFC").style.display = "block";
+      }
+      else {
+        //se esconde el elemento con id idNFC
+        document.getElementById("idNFC").style.display = "none";
+      }
+
+      
     })
     .catch(error => {
       console.error('Error:', error);
