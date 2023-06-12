@@ -32,7 +32,8 @@ bool actuando=false;
 /////////////////////////
 String idTaquilla="2";
 // String host="http://192.168.1.151:8000"; //LOMBA
-String host="http://192.168.116.148:8000"; //CESAR
+//String host="http://192.168.116.148:8000"; //CESAR
+String host="https://bottle-editing-licensed-kathy.trycloudflare.com"; //LUCÍA
 String endpointLock=host+"/taquillas/"+idTaquilla;
 String endpointHistorico=host+"/aulas/1/historico";
 String endpointClimatizar=host+"/aulas/1/climatizar";
@@ -109,7 +110,7 @@ void loop() {
     }
 
     if(minute()%2==0 && second()==0 && actuando==false) {
-      //cada 5 minutos entra en el codigo
+      //cada 2 minutos entra en el codigo
       Serial.println("hago llamada de temp");
       if(llamadaClima()){
         actuando=true;
