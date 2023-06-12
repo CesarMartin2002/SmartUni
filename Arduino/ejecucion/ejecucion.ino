@@ -13,6 +13,7 @@
 //////////////////////////
 DHT dht(DHTPIN, DHTTYPE); //Initialize the DHT11 sensor
 float t;
+int temperatura;
 int ran;
 int randr;
 bool actuando=false;
@@ -30,12 +31,12 @@ bool actuando=false;
 //connection components//
 /////////////////////////
 String idTaquilla="2";
-String host="http://192.168.1.151:8000"; //LOMBA
-//String host="http://192.168.1.159:8000"; //CESAR
-String endpointLock="/taquillas/"+idTaquilla;
-String endpointHistorico="http://192.168.1.151:8000/aulas/1/historico";
-String endpointClimatizar="http://192.168.1.151:8000/aulas/1/climatizar";
-String endpointTemp="http://192.168.1.151:8000/aulas/1";
+// String host="http://192.168.1.151:8000"; //LOMBA
+String host="http://192.168.116.148:8000"; //CESAR
+String endpointLock=host+"/taquillas/"+idTaquilla;
+String endpointHistorico=host+"/aulas/1/historico";
+String endpointClimatizar=host+"/aulas/1/climatizar";
+String endpointTemp=host+"/aulas/1";
 
 //////////////////////////
 //***init components****//
@@ -212,7 +213,7 @@ bool llamadaLocker(String contra){
   String msgLock = "{\"password\": \""+contra.substring(0,4)+"\"}";
   Serial.println(msgLock);
   HTTPClient http;
-  http.begin(host+endpointLock);        //Indicamos el destino
+  http.begin(endpointLock);        //Indicamos el destino
   http.addHeader("Content-Type", "application/json"); //Preparamos el header text/plain si solo vamos a enviar texto plano sin un paradigma llave:valor.
   //Enviamos el post pasándole, los datos que queremos enviar. (esta función nos devuelve un código que guardamos en un int)
   int codigo_respuesta = http.POST(msgLock);
@@ -235,8 +236,9 @@ void actualizaTemp(){
     //cada 5 minutos entra en el codigo
     Serial.println("actualizo la temperatura");
     t = dht.readTemperature();
+    temperatura = int(t);
     //llamada
-    String dataTemp = "{\"temperatura\": \""+String(t)+"\"}";
+    String dataTemp = "{\"temperatura\": \""+String(temperatura)+"\"}";
     http.begin(endpointTemp);        //Indicamos el destino
     http.addHeader("Content-Type", "application/json"); //Preparamos el header text/plain si solo vamos a enviar texto plano sin un paradigma llave:valor.
     //Enviamos el post pasándole, los datos que queremos enviar. (esta función nos devuelve un código que guardamos en un int)
@@ -249,7 +251,7 @@ void actualizaTemp(){
         Serial.println(cuerpo_respuesta);
       }
     }else{
-     Serial.print("Error enviando POST, código: ");
+     Serial.print("Error enviando PUT endpointTemp, código: ");
      Serial.println(codigo_respuesta);
     }
     http.end();  //libero recursos
@@ -262,9 +264,10 @@ void updateClima(){
   if(minute()==randr && second()==0 && actuando) {
     //cada 5 minutos entra en el codigo
     t = dht.readTemperature(); //Read temperatura in Celsius degrees
+    temperatura = int(t);
     Serial.println("hago update en historico");
     //lamada post
-    String dataClimatizar = "{\"id_aula_aula\":1,\"temperatura_previa\":"+String(t)+",\"tiempo_calentar\":"+String(ran)+"}";
+    String dataClimatizar = "{\"id_aula_aula\":1,\"temperatura_previa\":"+String(temperatura)+",\"tiempo_calentar\":"+String(ran)+"}";
     http.begin(endpointHistorico);        //Indicamos el destino
     http.addHeader("Content-Type", "application/json"); //Preparamos el header text/plain si solo vamos a enviar texto plano sin un paradigma llave:valor.
     //Enviamos el post pasándole, los datos que queremos enviar. (esta función nos devuelve un código que guardamos en un int)
@@ -277,7 +280,7 @@ void updateClima(){
         Serial.println(cuerpo_respuesta);
       }
     }else{
-     Serial.print("Error enviando POST, código: ");
+     Serial.print("Error enviando POST endpointHistorico, código: ");
      Serial.println(codigo_respuesta);
     }
     http.end();  //libero recursos
@@ -300,7 +303,7 @@ bool llamadaClima(){
         Serial.println(cuerpo_respuesta);
       }
     }else{
-     Serial.print("Error enviando GET, código: ");
+     Serial.print("Error enviando GET endpointClimatizar, código: ");
      Serial.println(codigo_respuesta);
     }
   http.end();  //libero recursos
