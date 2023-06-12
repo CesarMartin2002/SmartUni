@@ -448,6 +448,7 @@ def obtener_aula(id_aula: int):
 
     #region verificar que se encontró el aula
     if len(aula) == 0:
+        
         print("No se encontró el aula con id " + str(id_aula))
         mensaje = "No se encontró el aula con id " + str(id_aula)
         respuesta_fallida(mensaje, 404)

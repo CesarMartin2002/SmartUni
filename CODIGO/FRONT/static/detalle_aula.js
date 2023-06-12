@@ -20,8 +20,12 @@ async function cargarDatos() {
       if (data.data && Object.keys(data.data).length > 0) {
         mostrarDatos(data);
     } else {
-        var mensaje = 'No se imparten asignaturas en este aula.';
-        document.getElementById('aulas').innerHTML = `<h2 style="color:red">${mensaje}</h2>`;
+      fetch(`/aulas/${id}`)
+          .then(response => response.json())
+          .then(aula => {
+            console.log(aula);
+            mostrarDatosAula(aula);
+          });
       }
     });
 }
@@ -42,11 +46,16 @@ function mostrarDatos(data) {
 
   var nombre_aula = `Aula ${aula[0].nombre}`;
   var temperatura = `🌡️Temperatura: ${aula[0].temperatura}ºC`;
+  var planta = `Planta: ${aula[0].planta}`;
+  var ala = `Ala: ${aula[0].ala}`
 
   html += `
       <div class="aula">
       <h1>${nombre_aula}</h1>  
       <h2>${temperatura}</h2>
+      <h2>${ala}</h2>
+      <h2>${planta}</h2>
+      
       </div>
       <br>
       `;   
@@ -72,4 +81,29 @@ function mostrarDatos(data) {
 
   }
   document.getElementById('aulas').innerHTML = html;
+}
+
+function mostrarDatosAula(data) {
+  var aula = data.data;
+  console.log(aula);
+  console.log(aula.length);
+  var html = '';
+
+  var nombre_aula = `Aula ${aula.nombre}`;
+  var temperatura = `🌡️Temperatura: ${aula.temperatura}ºC`;
+  var planta = `Planta: ${aula.planta}`;
+  var ala = `Ala: ${aula.ala}`
+  var mensaje = 'No se imparten asignaturas en este aula.'; 
+
+  html += `
+      <div class="aula">
+      <h1>${nombre_aula}</h1>  
+      <h2>${temperatura}</h2>
+      <h2>${ala}</h2>
+      <h2>${planta}</h2>
+      <h2 style="color:red">${mensaje}</h2>
+      </div>
+      <br>
+      `;  
+      document.getElementById('aulas').innerHTML = html;
 }
