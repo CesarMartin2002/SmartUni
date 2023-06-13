@@ -1,25 +1,96 @@
 \babel@toc {spanish}{}\relax 
 \contentsline {chapter}{\numberline {1}Introducción}{2}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Objetivos}{2}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Justificación}{3}{section.1.2}%
-\contentsline {section}{\numberline {1.3}Estructura de la memoria}{4}{section.1.3}%
-\contentsline {chapter}{\numberline {2}Inconvenientes en el primer proyecto y propuestas de solución}{5}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Limitaciones en la comunicación}{5}{section.2.1}%
-\contentsline {section}{\numberline {2.2}Alojamiento del servidor}{5}{section.2.2}%
-\contentsline {section}{\numberline {2.3}Alojamiento de la BBDD}{6}{section.2.3}%
-\contentsline {section}{\numberline {2.4}Eliminación de la máquina virtual}{6}{section.2.4}%
-\contentsline {section}{\numberline {2.5}Inconvenientes adicionales}{6}{section.2.5}%
-\contentsline {section}{\numberline {2.6}Testing lento}{7}{section.2.6}%
-\contentsline {chapter}{\numberline {3}Implementación y soluciones a los problemas}{8}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Implementación con \textit {FastApi}}{8}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Servidores locales}{8}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Entornos virtuales}{9}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Base de datos online}{9}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Testing con Postman}{9}{section.3.5}%
-\contentsline {section}{\numberline {3.6}Mejoras adicinoales}{9}{section.3.6}%
-\contentsline {chapter}{\numberline {4}Desarrollo del Backend}{10}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Estructura clara y organizada}{10}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Manejo de errores}{11}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Impresión interrumpida}{11}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Utilidades para la base de datos}{11}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Endpoints}{13}{section.4.5}%
+\contentsline {section}{\numberline {1.1}Análisis del problema}{5}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Objetivos}{6}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Ideas descartadas}{7}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Estructura de la memoria}{8}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Inconvenientes en el primer proyecto y propuestas de solución}{9}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Limitaciones en la comunicación}{9}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Alojamiento del servidor}{9}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Alojamiento de la BBDD}{10}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Eliminación de la máquina virtual}{10}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Inconvenientes adicionales}{10}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Testing lento}{11}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Implementación y soluciones a los problemas}{12}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Implementación con \textit {FastApi}}{12}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Servidores locales}{12}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Entornos virtuales}{12}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Testing con Postman}{12}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Mejoras adicionales}{12}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Arquitectura del sistema}{13}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Capa de percepción}{13}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Sensores y actuadores}{13}{subsection.4.1.1}%
+\contentsline {subsubsection}{Sensores}{13}{section*.2}%
+\contentsline {subsubsection}{Actuadores}{14}{section*.3}%
+\contentsline {subsubsection}{Periféricos}{14}{section*.4}%
+\contentsline {subsection}{\numberline {4.1.2}ESP32}{14}{subsection.4.1.2}%
+\contentsline {subsubsection}{Introducción}{14}{section*.5}%
+\contentsline {subsubsection}{Librerias}{14}{section*.6}%
+\contentsline {subsection}{\numberline {4.1.3}NFC}{15}{subsection.4.1.3}%
+\contentsline {section}{\numberline {4.2}Capa de transporte}{15}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Capa de procesamiento}{16}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Capa de Aplicación}{16}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Base de datos online}{18}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Modelo E/R: Versión 1}{18}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Modelo E/R: Versión 2}{19}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Modelo E/R: Versión 3}{19}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Esquema de tablas}{20}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Tablas extra}{23}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Vistas}{24}{section.5.6}%
+\contentsline {section}{\numberline {5.7}Instalación y configuración}{25}{section.5.7}%
+\contentsline {chapter}{\numberline {6}Desarrollo de la API}{26}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Estructura clara y organizada}{26}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Manejo de errores}{27}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Impresión interrumpida}{27}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Utilidades para la base de datos}{27}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Endpoints}{29}{section.6.5}%
+\contentsline {chapter}{\numberline {7}Diseño e implementación del front-end}{35}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Estructura HTML}{35}{section.7.1}%
+\contentsline {subsection}{\numberline {7.1.1}Página de Inicio de Sesión}{35}{subsection.7.1.1}%
+\contentsline {subsection}{\numberline {7.1.2}Página de Registro}{36}{subsection.7.1.2}%
+\contentsline {subsection}{\numberline {7.1.3}Página de Menú}{37}{subsection.7.1.3}%
+\contentsline {subsection}{\numberline {7.1.4}Página de Aulas}{38}{subsection.7.1.4}%
+\contentsline {subsection}{\numberline {7.1.5}Página de Detalle de Aula}{39}{subsection.7.1.5}%
+\contentsline {subsection}{\numberline {7.1.6}Página de Taquillas}{39}{subsection.7.1.6}%
+\contentsline {subsection}{\numberline {7.1.7}Página de Detalle de Taquilla}{40}{subsection.7.1.7}%
+\contentsline {subsection}{\numberline {7.1.8}Página de Cafetería}{41}{subsection.7.1.8}%
+\contentsline {subsection}{\numberline {7.1.9}Página de Realizar Pedido en la Cafetería}{41}{subsection.7.1.9}%
+\contentsline {subsection}{\numberline {7.1.10}Página de Producto en la Cafetería}{42}{subsection.7.1.10}%
+\contentsline {subsection}{\numberline {7.1.11}Página de Entrega de Pedido con NFC}{43}{subsection.7.1.11}%
+\contentsline {subsection}{\numberline {7.1.12}Página de Mis Pedidos}{44}{subsection.7.1.12}%
+\contentsline {subsection}{\numberline {7.1.13}Página NFC}{45}{subsection.7.1.13}%
+\contentsline {subsection}{\numberline {7.1.14}Página notif}{45}{subsection.7.1.14}%
+\contentsline {subsection}{\numberline {7.1.15}Página de notificaciones}{46}{subsection.7.1.15}%
+\contentsline {section}{\numberline {7.2}Lógica Javascript}{47}{section.7.2}%
+\contentsline {subsection}{\numberline {7.2.1}Lógica de Iniciar sesión}{47}{subsection.7.2.1}%
+\contentsline {subsection}{\numberline {7.2.2}Lógica de Registrarse}{48}{subsection.7.2.2}%
+\contentsline {subsection}{\numberline {7.2.3}Lógica de Menú}{48}{subsection.7.2.3}%
+\contentsline {subsection}{\numberline {7.2.4}Lógica de Listar aulas}{48}{subsection.7.2.4}%
+\contentsline {subsection}{\numberline {7.2.5}Lógica de Detalle aula}{48}{subsection.7.2.5}%
+\contentsline {subsection}{\numberline {7.2.6}Lógica de Listar taquillas}{48}{subsection.7.2.6}%
+\contentsline {subsection}{\numberline {7.2.7}Lógica de Detalle taquilla}{48}{subsection.7.2.7}%
+\contentsline {subsection}{\numberline {7.2.8}Lógica de Cafetería pedido}{48}{subsection.7.2.8}%
+\contentsline {subsection}{\numberline {7.2.9}Lógica de Cafetería producto}{48}{subsection.7.2.9}%
+\contentsline {subsection}{\numberline {7.2.10}Lógica de Entrega pedido}{48}{subsection.7.2.10}%
+\contentsline {subsection}{\numberline {7.2.11}Lógica de Listar pedidos}{48}{subsection.7.2.11}%
+\contentsline {section}{\numberline {7.3}Estilos de la web}{48}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Estilo main css}{48}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}Estilo notificaciones}{48}{subsection.7.3.2}%
+\contentsline {chapter}{\numberline {8}Plan de desarrollo}{49}{chapter.8}%
+\contentsline {chapter}{\numberline {9}Conclusiones}{50}{chapter.9}%
+\contentsline {chapter}{\numberline {A}Manual de instalación}{52}{appendix.alph1.Alph1}%
+\contentsline {chapter}{\numberline {B}Manual de Usuario de la Aplicación Web}{53}{appendix.alph1.Alph2}%
+\contentsline {section}{\numberline {B.1}Bienvenida}{53}{section.alph1.Alph2.1}%
+\contentsline {section}{\numberline {B.2}Registro}{53}{section.alph1.Alph2.2}%
+\contentsline {section}{\numberline {B.3}Menú}{54}{section.alph1.Alph2.3}%
+\contentsline {section}{\numberline {B.4}Listado de aulas}{54}{section.alph1.Alph2.4}%
+\contentsline {section}{\numberline {B.5}Detalle de un aula}{54}{section.alph1.Alph2.5}%
+\contentsline {section}{\numberline {B.6}Listado de taquillas}{55}{section.alph1.Alph2.6}%
+\contentsline {section}{\numberline {B.7}Reserva de Taquilla}{55}{section.alph1.Alph2.7}%
+\contentsline {section}{\numberline {B.8}Taquilla reservada}{55}{section.alph1.Alph2.8}%
+\contentsline {section}{\numberline {B.9}Inicio de cafetería}{55}{section.alph1.Alph2.9}%
+\contentsline {section}{\numberline {B.10}Realizar Pedido}{56}{section.alph1.Alph2.10}%
+\contentsline {section}{\numberline {B.11}Seleccionar pedido}{56}{section.alph1.Alph2.11}%
+\contentsline {section}{\numberline {B.12}Información de un pedido}{56}{section.alph1.Alph2.12}%
+\contentsline {chapter}{\numberline {C}Simulación de datos}{58}{appendix.alph1.Alph3}%
+\contentsline {chapter}{\numberline {D}Hojas de características de los componentes}{59}{appendix.alph1.Alph4}%
