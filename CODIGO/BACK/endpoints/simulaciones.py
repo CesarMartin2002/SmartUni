@@ -14,6 +14,8 @@ def simulacion(usuario = 0, numero_aleatorio = 0):
     if numero_aleatorio == 1:
     #region se reserva una taquilla
         id_taquilla = random.randint(1, 10)
+        if id_taquilla == 2:
+            id_taquilla = 1
         print(f"\nSe va a reservar la taquilla {id_taquilla} para el usuario {usuario}")
         numero = random.randint(1000, 9999)
         json = {"password": numero,
