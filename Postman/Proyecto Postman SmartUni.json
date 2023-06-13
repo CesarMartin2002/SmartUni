@@ -1,0 +1,1147 @@
+{
+	"info": {
+		"_postman_id": "c518713e-6679-4c99-9106-65fb785bd816",
+		"name": "Proyecto Ubicomp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25955057",
+		"_collection_link": "https://ubicompuah.postman.co/workspace/Ubicua~e6e6c685-bd04-4db7-9b2a-db7e4927ef5f/collection/25955057-c518713e-6679-4c99-9106-65fb785bd816?action=share&creator=25955057&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Taquillas",
+			"item": [
+				{
+					"name": "Lista Taquillas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extrae el ID de la primera taquilla en la lista de taquillas\r",
+									"var taquilla = pm.response.json()[\"data\"][0];\r",
+									"var id_taquilla = taquilla.id_taquilla;\r",
+									"\r",
+									"// Guarda el ID de la taquilla en una variable de coleccion llamada \"id_taquilla\"\r",
+									"pm.collectionVariables.set(\"id_taquilla\", id_taquilla);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{environment}}/taquillas",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"taquillas"
+							],
+							"query": [
+								{
+									"key": "ala",
+									"value": "sur",
+									"disabled": true
+								},
+								{
+									"key": "pasillo",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "piso",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "ocupado",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalle taquilla",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extrae el ID de la primera taquilla en la lista de taquillas\r",
+									"var taquilla = pm.response.json()[\"data\"];\r",
+									"var id_taquilla = taquilla.id_taquilla;\r",
+									"\r",
+									"// Guarda el ID de la taquilla en una variable de coleccion llamada \"id_taquilla\"\r",
+									"pm.collectionVariables.set(\"id_taquilla\", id_taquilla);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{environment}}/taquillas/:idTaquilla",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"taquillas",
+								":idTaquilla"
+							],
+							"variable": [
+								{
+									"key": "idTaquilla",
+									"value": "{{id_taquilla}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nueva taquilla",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extrae el ID de la nueva taquilla en la lista de taquillas\r",
+									"var id_taquilla = pm.response.json().id;\r",
+									"\r",
+									"// Guarda el ID de la taquilla en una variable de coleccion llamada \"id_taquilla\"\r",
+									"pm.collectionVariables.set(\"id_taquilla\", id_taquilla);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ala\": \"este\",\r\n    \"pasillo\": 2,\r\n    \"piso\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{environment}}/taquillas",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"taquillas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Abrir taquilla",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\":\"3022\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{environment}}/taquillas/:idTaquilla",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"taquillas",
+								":idTaquilla"
+							],
+							"variable": [
+								{
+									"key": "idTaquilla",
+									"value": "{{id_taquilla}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reservar taquilla",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id_alumno\":7\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{environment}}/taquillas/reservar/:idTaquilla",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"taquillas",
+								"reservar",
+								":idTaquilla"
+							],
+							"variable": [
+								{
+									"key": "idTaquilla",
+									"value": "{{id_taquilla}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancelar reserva taquilla",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "alumno",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{environment}}/taquillas/cancelar/:idTaquilla/:idAlumno",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"taquillas",
+								"cancelar",
+								":idTaquilla",
+								":idAlumno"
+							],
+							"variable": [
+								{
+									"key": "idTaquilla",
+									"value": "{{id_taquilla}}"
+								},
+								{
+									"key": "idAlumno",
+									"value": "{{id_alumno}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Taquilla reservada Alumno",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{environment}}/taquilla/Alumno/:idAlumno",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"taquilla",
+								"Alumno",
+								":idAlumno"
+							],
+							"variable": [
+								{
+									"key": "idAlumno",
+									"value": "{{id_alumno}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Aulas",
+			"item": [
+				{
+					"name": "Horario",
+					"item": [
+						{
+							"name": "Detalle horario",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/aulas/horarios/:idHorario",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"aulas",
+										"horarios",
+										":idHorario"
+									],
+									"variable": [
+										{
+											"key": "idHorario",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar asignaturas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/aulas/asignaturas/:idAula",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"aulas",
+										"asignaturas",
+										":idAula"
+									],
+									"variable": [
+										{
+											"key": "idAula",
+											"value": "{{id_aula}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Nuevo horario",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n     \"dia\": \"2023/06/02\",\r\n     \"hora_inicio\": \"8:00\",\r\n     \"hora_fin\": \"10:00\",\r\n     \"id_asignatura_asignatura\": 3,\r\n     \"id_aula_aula\": 1\r\n }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{environment}}/aulas/horarios",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"aulas",
+										"horarios"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Clima",
+					"item": [
+						{
+							"name": "Obtener climatizacion aula",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Extrae el ID de la primera aula en la lista de aulas\r",
+											"var aula = pm.response.json()[\"data\"][0];\r",
+											"var id_aula = aula.id_aula;\r",
+											"\r",
+											"// Guarda el ID de la aula en una variable de coleccion llamada \"id_aula\"\r",
+											"pm.collectionVariables.set(\"id_aula\", id_aula);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/aulas/:idAula/climatizar",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"aulas",
+										":idAula",
+										"climatizar"
+									],
+									"variable": [
+										{
+											"key": "idAula",
+											"value": "{{id_aula}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "historico aula",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Extrae el ID de la nueva aula en la lista de aulas\r",
+											"var id_aula = pm.response.json().id;\r",
+											"\r",
+											"// Guarda el ID de la aula en una variable de coleccion llamada \"id_aula\"\r",
+											"pm.collectionVariables.set(\"id_aula\", id_aula);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_aula_aula\":1,\r\n    \"temperatura_previa\":21,\r\n    \"tiempo_calentar\":12\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{environment}}/aulas/:idAula/historico",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"aulas",
+										":idAula",
+										"historico"
+									],
+									"variable": [
+										{
+											"key": "idAula",
+											"value": "{{id_aula}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Listar aulas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extrae el ID de la primera aula en la lista de aulas\r",
+									"var aula = pm.response.json()[\"data\"][0];\r",
+									"var id_aula = aula.id_aula;\r",
+									"\r",
+									"// Guarda el ID de la aula en una variable de coleccion llamada \"id_aula\"\r",
+									"pm.collectionVariables.set(\"id_aula\", id_aula);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{environment}}/aulas?ala=Este&numero=1&planta=1",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"aulas"
+							],
+							"query": [
+								{
+									"key": "ala",
+									"value": "Este"
+								},
+								{
+									"key": "numero",
+									"value": "1"
+								},
+								{
+									"key": "planta",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Info aula",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{environment}}/aulas/:idAula",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"aulas",
+								":idAula"
+							],
+							"variable": [
+								{
+									"key": "idAula",
+									"value": "{{id_aula}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nuevo aula",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extrae el ID de la nueva aula en la lista de aulas\r",
+									"var id_aula = pm.response.json().id;\r",
+									"\r",
+									"// Guarda el ID de la aula en una variable de coleccion llamada \"id_aula\"\r",
+									"pm.collectionVariables.set(\"id_aula\", id_aula);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"temperatura\": 23,\r\n        \"luminosidad\": 40,\r\n        \"laboratorio\": true,\r\n        \"planta\": \"2\",\r\n        \"ala\": \"Sur\",\r\n        \"num_aula\": 3\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{environment}}/aulas",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"aulas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizar aula",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"ala\": \"Este\",\r\n        \"temperatura\": 23\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{environment}}/aulas/:idAula",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"aulas",
+								":idAula"
+							],
+							"variable": [
+								{
+									"key": "idAula",
+									"value": "{{id_aula}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cafeteria",
+			"item": [
+				{
+					"name": "Pedidos",
+					"item": [
+						{
+							"name": "listar pedidos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Extrae el ID del primer pedido en la lista de pedidos\r",
+											"var pedido = pm.response.json()[\"data\"][0];\r",
+											"var id_pedido = pedido.id_pedido;\r",
+											"\r",
+											"// Guarda el ID del pedido en una variable de coleccion llamada \"id_pedido\"\r",
+											"pm.collectionVariables.set(\"id_pedido\", id_pedido);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/cafeteria/pedidos?id_alumno={{id_alumno}}",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"cafeteria",
+										"pedidos"
+									],
+									"query": [
+										{
+											"key": "id_alumno",
+											"value": "{{id_alumno}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "detallar pedido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Extrae el ID del primer pedido en la lista de pedidos\r",
+											"var pedido = pm.response.json()[\"data\"];\r",
+											"var id_pedido = pedido.id_pedido;\r",
+											"\r",
+											"// Guarda el ID del pedido en una variable de coleccion llamada \"id_pedido\"\r",
+											"pm.collectionVariables.set(\"id_pedido\", id_pedido);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{environment}}/cafeteria/pedidos/:idPedido",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"cafeteria",
+										"pedidos",
+										":idPedido"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									],
+									"variable": [
+										{
+											"key": "idPedido",
+											"value": "{{id_pedido}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Realizar Pedido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Extrae el ID del primer pedido en la lista de pedidos\r",
+											"var pedido = pm.response.json()[\"data\"];\r",
+											"var id_pedido = pedido.id_pedido;\r",
+											"\r",
+											"// Guarda el ID del pedido en una variable de coleccion llamada \"id_pedido\"\r",
+											"pm.collectionVariables.set(\"id_pedido\", id_pedido);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_alumno\" : 3,\r\n    \"productos\" : [1,2,3]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{environment}}/cafeteria/pedidos",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"cafeteria",
+										"pedidos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Actualizar Pedido",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id_alumno\" : 3,\r\n    \"estado\" : 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{environment}}/cafeteria/pedidos/:idPedido",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"cafeteria",
+										"pedidos",
+										":idPedido"
+									],
+									"variable": [
+										{
+											"key": "idPedido",
+											"value": "{{id_pedido}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "listar productos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extrae el ID del primer producto en la lista de productos\r",
+									"var producto = pm.response.json()[\"data\"][0];\r",
+									"var id_producto = producto.id_producto;\r",
+									"\r",
+									"// Guarda el ID del producto en una variable de coleccion llamada \"id_producto\"\r",
+									"pm.collectionVariables.set(\"id_producto\", id_producto);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{environment}}/cafeteria/productos",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"cafeteria",
+								"productos"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detallar producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{environment}}/cafeteria/productos/:id_producto",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"cafeteria",
+								"productos",
+								":id_producto"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id_producto",
+									"value": "{{id_producto}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Producto estrella",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{environment}}/cafeteria/pedidos/estrella",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"cafeteria",
+								"pedidos",
+								"estrella"
+							],
+							"query": [
+								{
+									"key": "id_alumno",
+									"value": "{{id_alumno}}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sesion",
+			"item": [
+				{
+					"name": "Inicio Sesion Alumno",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extrae el ID de la primera alumno en la lista de alumnos\r",
+									"var alumno = pm.response.json()[\"data\"];\r",
+									"var id_alumno = alumno.id_alumno;\r",
+									"\r",
+									"// Guarda el ID de la alumno en una variable de coleccion llamada \"id_alumno\"\r",
+									"pm.collectionVariables.set(\"id_alumno\", id_alumno);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"correo\": \"juan@edu.uah.es\",\r\n    \"password\": \"juan1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{environment}}/login",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registrar alumno",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"correo\": \"juan3@edu.uah.es\",\r\n    \"password\": \"juan1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{environment}}/signup",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "NFC",
+			"item": [
+				{
+					"name": "Cafeteria",
+					"item": [
+						{
+							"name": "Actualizar Pedido NFC",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"num_serie\": \"04:ef:8e:56:70:00:00\",\r\n    \"id_alumno\" : 3,\r\n    \"estado\" : 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{environment}}/cafeteria/pedidos/nfc/:idPedido",
+									"host": [
+										"{{environment}}"
+									],
+									"path": [
+										"cafeteria",
+										"pedidos",
+										"nfc",
+										":idPedido"
+									],
+									"variable": [
+										{
+											"key": "idPedido",
+											"value": "{{id_pedido}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Lista NFC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extrae el ID de la primera nfc en la lista de nfcs\r",
+									"var nfc = pm.response.json()[\"data\"][0];\r",
+									"var id_nfc = nfc.id_nfc;\r",
+									"\r",
+									"// Guarda el ID de la nfc en una variable de coleccion llamada \"id_nfc\"\r",
+									"pm.collectionVariables.set(\"id_nfc\", id_nfc);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{environment}}/nfc",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"nfc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "nuevo NFC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extrae el ID de la nueva nfc en la lista de nfcs\r",
+									"var id_nfc = pm.response.json().id;\r",
+									"\r",
+									"// Guarda el ID de la nfc en una variable de coleccion llamada \"id_nfc\"\r",
+									"pm.collectionVariables.set(\"id_nfc\", id_nfc);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"num_serie\": \"serial_inventado\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{environment}}/nfc",
+							"host": [
+								"{{environment}}"
+							],
+							"path": [
+								"nfc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "id_taquilla",
+			"value": "2"
+		},
+		{
+			"key": "id_aula",
+			"value": "1"
+		},
+		{
+			"key": "id_producto",
+			"value": "1"
+		},
+		{
+			"key": "id_pedido",
+			"value": "2"
+		},
+		{
+			"key": "id_nfc",
+			"value": "0"
+		},
+		{
+			"key": "id_alumno",
+			"value": ""
+		}
+	]
+}
