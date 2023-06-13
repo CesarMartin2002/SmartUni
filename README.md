@@ -10,7 +10,6 @@ El proyecto consiste en el desarrollo de una plataforma que permita automatizar 
 
 - Automatización de las taquillas de la universidad mediante el uso de ESP32.
 - Control de la temperatura de las aulas mediante sensores IoT.
-- Asignación de asientos en el aula mediante el uso de NFC.
 - Pedido remoto de comida en la cafetería.
 
 La plataforma se compone de distintas tecnologías, entre las que se incluyen:
