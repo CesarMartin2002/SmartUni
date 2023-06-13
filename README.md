@@ -28,7 +28,7 @@ Este proyecto es un trabajo cerrado y no está abierto a contribuciones externas
 
 ## Autores
 
-- [Javier Lombardía](https://github.com/lombaa)
+- [Javier Lombardía Castro](https://github.com/lombaa)
 - [César Martín Guijarro](https://github.com/CesarMartin2002)
-- [Lucía Picado](https://github.com/LuciaPicado)
+- [Lucía Picado Joglar](https://github.com/LuciaPicado)
 - [Valeria Fernanda Villamares Félix](https://github.com/Valeriia632)
