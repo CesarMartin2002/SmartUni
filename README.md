@@ -20,7 +20,7 @@ La plataforma se compone de distintas tecnologías, entre las que se incluyen:
 - Implementación de una API RESTful utilizando FastAPI.
 
 ## Memoria
-El documento de memoria se puede encontrar [aquí](https://www.overleaf.com/4358141674rwwcsbrsywwx).  
+El documento de memoria se puede encontrar [aquí](https://www.overleaf.com/read/wxcfdvkfcybv).  
 El proyecto de LaTeX también se puede encontrar al repositorio, pero puede no estar actualizado.
 ## Contribuir
 
