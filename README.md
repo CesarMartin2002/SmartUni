@@ -22,6 +22,9 @@ La plataforma se compone de distintas tecnologías, entre las que se incluyen:
 ## Memoria
 El documento de memoria se puede encontrar [aquí](https://www.overleaf.com/read/wxcfdvkfcybv).  
 El proyecto de LaTeX también se puede encontrar al repositorio, pero puede no estar actualizado.
+
+## Vídeo explicativo
+Se puede encontrar en [este enlace de Youtube](https://youtu.be/OeZ_oWdZz1s) un vídeo explicativo del proyecto presentado por todos los autores del mismo.
 ## Contribuir
 
 Este proyecto es un trabajo cerrado y no está abierto a contribuciones externas.
